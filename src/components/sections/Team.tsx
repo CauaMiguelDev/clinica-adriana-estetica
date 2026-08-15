@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowRight, BadgeCheck, Users } from "lucide-react";
+import { ArrowRight, BadgeCheck, Users, ImagePlus } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
 import { TEAM, CLINIC, waLink } from "@/lib/data";
 
@@ -46,12 +46,18 @@ export function Team() {
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                       />
                     ) : (
-                      <div className="grid h-full place-items-center">
+                      // Espaço reservado que se explica, em vez de parecer
+                      // imagem quebrada: monograma sólido + rótulo.
+                      <div className="flex h-full flex-col items-center justify-center gap-3 border border-dashed border-olive/30 px-4 text-center">
                         <span
-                          className="font-display text-5xl font-semibold text-olive/45"
+                          className="grid h-20 w-20 place-items-center rounded-full bg-olive/10 font-display text-3xl font-semibold text-olive-dark"
                           aria-hidden
                         >
                           {firstName.charAt(0)}
+                        </span>
+                        <span className="inline-flex items-center gap-1.5 text-xs text-muted">
+                          <ImagePlus size={13} className="text-olive" />
+                          Foto em breve
                         </span>
                         <span className="sr-only">
                           Retrato de {p.name} em breve
