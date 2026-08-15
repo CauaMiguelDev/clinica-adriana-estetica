@@ -87,12 +87,14 @@ const FRAG = /* glsl */ `
     // Lambert "envolvido": sem sombra dura, tudo permanece claro e macio.
     float diff = clamp(dot(n, l) * 0.5 + 0.5, 0.0, 1.0);
 
+    // Expoente baixo: com ondas rasas (~13°), um brilho estreito quase nunca
+    // encontra o ângulo certo. Largo, ele corre pelas cristas.
     vec3 hv = normalize(l + v);
-    float spec = pow(max(dot(n, hv), 0.0), 56.0);
+    float spec = pow(max(dot(n, hv), 0.0), 26.0);
 
-    vec3 col = mix(uValley, uCrest, clamp(vHeight * 0.85 + 0.5, 0.0, 1.0));
-    col = mix(col * 0.93, col, diff);
-    col += uGlint * spec * 0.5;
+    vec3 col = mix(uValley, uCrest, clamp(vHeight * 0.9 + 0.5, 0.0, 1.0));
+    col = mix(col * 0.88, col, diff);
+    col += uGlint * spec * 0.35;
 
     // Dissolve conforme se afasta e nas laterais: a água some no fundo da
     // página em vez de terminar numa aresta.
@@ -100,7 +102,7 @@ const FRAG = /* glsl */ `
     float far = 1.0 - smoothstep(0.15, 0.85, vUvz.y);
     float near = smoothstep(0.0, 0.04, vUvz.y);
 
-    gl_FragColor = vec4(col, sides * far * near * 0.85);
+    gl_FragColor = vec4(col, sides * far * near * 0.95);
   }
 `;
 
@@ -165,8 +167,10 @@ export function WaterScene({ className = "" }: { className?: string }) {
           depthWrite: false,
           uniforms: {
             uTime: { value: 0 },
-            uValley: { value: new THREE.Vector3(...srgb("#EDE2D2")) },
-            uCrest: { value: new THREE.Vector3(...srgb("#FDFAF5")) },
+            // O vale precisa destoar do fundo da página (#FAF6F0), senão a
+            // ondulação some: cores próximas demais viram um bloco chapado.
+            uValley: { value: new THREE.Vector3(...srgb("#DCCDB4")) },
+            uCrest: { value: new THREE.Vector3(...srgb("#FCF8F0")) },
             uGlint: { value: new THREE.Vector3(...srgb("#C9A35E")) },
             uLightDir: { value: new THREE.Vector3(-0.35, 0.85, 0.4).normalize() },
             uCam: { value: camera.position.clone() },

@@ -75,8 +75,10 @@ export function Procedures() {
 
         {/* Filtro único, por categoria. */}
         <Reveal delay={0.08}>
+          {/* Botões de alternância, não abas: não existe tabpanel por trás
+              deles, então `aria-pressed` descreve melhor do que role="tab". */}
           <div
-            role="tablist"
+            role="group"
             aria-label="Filtrar por categoria"
             className="mt-10 flex flex-wrap justify-center gap-2.5"
           >
@@ -85,8 +87,7 @@ export function Procedures() {
               return (
                 <button
                   key={f}
-                  role="tab"
-                  aria-selected={isActive}
+                  aria-pressed={isActive}
                   onClick={() => setActive(f)}
                   className={`rounded-full border px-5 py-2 text-sm font-medium transition-colors duration-300 ${
                     isActive

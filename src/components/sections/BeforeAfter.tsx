@@ -66,7 +66,9 @@ function Comparator({ pair }: { pair: ResultPair }) {
         value={pos}
         onChange={(e) => setPos(Number(e.target.value))}
         aria-label={`Comparar antes e depois: ${pair.label}`}
-        className="absolute inset-0 z-30 h-full w-full cursor-ew-resize opacity-0"
+        // touch-pan-y devolve o gesto vertical ao navegador: sem isso o range
+        // cobre a imagem inteira e o dedo não consegue rolar a página por cima dela.
+        className="absolute inset-0 z-30 h-full w-full cursor-ew-resize touch-pan-y opacity-0"
       />
     </div>
   );
