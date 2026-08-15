@@ -51,6 +51,49 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
+// Perfil do negócio para os buscadores. Endereço, telefone, horário e nota
+// vêm de CLINIC — se o dado mudar lá, muda aqui junto.
+const businessSchema = {
+  "@context": "https://schema.org",
+  "@type": "HealthAndBeautyBusiness",
+  name: CLINIC.name,
+  description:
+    "Clínica de estética em Ceilândia, Brasília. Estética facial e corporal, harmonização e massoterapia com profissionais certificadas.",
+  telephone: `+${CLINIC.whatsapp}`,
+  email: CLINIC.email,
+  url: "https://clinicaadrianaestetica.com.br",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "QNN 1, Conjunto D, Casa 11",
+    addressLocality: "Ceilândia",
+    addressRegion: "DF",
+    addressCountry: "BR",
+  },
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ],
+      opens: "09:00",
+      closes: "20:00",
+    },
+  ],
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: CLINIC.rating,
+    reviewCount: CLINIC.reviews,
+    bestRating: 5,
+  },
+  sameAs: [CLINIC.instagram],
+  priceRange: "$$",
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -58,7 +101,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR" className={`${display.variable} ${sans.variable}`}>
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased">
+        {children}
+        {/* Dados estruturados: sem isto o Google adivinha o que é a página.
+            Só campos que a clínica realmente tem — nada inventado. */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(businessSchema) }}
+        />
+      </body>
     </html>
   );
 }
