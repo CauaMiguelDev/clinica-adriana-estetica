@@ -1,26 +1,15 @@
-# Clínica Adriana Estética — Site Premium
+# Espaço Cuide-se Bem
 
-Site institucional de alto padrão para clínica de estética e beleza, com foco em
-conversão e agendamento. Construído com **Next.js 14 (App Router) + TypeScript +
-Tailwind CSS + Framer Motion + React Three Fiber + Lucide**.
+Site de página única da clínica de estética Espaço Cuide-se Bem, em Ceilândia,
+Brasília. O objetivo é levar o visitante de *conhecer os serviços* a *agendar
+pelo WhatsApp* no menor caminho possível.
 
-## ✨ Destaques visuais
+**Next.js 14 (App Router) · TypeScript · Tailwind CSS · Framer Motion · Three.js · Lucide**
 
-- Tema **dark/light** com toggle (paleta dourado/champagne sobre fundo profundo)
-- **Cursor personalizado**, **partículas douradas** flutuantes e **objeto 3D** no hero (R3F)
-- **Glassmorphism**, gradientes animados, efeitos de **glow** e **shimmer**
-- **Scroll reveal**, **parallax**, **tilt 3D** nos cards, **ripple** nos botões
-- **Números animados**, barra de progresso de leitura e **preloader** elegante
-- Totalmente **responsivo** e com `prefers-reduced-motion` respeitado
+O sistema de design — paleta, tipografia, escala, estados e regras de movimento —
+está documentado em [`DESIGN.md`](./DESIGN.md). Leia antes de mexer no visual.
 
-## 🧱 Seções
-
-Hero · Sobre · Equipe · Catálogo de procedimentos (com filtros) · Antes & Depois
-(comparador interativo) · Depoimentos (carrossel) · **Agendamento online em 4 passos**
-· Pacotes & Assinaturas · Programa de fidelidade · Blog · FAQ (accordion) · Contato
-+ mapa · Rodapé premium · WhatsApp flutuante · Assistente virtual (chat).
-
-## 🚀 Como rodar
+## Como rodar
 
 ```bash
 npm install
@@ -29,36 +18,57 @@ npm run build    # build de produção
 npm start        # servir a build
 ```
 
-## ✅ O que já está funcional
+> Não rode `npm run build` com o `npm run dev` ligado: os dois escrevem em
+> `.next` e o build derruba os artefatos do dev (a página passa a carregar sem
+> CSS nem JS). Se acontecer, pare tudo, apague `.next` e suba o dev de novo.
 
-- Todo o frontend, animações e responsividade
-- **Agendamento → WhatsApp**: o formulário monta a mensagem (profissional,
-  procedimento, data, horário, dados) e abre o WhatsApp da clínica
-- Links de contato (WhatsApp, telefone, e-mail, mapa, redes)
-- Catálogo com filtros por categoria e comparador antes/depois
+## Seções
 
-## 🔌 Integrações pendentes (precisam de backend/credenciais)
+Hero (com cena 3D) · Faixa de confiança · **Serviços** · **Catálogo de
+procedimentos** (filtro por categoria) · **Agendamento** · Resultados (antes &
+depois) · A Clínica · Equipe · Depoimentos · Investimento · Dúvidas · Blog ·
+Instagram · Contato + mapa · Rodapé. Mais o WhatsApp flutuante e o "voltar ao
+topo".
 
-Procure por `TODO` no código. Para deixar 100% operacional, integre:
+A ordem segue a prioridade do visitante: serviços → agendar → resultados →
+confiança → contato.
 
-| Recurso | Onde | Sugestão |
+## Onde mexer
+
+| O quê | Onde |
+|---|---|
+| Todo o conteúdo (clínica, equipe, procedimentos, FAQ, blog, pagamento) | `src/lib/data.ts` |
+| Cores, fontes, raios, sombras | `src/app/globals.css` (tokens) e `tailwind.config.ts` |
+| Cena 3D do Hero | `src/components/ui/WaterScene.tsx` |
+| Número do WhatsApp | `CLINIC.whatsapp` em `src/lib/data.ts` |
+
+## Fotos
+
+**O site não tem nenhuma foto no momento** — as de banco de imagens foram
+removidas para não apresentar pessoas e resultados que não são da clínica. Todos
+os lugares já estão preparados: coloque o arquivo em `public/images/` e preencha
+o campo correspondente em `src/lib/data.ts`, que o espaço reservado dá lugar à
+foto sozinho.
+
+| Onde aparece | Campo |
+|---|---|
+| Retratos da equipe | `TEAM[].image` |
+| Fotos do espaço | `CLINIC_PHOTOS[].src` |
+| Antes & depois (liga o comparador) | `RESULTS[].before` e `.after` |
+| Publicações do Instagram | `INSTAGRAM_POSTS[].image` |
+
+## Pendências
+
+Nada aqui exige backend — são dados que só a clínica tem.
+
+| O quê | Onde | Por quê |
 |---|---|---|
-| Assistente IA real | `src/components/ui/ChatWidget.tsx` | Claude API (Anthropic) via rota `app/api/chat` |
-| Newsletter / leads | `src/components/layout/Footer.tsx` | Mailchimp, Brevo ou Resend |
-| Pagamento online | seção de consultoria/pacotes | Stripe ou Mercado Pago |
-| Google Calendar + lembretes | `Booking.tsx` | Google Calendar API + webhook |
-| Google Reviews ao vivo | `Testimonials.tsx` | Google Places API |
-| Analytics | `app/layout.tsx` | `@next/third-parties` (GA4) |
+| Place ID do Google | `CLINIC.googlePlaceId` | Sem ele, "Avaliar no Google" abre uma busca em vez do formulário de avaliação |
+| CNPJ real e Política de Privacidade | `src/components/layout/Footer.tsx` | Está com CNPJ zerado e link que não leva a lugar nenhum; o formulário coleta nome e telefone (LGPD) |
+| Registro profissional de cada especialista | `TEAM[].credential` | Hoje diz "certificada"; um número de registro é verificável |
+| Imagem de compartilhamento (OG image) | `src/app/layout.tsx` | Link mandado no WhatsApp aparece sem prévia |
+| Atualizar o Next.js | `package.json` | A 14.2.15 tem vulnerabilidade crítica conhecida |
 
-## ⚙️ Personalização rápida
-
-- **Dados** (clínica, equipe, procedimentos, preços, FAQ, blog): `src/lib/data.ts`
-- **Cores / fontes / animações**: `tailwind.config.ts` e `src/app/globals.css`
-- **Imagens**: hoje usam Unsplash (ilustrativas). Troque as URLs em `src/lib/data.ts`
-  e nas seções por fotos reais da clínica para autenticidade total.
-- **WhatsApp**: número em `CLINIC.whatsapp` (`src/lib/data.ts`).
-
----
-
-> As imagens atuais são de banco de imagens (ilustrativas). Substitua por fotos
-> reais da clínica e da equipe para o resultado final.
+O agendamento **não precisa de backend**: o formulário monta a mensagem e abre a
+conversa no WhatsApp para a pessoa revisar antes de enviar. Nada é armazenado
+nem enviado por este site.

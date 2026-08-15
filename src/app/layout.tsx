@@ -22,21 +22,23 @@ const sans = Karla({
 export const metadata: Metadata = {
   metadataBase: new URL("https://clinicaadrianaestetica.com.br"),
   title: {
-    default: `${CLINIC.name} | Estética & Beleza de Alto Padrão em Brasília`,
+    default: `${CLINIC.name} | Estética e Bem-estar em Ceilândia, Brasília`,
     template: `%s | ${CLINIC.name}`,
   },
   description:
-    "Clínica de estética e beleza premium em Ceilândia, Brasília. Massoterapia, estética facial e corporal, harmonização e tratamentos avançados com tecnologia de ponta.",
+    "Clínica de estética em Ceilândia, Brasília. Estética facial e corporal, harmonização e massoterapia com profissionais certificadas. Agende pelo WhatsApp.",
   keywords: [
-    "clínica de estética Brasília",
+    "clínica de estética Ceilândia",
+    "estética Brasília",
     "harmonização facial Ceilândia",
-    "drenagem linfática",
-    "limpeza de pele",
-    "estética avançada",
+    "drenagem linfática Brasília",
+    "limpeza de pele Ceilândia",
+    "massoterapia Brasília",
   ],
   openGraph: {
-    title: CLINIC.name,
-    description: "Estética & beleza de alto padrão em Brasília.",
+    title: `${CLINIC.name} | Estética e Bem-estar em Ceilândia`,
+    description:
+      "Estética facial e corporal, harmonização e massoterapia com profissionais certificadas, em Ceilândia, Brasília.",
     type: "website",
     locale: "pt_BR",
   },
