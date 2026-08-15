@@ -90,7 +90,7 @@ export const TEAM: Professional[] = [
     role: "Esteticista Facial",
     credential: "Esteticista facial certificada",
     bio: "Protocolos de limpeza profunda e peelings para uma pele renovada e saudável.",
-    image: "/images/blog-facial-cropped.jpg",
+    image: "",
     procedures: [
       "Limpeza de Pele + Consultoria",
       "Limpeza de Pele + Peeling Químico + Consultoria",
