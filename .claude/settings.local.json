@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(mkdir -p .tmp_imgcheck)",
+      "Bash(curl -s -o .tmp_imgcheck/test.jpg -w \"HTTP %{http_code} size=%{size_download}\\\\n\" \"https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=400&q=60\")",
+      "WebFetch(domain:unsplash.com)",
+      "mcp__Claude_Preview__preview_start",
+      "PowerShell(Stop-Process -Id 11628 -Force -ErrorAction SilentlyContinue)",
+      "PowerShell(\"done\")",
+      "Bash(npx tsc *)",
+      "WebFetch(domain:www.instagram.com)",
+      "PowerShell(npm run build)",
+      "Bash(curl -sL -A \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\)\" -o /tmp/gmap.html -w \"FINAL_URL: %{url_effective}\\\\n\" \"https://share.google/JMSP6GxAQbcZ4PkC0\")",
+      "Read(//tmp/**)",
+      "Bash(echo \"size:\"; wc -c < /tmp/gmap.html; echo \"---ludocid---\"; grep -oE \"ludocid[^&\\\\\"]*\" /tmp/gmap.html | head; echo \"---lrd---\"; grep -oE \"lrd=[^&\\\\\"]*\" /tmp/gmap.html | head; echo \"---0x anywhere---\"; grep -oaE \"0x[0-9a-f]{6,}\" /tmp/gmap.html | head; echo \"---place_id---\"; grep -oE \"place_id[^&\\\\\"]{0,40}\" /tmp/gmap.html | head; echo \"---11v190---\"; grep -oE \"/g/11v190jxx4\" /tmp/gmap.html | head -1)",
+      "Bash(curl -sL -A \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36\" -H \"Cookie: CONSENT=YES+1\" -H \"Accept-Language: pt-BR\" -o /tmp/maps.html -w \"FINAL: %{url_effective}\\\\nHTTP: %{http_code}\\\\n\" \"https://www.google.com/maps/search/Espa%C3%A7o+Cuide-se+Bem+Ceil%C3%A2ndia+DF\")",
+      "PowerShell(npm run build 2>&1)",
+      "PowerShell($ids = @\\('photo-1570172619644-dfd03ed5d881','photo-1598440947619-2c35fc9aa908','photo-1607779097040-26e80aa78e66','photo-1583416750470-965b2707b355','photo-1595476108010-b4d1f102b1b1','photo-1576091160399-112ba8d25d1d'\\); $dir=\"$env:TEMP\\\\teamcand\"; New-Item -ItemType Directory -Force $dir | Out-Null; foreach\\($id in $ids\\){ try { Invoke-WebRequest -Uri \"https://images.unsplash.com/$id`?auto=format&fit=crop&w=700&q=75\" -OutFile \"$dir\\\\$id.jpg\" -UseBasicParsing } catch { \"fail $id\" } }; Get-ChildItem $dir | Select-Object Name,Length)",
+      "PowerShell($ids = @\\('photo-1612908689435-9c4c7c9f4d6f','photo-1620331317314-9f0c1c5f1f8a','photo-1633681926022-84c23e8cb2d6','photo-1633681926035-ec1ac984418a','photo-1487412947147-5cebf100ffc2','photo-1631730486572-226d1f595b68','photo-1614608682850-e0d6ed316d47','photo-1556228578-8c89e6adf883','photo-1532710093739-9470acff878f','photo-1559599101-f09722fb4948','photo-1522337660859-02fbefca4702','photo-1591019479261-1a103585c559'\\); $dir=\"$env:TEMP\\\\teamcand2\"; New-Item -ItemType Directory -Force $dir | Out-Null; foreach\\($id in $ids\\){ try { Invoke-WebRequest -Uri \"https://images.unsplash.com/$id`?auto=format&fit=crop&w=700&q=75\" -OutFile \"$dir\\\\$id.jpg\" -UseBasicParsing -ErrorAction Stop } catch { \"fail $id\" } }; Get-ChildItem $dir | Select-Object Name,Length)",
+      "PowerShell($dir=\"$env:TEMP\\\\adrielhe\"; New-Item -ItemType Directory -Force $dir | Out-Null; Invoke-WebRequest -Uri \"https://images.unsplash.com/photo-1643684391140-c5056cfd3436?auto=format&fit=max&w=1600&q=80\" -OutFile \"$dir\\\\full.jpg\" -UseBasicParsing; \\(Get-Item \"$dir\\\\full.jpg\"\\).Length)",
+      "PowerShell(npx --yes skills add CloudAI-X/threejs-skills)"
+    ]
+  }
+}
