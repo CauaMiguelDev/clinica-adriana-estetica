@@ -1,68 +1,79 @@
 import type { Config } from "tailwindcss";
 
+/**
+ * Sistema de design — Espaço Cuide-se Bem.
+ * Os valores das cores vivem em `globals.css` (:root) como triplets RGB,
+ * para que o Tailwind possa aplicar opacidade (`bg-olive/10`) sobre eles.
+ * Documentação completa e regras de uso: DESIGN.md
+ */
+const rgb = (v: string) => `rgb(var(${v}) / <alpha-value>)`;
+
 const config: Config = {
-  darkMode: "class",
-  content: [
-    "./src/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
+  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
     extend: {
       colors: {
-        // Acentos de luxo (constantes nos dois temas)
-        gold: {
-          DEFAULT: "#c9a35e",
-          light: "#e6c789",
-          dark: "#a07f3f",
+        // --- Neutros terrosos ---
+        bg: rgb("--bg"),
+        surface: rgb("--surface"),
+        sand: rgb("--sand"),
+        fg: rgb("--fg"),
+        muted: rgb("--muted"),
+        line: rgb("--line"),
+
+        // --- Cor de ação ---
+        olive: {
+          DEFAULT: rgb("--olive"),
+          dark: rgb("--olive-dark"),
+          light: rgb("--olive-light"),
         },
-        champagne: "#f3e6cf",
-        rose: "#d98a8a",
-        plum: "#3a1f3d",
-        // Cores semânticas (mudam com o tema via CSS vars)
-        bg: "rgb(var(--bg) / <alpha-value>)",
-        surface: "rgb(var(--surface) / <alpha-value>)",
-        fg: "rgb(var(--fg) / <alpha-value>)",
-        muted: "rgb(var(--muted) / <alpha-value>)",
-        line: "rgb(var(--line) / <alpha-value>)",
+        // --- Secundária / destaque de título ---
+        terracotta: {
+          DEFAULT: rgb("--terracotta"),
+          dark: rgb("--terracotta-dark"),
+          light: rgb("--terracotta-light"),
+        },
+        // --- Acento raro: selos e detalhes. NUNCA texto corrido (2,2:1). ---
+        gold: {
+          DEFAULT: rgb("--gold"),
+          dark: rgb("--gold-dark"),
+        },
       },
+
+      // Borda padrão do projeto — substitui o antigo seletor global `* {}`.
+      borderColor: { DEFAULT: rgb("--line") },
+
       fontFamily: {
-        display: ["var(--font-display)", "serif"],
+        display: ["var(--font-display)", "Georgia", "serif"],
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
       },
+
+      // Três raios, não seis.
+      borderRadius: {
+        card: "1.25rem", // cards, botões grandes
+        panel: "2rem", // painéis, imagens, blocos de destaque
+      },
+
       backgroundImage: {
-        "gold-grad": "linear-gradient(120deg, #e6c789, #c9a35e, #a07f3f)",
-        "radial-fade": "radial-gradient(60% 60% at 50% 0%, rgba(201,163,94,0.18), transparent 70%)",
+        "olive-grad": "linear-gradient(135deg, #74805E, #63704F 55%, #4A5539)",
+        "terracotta-grad": "linear-gradient(135deg, #B06B4E, #9A5C42 55%, #7E4832)",
+        "sand-fade": "linear-gradient(180deg, #FFFFFF 0%, #FAF6F0 60%, #F4EDE4 100%)",
       },
+
+      // Sombras quentes e discretas — nunca preto puro.
       boxShadow: {
-        glow: "0 0 40px -8px rgba(201,163,94,0.45)",
-        "glow-lg": "0 0 80px -10px rgba(201,163,94,0.5)",
-        luxe: "0 30px 80px -30px rgba(0,0,0,0.55)",
+        soft: "0 1px 2px rgba(46,42,36,0.04), 0 8px 24px -12px rgba(46,42,36,0.10)",
+        lift: "0 2px 4px rgba(46,42,36,0.05), 0 20px 40px -20px rgba(46,42,36,0.16)",
       },
+
       keyframes: {
-        gradient: {
-          "0%,100%": { backgroundPosition: "0% 50%" },
-          "50%": { backgroundPosition: "100% 50%" },
-        },
         float: {
           "0%,100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-18px)" },
-        },
-        shimmer: {
-          "100%": { transform: "translateX(200%)" },
-        },
-        "spin-slow": {
-          to: { transform: "rotate(360deg)" },
-        },
-        "pulse-ring": {
-          "0%": { transform: "scale(1)", opacity: "0.6" },
-          "100%": { transform: "scale(1.8)", opacity: "0" },
+          "50%": { transform: "translateY(-10px)" },
         },
       },
       animation: {
-        gradient: "gradient 8s ease infinite",
-        float: "float 6s ease-in-out infinite",
-        shimmer: "shimmer 2.5s infinite",
-        "spin-slow": "spin-slow 18s linear infinite",
-        "pulse-ring": "pulse-ring 2.4s ease-out infinite",
+        float: "float 7s ease-in-out infinite",
       },
     },
   },

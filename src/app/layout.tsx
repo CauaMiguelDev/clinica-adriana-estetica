@@ -1,19 +1,20 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Sora } from "next/font/google";
+import { Fraunces, Karla } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { CLINIC } from "@/lib/data";
 
+// Títulos: serifada com personalidade. Leitura: humanista, calorosa e legível.
+// 5 pesos no total (antes eram 10) — ver DESIGN.md.
 const display = Fraunces({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "600"],
   variable: "--font-display",
   display: "swap",
 });
 
-const sans = Sora({
+const sans = Karla({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "700"],
   variable: "--font-sans",
   display: "swap",
 });
@@ -43,7 +44,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#c9a35e",
+  themeColor: "#63704F",
   width: "device-width",
   initialScale: 1,
 };
@@ -55,18 +56,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR" className={`${display.variable} ${sans.variable}`}>
-      <head>
-        {/* Aplica o tema antes da pintura: claro é o padrão; .dark só se escolhido */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html:
-              "try{if(localStorage.getItem('theme')==='dark')document.documentElement.classList.add('dark')}catch(e){}",
-          }}
-        />
-      </head>
-      <body className="font-sans antialiased">
-        <ThemeProvider>{children}</ThemeProvider>
-      </body>
+      <body className="font-sans antialiased">{children}</body>
     </html>
   );
 }

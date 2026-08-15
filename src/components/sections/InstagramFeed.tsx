@@ -5,65 +5,82 @@ import { Instagram, ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
 import { CLINIC, INSTAGRAM_POSTS } from "@/lib/data";
 
+/**
+ * Instagram.
+ *
+ * As imagens ficam vazias até serem trocadas pelos posts reais (ver
+ * INSTAGRAM_POSTS em src/lib/data.ts) — mostrar fotos de banco como se fossem
+ * publicações da clínica seria enganoso. O link para o perfil funciona sempre.
+ */
 export function InstagramFeed() {
   return (
-    <section id="instagram" className="section-pad relative">
-      <div className="container-luxe">
-        <Reveal className="flex flex-col items-center gap-4 text-center sm:flex-row sm:justify-between sm:text-left">
-          <div>
-            <span className="eyebrow"><Instagram size={14} /> Acompanhe nosso dia a dia</span>
-            <h2 className="mt-3 font-display text-3xl font-semibold sm:text-5xl">
-              Siga no <span className="text-gradient-gold italic">Instagram</span>
-            </h2>
-            <p className="mt-3 max-w-md text-sm text-muted">
-              Resultados reais, bastidores e novidades. Veja por que nossas
-              clientes confiam no nosso trabalho.
-            </p>
-          </div>
+    <section id="instagram" className="section-pad relative bg-sand">
+      <div className="container-page">
+        <Reveal className="mx-auto max-w-2xl text-center">
+          <span className="eyebrow justify-center">
+            <Instagram size={14} /> Nosso dia a dia
+          </span>
+          <h2 className="mt-4 font-display text-3xl font-semibold sm:text-4xl">
+            Siga no <span className="text-terracotta-dark">Instagram</span>
+          </h2>
+          <p className="mt-4 text-muted">
+            Resultados, bastidores e novidades da clínica.
+          </p>
           <a
             href={CLINIC.instagram}
             target="_blank"
             rel="noopener"
-            className="inline-flex items-center gap-2 rounded-full bg-gold-grad px-6 py-3 text-sm font-semibold text-[#1b140a] shadow-luxe transition-transform hover:scale-105"
+            className="mt-6 inline-flex items-center gap-2 rounded-full bg-olive px-6 py-3 text-sm font-semibold text-white shadow-soft transition-colors duration-300 hover:bg-olive-dark hover:shadow-lift active:scale-[0.98]"
           >
-            <Instagram size={18} /> {CLINIC.instagramHandle}
+            <Instagram size={17} /> {CLINIC.instagramHandle}
           </a>
         </Reveal>
 
-        <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-5">
+        <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3">
           {INSTAGRAM_POSTS.map((post, i) => (
-            <Reveal key={post.image} delay={i * 0.06}>
-              <a
-                href={CLINIC.instagram}
-                target="_blank"
-                rel="noopener"
-                aria-label={`Ver no Instagram: ${post.caption}`}
-                className="group relative block aspect-square overflow-hidden rounded-2xl border border-line shadow-luxe"
-              >
-                <Image
-                  src={post.image}
-                  alt={post.caption}
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                  sizes="(max-width: 768px) 50vw, 33vw"
-                />
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/55 px-3 text-center opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
-                  <Instagram size={26} className="text-gold-light" />
-                  <span className="text-xs font-medium text-white sm:text-sm">
+            <Reveal key={post.caption} delay={i * 0.05}>
+              {post.image ? (
+                <a
+                  href={CLINIC.instagram}
+                  target="_blank"
+                  rel="noopener"
+                  aria-label={`Ver no Instagram: ${post.caption}`}
+                  className="group relative block aspect-square overflow-hidden rounded-card border border-line shadow-soft"
+                >
+                  <Image
+                    src={post.image}
+                    alt={post.caption}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    sizes="(max-width: 640px) 50vw, 33vw"
+                  />
+                  <span className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-fg/60 px-3 text-center text-sm text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    <Instagram size={24} />
                     {post.caption}
                   </span>
+                </a>
+              ) : (
+                <div className="grid aspect-square place-items-center rounded-card border border-dashed border-olive/30 bg-surface/60 px-4 text-center">
+                  <div>
+                    <Instagram
+                      size={22}
+                      className="mx-auto text-olive/50"
+                      aria-hidden
+                    />
+                    <p className="mt-2 text-xs text-muted">{post.caption}</p>
+                  </div>
                 </div>
-              </a>
+              )}
             </Reveal>
           ))}
         </div>
 
-        <Reveal className="mt-10 text-center">
+        <Reveal className="mt-8 text-center">
           <a
             href={CLINIC.instagram}
             target="_blank"
             rel="noopener"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-gold transition-all hover:gap-2.5"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-olive-dark transition-all hover:gap-2.5 hover:underline"
           >
             Ver todas as publicações <ArrowUpRight size={15} />
           </a>

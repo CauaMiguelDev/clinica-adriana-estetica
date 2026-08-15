@@ -5,48 +5,46 @@ import { Hero } from "@/components/sections/Hero";
 import { TrustBar } from "@/components/sections/TrustBar";
 import { About } from "@/components/sections/About";
 import { Team } from "@/components/sections/Team";
+import { Services } from "@/components/sections/Services";
 import { Procedures } from "@/components/sections/Procedures";
+import { Booking } from "@/components/sections/Booking";
+import { Investment } from "@/components/sections/Investment";
 import { BeforeAfter } from "@/components/sections/BeforeAfter";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { InstagramFeed } from "@/components/sections/InstagramFeed";
 import { Blog } from "@/components/sections/Blog";
 import { FAQ } from "@/components/sections/FAQ";
 import { Contact } from "@/components/sections/Contact";
-import { AmbientBackground } from "@/components/ui/AmbientBackground";
-import { ParticlesBackground } from "@/components/ui/ParticlesBackground";
-import { LeavesBackground } from "@/components/ui/LeavesBackground";
 import { WhatsappFloat } from "@/components/ui/WhatsappFloat";
-import { ChatWidget } from "@/components/ui/ChatWidget";
 import { BackToTop } from "@/components/ui/BackToTop";
-import { Preloader } from "@/components/ui/Preloader";
 
 export default function Home() {
   return (
     <>
-      <Preloader />
-      <AmbientBackground />
-      <ParticlesBackground />
-      <LeavesBackground />
       <ScrollProgress />
       <Navbar />
 
+      {/* Ordem pela prioridade do visitante:
+          serviços → agendar → resultados → confiança → contato. */}
       <main className="relative z-10">
         <Hero />
         <TrustBar />
+        <Services />
+        <Procedures />
+        <Booking />
+        <BeforeAfter />
         <About />
         <Team />
-        <Procedures />
-        <BeforeAfter />
-        <InstagramFeed />
         <Testimonials />
-        <Blog />
+        <Investment />
         <FAQ />
+        <Blog />
+        <InstagramFeed />
         <Contact />
       </main>
 
       <Footer />
       <WhatsappFloat />
-      <ChatWidget />
       <BackToTop />
     </>
   );

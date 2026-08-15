@@ -2,198 +2,109 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+   Tokens — Espaço Cuide-se Bem
+   Valores em triplet RGB para permitir opacidade no Tailwind
+   (ex.: bg-olive/10). Regras de uso: DESIGN.md
+   ============================================================ */
 :root {
-  /* Tema claro (padrão) — fundo branco champanhe */
-  --bg: 250 247 242;       /* papel champanhe claro */
-  --surface: 255 255 255;
-  --fg: 32 26 32;
-  --muted: 110 100 110;
-  --line: 226 218 208;
-}
+  /* Neutros terrosos */
+  --bg: 250 246 240;          /* #FAF6F0 areia clara */
+  --surface: 255 255 255;     /* #FFFFFF cartões */
+  --sand: 244 237 228;        /* #F4EDE4 faixas alternadas */
+  --fg: 46 42 36;             /* #2E2A24 texto principal */
+  --muted: 107 97 86;         /* #6B6156 texto suave  · 5,7:1 sobre --bg */
+  --line: 228 218 206;        /* #E4DACE bordas */
 
-.dark {
-  /* Tema escuro (opcional) — clínica de luxo */
-  --bg: 14 12 17;          /* quase preto com toque de ameixa */
-  --surface: 26 22 30;
-  --fg: 245 240 235;
-  --muted: 168 160 170;
-  --line: 60 52 64;
-}
+  /* Ação */
+  --olive: 99 112 79;         /* #63704F · 4,9:1 sobre --bg · branco sobre ele 5,3:1 */
+  --olive-dark: 74 85 57;     /* #4A5539 texto/ícone com mais peso */
+  --olive-light: 139 152 120; /* #8B9878 decorativo, nunca texto */
 
-* {
-  border-color: rgb(var(--line));
+  /* Secundária — destaque de título */
+  --terracotta: 154 92 66;      /* #9A5C42 · 4,9:1 sobre --bg · branco sobre ele 5,3:1 */
+  --terracotta-dark: 126 72 50; /* #7E4832 */
+  --terracotta-light: 192 138 112; /* #C08A70 decorativo */
+
+  /* Acento raro — selos e detalhes. 2,2:1: NUNCA como texto. */
+  --gold: 201 163 94;
+  --gold-dark: 160 127 63;
+
+  /* Ritmo */
+  --header-h: 4.5rem;
 }
 
 html {
   scroll-behavior: smooth;
-  /* Impede que brilhos/decorações fora da tela criem rolagem horizontal
-     e estiquem o "containing block" no mobile (quebrava todo o layout). */
-  overflow-x: hidden;
-  max-width: 100%;
-}
-
-/* Compensa o cabeçalho fixo ao navegar pelos links âncora,
-   para o título da seção não ficar escondido sob o menu. */
-section[id] {
-  scroll-margin-top: 5rem;
 }
 
 body {
   background: rgb(var(--bg));
   color: rgb(var(--fg));
-  font-feature-settings: "ss01", "cv01";
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
 }
 
-/* Scrollbar luxuosa */
+/* Compensa o cabeçalho fixo ao navegar pelas âncoras. */
+section[id] {
+  scroll-margin-top: calc(var(--header-h) + 1rem);
+}
+
+/* ============================================================
+   Foco visível — uma regra para o site inteiro.
+   ============================================================ */
+:where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+  outline: 2px solid rgb(var(--olive));
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+::selection {
+  background: rgb(var(--olive) / 0.18);
+}
+
+/* Barra de rolagem discreta, no tom do site. */
 ::-webkit-scrollbar {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: rgb(var(--bg));
+  background: rgb(var(--sand));
 }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(#c9a35e, #a07f3f);
+  background: rgb(var(--olive-light));
   border-radius: 999px;
 }
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--olive));
+}
 
+/* ============================================================
+   Classes de composição
+   ============================================================ */
 @layer components {
-  .container-luxe {
+  /* Largura de leitura padrão do site. */
+  .container-page {
     @apply mx-auto w-full max-w-7xl px-5 sm:px-8;
   }
-  .text-gradient-gold {
-    @apply bg-gold-grad bg-clip-text text-transparent;
-  }
-  .glass {
-    @apply border border-black/5 bg-white/60 backdrop-blur-xl;
-  }
-  .dark .glass {
-    @apply border-white/10 bg-white/5;
-  }
-  .eyebrow {
-    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-gold;
-  }
+
+  /* Respiro vertical entre seções — rampa suave, não salto. */
   .section-pad {
-    @apply py-14 sm:py-28;
+    @apply py-16 sm:py-24 lg:py-28;
   }
-}
 
-/* ===== Fundo ambiente: texturas + feixes de luz ===== */
-.ambient {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  pointer-events: none;
-  /* tema claro (padrão): champanhe quente com profundidade p/ os feixes */
-  background:
-    linear-gradient(180deg, #fffdf8 0%, #faf2e4 45%, #f3e7d3 100%),
-    radial-gradient(80% 50% at 50% 120%, rgba(217, 138, 138, 0.10), transparent 60%);
-}
-.dark .ambient {
-  /* base quente sutil no tema escuro */
-  background:
-    radial-gradient(120% 70% at 50% -10%, rgba(58, 31, 61, 0.45), transparent 60%),
-    radial-gradient(90% 60% at 100% 0%, rgba(201, 163, 94, 0.06), transparent 55%);
-}
-
-/* brilhos radiais dourados/rosé */
-.ambient-glow {
-  position: absolute;
-  inset: -15%;
-  background:
-    radial-gradient(42% 36% at 50% -4%, rgba(201, 163, 94, 0.32), transparent 70%),
-    radial-gradient(38% 34% at 88% 6%, rgba(217, 138, 138, 0.22), transparent 72%),
-    radial-gradient(48% 42% at 5% 20%, rgba(243, 230, 207, 0.60), transparent 72%);
-}
-.dark .ambient-glow {
-  background:
-    radial-gradient(38% 32% at 50% 0%, rgba(201, 163, 94, 0.20), transparent 70%),
-    radial-gradient(34% 30% at 86% 8%, rgba(217, 138, 138, 0.12), transparent 72%),
-    radial-gradient(42% 38% at 8% 22%, rgba(230, 199, 137, 0.12), transparent 72%);
-}
-
-/* feixes de luz diagonais */
-.ambient-beams {
-  position: absolute;
-  inset: 0;
-}
-.ambient-beam {
-  position: absolute;
-  top: -25vh;
-  height: 150vh;
-  transform: rotate(var(--rot, 14deg));
-  transform-origin: top center;
-  will-change: opacity;
-  animation: beamGlow 13s ease-in-out infinite;
-  /* tema claro (padrão): feixes de luz brilhantes */
-  filter: blur(28px);
-  mix-blend-mode: normal;
-  opacity: 0.9;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 253, 247, 0.98) 20%,
-    rgba(250, 232, 190, 0.6) 52%,
-    rgba(255, 252, 244, 0) 100%
-  );
-}
-.dark .ambient-beam {
-  filter: blur(45px);
-  mix-blend-mode: screen;
-  opacity: 0.6;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 250, 235, 0) 0%,
-    rgba(230, 199, 137, 0.14) 32%,
-    rgba(201, 163, 94, 0.06) 62%,
-    rgba(255, 250, 235, 0) 100%
-  );
-}
-@keyframes beamGlow {
-  0%, 100% { opacity: 0.35; }
-  50% { opacity: 0.8; }
-}
-
-/* textura granulada sutil */
-.ambient-grain {
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  /* tema claro (padrão) */
-  opacity: 0.045;
-  mix-blend-mode: multiply;
-}
-.dark .ambient-grain {
-  opacity: 0.06;
-  mix-blend-mode: overlay;
-}
-
-/* Gradiente animado de texto/bordas */
-.animated-gold {
-  background-size: 200% 200%;
-}
-
-/* Linha divisória brilhante */
-.hairline {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(201, 163, 94, 0.6), transparent);
-}
-
-/* Ripple dos botões (keyframe global p/ funcionar com classe utilitária) */
-@keyframes ripple {
-  to {
-    transform: translate(-50%, -50%) scale(28);
-    opacity: 0;
+  /* Rótulo acima do título da seção. */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-olive-dark;
   }
-}
-.animate-ripple {
-  animation: ripple 0.65s ease-out;
+
 }
 
+/* ============================================================
+   Movimento reduzido
+   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;

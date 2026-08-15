@@ -1,103 +1,118 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowRight, Check, BadgeCheck, Users } from "lucide-react";
+import { ArrowRight, BadgeCheck, Users } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
-import { Spotlight } from "@/components/ui/Spotlight";
 import { TEAM, CLINIC, waLink } from "@/lib/data";
 
+/**
+ * Equipe — quem cuida de você.
+ *
+ * O card mostra só três especialidades por profissional; o catálogo completo
+ * já vive na seção Procedimentos e não precisa ser repetido aqui.
+ * Sem retrato real, exibimos o monograma — nunca uma pessoa de banco de imagens.
+ */
 export function Team() {
   return (
-    <section id="equipe" className="section-pad relative bg-surface/40">
-      {/* Luz ambiente de fundo */}
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold/5 blur-3xl" />
-
-      <div className="container-luxe relative z-10">
+    <section id="equipe" className="section-pad relative">
+      <div className="container-page">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <span className="eyebrow"><Users size={14} /> Equipe profissional</span>
-          <h2 className="mt-4 font-display text-4xl font-semibold sm:text-5xl leading-normal py-2">
-            Especialistas que <span className="text-gradient-gold italic px-1">cuidam de você</span>
+          <span className="eyebrow justify-center">
+            <Users size={14} /> Equipe
+          </span>
+          <h2 className="mt-4 font-display text-3xl font-semibold sm:text-4xl">
+            Especialistas que{" "}
+            <span className="text-terracotta-dark">cuidam de você</span>
           </h2>
-          <p className="mt-4 text-muted leading-relaxed pb-2">
-            Conheça as profissionais especializadas por trás dos seus resultados de bem-estar.
+          <p className="mt-4 text-muted">
+            Quatro profissionais, cada uma com a sua especialidade.
           </p>
         </Reveal>
 
-        {/* Grade de 2 colunas em telas maiores (md:grid-cols-2) */}
-        <div className="mt-14 grid grid-cols-1 gap-8 md:grid-cols-2">
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {TEAM.map((p, i) => {
+            const firstName = p.name.replace(/^Dra\.\s*/, "");
             return (
-              <Reveal key={p.id} delay={i * 0.08} className="h-full">
-                <Spotlight className="h-full rounded-[2.5rem]">
-                <div className="group relative flex h-full flex-col overflow-hidden rounded-[2.5rem] border border-line bg-surface/40 backdrop-blur-md p-5 sm:p-8 transition-all duration-300 hover:border-gold/30 hover:shadow-glow hover:-translate-y-1">
-
-                  {/* Imagem no topo */}
-                  <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl border border-gold/15 shadow-luxe shrink-0">
-                    <Image
-                      src={p.image}
-                      alt={p.name}
-                      fill
-                      quality={90}
-                      className={`object-cover transition-transform duration-700 group-hover:scale-105 ${
-                        p.id === "adrielhe" ? "object-top" : "object-center"
-                      }`}
-                      sizes="(max-width: 768px) 92vw, 540px"
-                    />
-                    <div className={`absolute inset-0 bg-gradient-to-t ${p.accent} mix-blend-multiply opacity-20`} />
+              <Reveal key={p.id} delay={i * 0.07} className="h-full">
+                <article className="group flex h-full flex-col overflow-hidden rounded-card border border-line bg-surface shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-olive/30 hover:shadow-lift">
+                  <div className="relative aspect-[4/5] w-full overflow-hidden bg-sand">
+                    {p.image ? (
+                      <Image
+                        src={p.image}
+                        alt={p.name}
+                        fill
+                        quality={88}
+                        className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      />
+                    ) : (
+                      <div className="grid h-full place-items-center">
+                        <span
+                          className="font-display text-5xl font-semibold text-olive/45"
+                          aria-hidden
+                        >
+                          {firstName.charAt(0)}
+                        </span>
+                        <span className="sr-only">
+                          Retrato de {p.name} em breve
+                        </span>
+                      </div>
+                    )}
                   </div>
 
-                  {/* Conteúdo do Perfil */}
-                  <div className="flex flex-1 flex-col mt-6">
-                    {/* Cabeçalho do Perfil */}
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-line/50 pb-4">
-                      <div>
-                        <h3 className="font-display text-2xl font-semibold text-gradient-gold">
-                          {p.name}
-                        </h3>
-                        <p className="text-xs font-bold uppercase tracking-wider text-gold-light mt-0.5">
-                          {p.role}
-                        </p>
-                      </div>
-                      <span className="inline-flex items-center gap-1.5 self-start rounded-full border border-gold/30 bg-gold/10 px-3 py-1 text-xs font-semibold text-gold">
-                        <BadgeCheck size={14} /> {p.credential}
-                      </span>
-                    </div>
+                  <div className="flex flex-1 flex-col p-5">
+                    <h3 className="font-display text-xl font-semibold">
+                      {p.name}
+                    </h3>
+                    <p className="mt-0.5 text-sm text-olive-dark">{p.role}</p>
 
-                    {/* Bio */}
-                    <p className="text-sm text-muted leading-relaxed mt-4">
+                    <span className="mt-3 inline-flex w-fit items-center gap-1.5 rounded-full border border-line bg-sand px-3 py-1 text-xs font-medium text-muted">
+                      <BadgeCheck size={13} className="text-olive" />
+                      {p.credential}
+                    </span>
+
+                    <p className="mt-4 text-sm leading-relaxed text-muted">
                       {p.bio}
                     </p>
-                    
-                    {/* Procedimentos */}
-                    <h4 className="mt-6 text-xs font-bold uppercase tracking-wider text-gold">
-                      Procedimentos Realizados:
-                    </h4>
-                    <div className="mt-3.5 grid gap-x-4 gap-y-2 grid-cols-1 sm:grid-cols-2">
-                      {p.procedures.map((s) => (
-                        <div key={s} className="flex items-start gap-2 text-sm text-fg/90">
-                          <Check size={13} className="shrink-0 text-gold mt-1" />
-                          <span className="leading-snug">{s}</span>
-                        </div>
+
+                    <ul className="mt-4 space-y-1.5 border-t border-line pt-4">
+                      {p.procedures.slice(0, 3).map((s) => (
+                        <li
+                          key={s}
+                          className="flex items-start gap-2.5 text-sm text-fg"
+                        >
+                          <span
+                            className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-olive-light"
+                            aria-hidden
+                          />
+                          {s}
+                        </li>
                       ))}
+                    </ul>
+
+                    {p.procedures.length > 3 && (
+                      <a
+                        href="#procedimentos"
+                        className="mt-2.5 text-sm font-medium text-olive-dark hover:underline"
+                      >
+                        + {p.procedures.length - 3} no catálogo
+                      </a>
+                    )}
+
+                    <div className="mt-auto pt-5">
+                      <a
+                        href={waLink(
+                          `Olá! Gostaria de agendar um atendimento com a ${p.name} na ${CLINIC.name}.`
+                        )}
+                        target="_blank"
+                        rel="noopener"
+                        className="flex w-full items-center justify-center gap-2 rounded-full bg-olive py-3 text-sm font-semibold text-white transition-colors duration-300 hover:bg-olive-dark active:scale-[0.98]"
+                      >
+                        Agendar com {firstName} <ArrowRight size={15} />
+                      </a>
                     </div>
                   </div>
-
-                  {/* Botão de Agendamento (sempre empurrado para o rodapé do card) */}
-                  <div className="mt-8 pt-6 border-t border-line/35 shrink-0">
-                    <a
-                      href={waLink(
-                        `Olá! Gostaria de agendar um atendimento com a ${p.name} na ${CLINIC.name}.`
-                      )}
-                      target="_blank"
-                      rel="noopener"
-                      className="flex w-full items-center justify-center gap-2 rounded-full bg-gold-grad py-3.5 text-sm font-semibold text-[#1b140a] transition-all duration-300 hover:scale-105 hover:shadow-glow"
-                    >
-                      Agendar com {p.name.split(" ")[1]} <ArrowRight size={16} />
-                    </a>
-                  </div>
-
-                </div>
-                </Spotlight>
+                </article>
               </Reveal>
             );
           })}

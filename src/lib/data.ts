@@ -62,8 +62,8 @@ export interface Professional {
   role: string;
   credential: string; // formação/certificação — troque pelo registro real (ex.: "Esteticista · CRT 0000")
   bio: string;
+  /** Retrato real em `public/images/`. Vazio mostra o monograma no lugar. */
   image: string;
-  accent: string; // gradiente
   procedures: string[];
 }
 
@@ -74,9 +74,7 @@ export const TEAM: Professional[] = [
     role: "Massoterapeuta",
     credential: "Massoterapeuta certificada",
     bio: "Especialista em técnicas manuais e tecnológicas para drenar, modelar e relaxar o corpo.",
-    image:
-      "https://images.unsplash.com/photo-1600334129128-685c5582fd35?auto=format&fit=crop&w=1400&q=85",
-    accent: "from-emerald-400/80 to-teal-600/80",
+    image: "",
     procedures: [
       "Drenagem Linfática",
       "Dreno Modeladora",
@@ -92,9 +90,7 @@ export const TEAM: Professional[] = [
     role: "Esteticista Facial",
     credential: "Esteticista facial certificada",
     bio: "Protocolos de limpeza profunda e peelings para uma pele renovada e saudável.",
-    image:
-      "/images/blog-facial-cropped.jpg",
-    accent: "from-rose-300/80 to-pink-600/80",
+    image: "/images/blog-facial-cropped.jpg",
     procedures: [
       "Limpeza de Pele + Consultoria",
       "Limpeza de Pele + Peeling Químico + Consultoria",
@@ -107,9 +103,7 @@ export const TEAM: Professional[] = [
     role: "Estética Avançada",
     credential: "Especialista em estética avançada",
     bio: "Procedimentos avançados para rejuvenescimento, tratamento de pele e remoção de sinais.",
-    image:
-      "https://images.unsplash.com/photo-1713085085470-fba013d67e65?auto=format&fit=crop&w=1400&q=85",
-    accent: "from-violet-300/80 to-purple-700/80",
+    image: "",
     procedures: [
       "Consultoria Online",
       "Microagulhamento",
@@ -126,9 +120,7 @@ export const TEAM: Professional[] = [
     role: "Esteticista & Harmonização",
     credential: "Esteticista · harmonização facial",
     bio: "Realce da beleza natural com design de sobrancelhas, harmonização facial e tratamentos corporais.",
-    image:
-      "https://images.unsplash.com/photo-1731355771418-f10ab62c9f86?auto=format&fit=crop&w=1400&q=85",
-    accent: "from-amber-300/80 to-yellow-700/80",
+    image: "",
     procedures: [
       "Designer de Sobrancelhas Feminina",
       "Designer de Sobrancelhas Masculina",
@@ -154,7 +146,6 @@ export interface Procedure {
   benefits: string[];
   duration: string;
   indication: string;
-  image: string;
 }
 
 export const PROCEDURES: Procedure[] = [
@@ -168,7 +159,6 @@ export const PROCEDURES: Procedure[] = [
     benefits: ["Reduz inchaço", "Melhora a circulação", "Sensação de leveza"],
     duration: "60 min",
     indication: "Retenção de líquidos e pós-operatório",
-    image: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "dreno-modeladora",
@@ -179,7 +169,6 @@ export const PROCEDURES: Procedure[] = [
     benefits: ["Modela o contorno", "Combate a celulite", "Define silhueta"],
     duration: "60 min",
     indication: "Gordura localizada e celulite",
-    image: "https://images.unsplash.com/photo-1741522509438-a120c0bb5e88?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "liberacao-muscular",
@@ -190,7 +179,6 @@ export const PROCEDURES: Procedure[] = [
     benefits: ["Alivia dores crônicas", "Melhora flexibilidade", "Libera pontos de gatilho"],
     duration: "50 min",
     indication: "Tensão muscular, fadiga e recuperação física",
-    image: "https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "massagem-relaxante-terapeutica",
@@ -201,7 +189,6 @@ export const PROCEDURES: Procedure[] = [
     benefits: ["Alivia o estresse", "Relaxa músculos", "Bem-estar total"],
     duration: "60 min",
     indication: "Estresse e tensão muscular",
-    image: "https://images.unsplash.com/photo-1598901986949-f593ff2a31a6?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "pump-up",
@@ -212,7 +199,6 @@ export const PROCEDURES: Procedure[] = [
     benefits: ["Efeito lifting", "Estimula a circulação", "Melhora aspecto da celulite"],
     duration: "45 min",
     indication: "Flacidez nos glúteos e melhora de contorno",
-    image: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "corrente-russa",
@@ -223,7 +209,6 @@ export const PROCEDURES: Procedure[] = [
     benefits: ["Tonifica músculos", "Define o corpo", "Sem esforço físico"],
     duration: "40 min",
     indication: "Flacidez muscular e definição",
-    image: "https://images.unsplash.com/photo-1646909876562-9a00dab98e65?auto=format&fit=crop&w=800&q=80",
   },
 
   // --- Dra. Adrielhe ---
@@ -236,7 +221,6 @@ export const PROCEDURES: Procedure[] = [
     benefits: ["Remove cravos", "Controla a oleosidade", "Pele luminosa"],
     duration: "75 min",
     indication: "Acne, cravos e pele opaca",
-    image: "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "limpeza-pele-peeling-quimico-consultoria",
@@ -247,7 +231,6 @@ export const PROCEDURES: Procedure[] = [
     benefits: ["Uniformiza o tom da pele", "Estimula renovação celular", "Suaviza manchas e marcas"],
     duration: "90 min",
     indication: "Manchas, sequelas de acne e rejuvenescimento",
-    image: "https://images.unsplash.com/photo-1552693673-1bf958298935?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "limpeza-pele-peeling-diamante-consultoria",
@@ -258,7 +241,6 @@ export const PROCEDURES: Procedure[] = [
     benefits: ["Esfoliação profunda", "Suaviza linhas finas", "Pele macia e renovada"],
     duration: "80 min",
     indication: "Poros dilatados, textura irregular e cravos",
-    image: "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&w=800&q=80",
   },
 
   // --- Dra. Angélica ---
@@ -271,7 +253,6 @@ export const PROCEDURES: Procedure[] = [
     benefits: ["Conforto de casa", "Acompanhamento dedicado", "Rotina Skincare personalizada"],
     duration: "40 min",
     indication: "Avaliação estética e rotina de autocuidado",
-    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "microagulhamento",
@@ -282,7 +263,6 @@ export const PROCEDURES: Procedure[] = [
     benefits: ["Estimula colágeno", "Reduz cicatrizes", "Firmeza da pele"],
     duration: "60 min",
     indication: "Cicatrizes de acne, poros e rugas finas",
-    image: "https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "jato-plasma",
@@ -293,7 +273,6 @@ export const PROCEDURES: Procedure[] = [
     benefits: ["Efeito lifting", "Retração de pálpebras", "Estimulação profunda"],
     duration: "45 min",
     indication: "Flacidez palpebral e linhas finas",
-    image: "https://images.unsplash.com/photo-1740350631565-6a5081a2f841?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "retirada-sinais",
@@ -304,7 +283,6 @@ export const PROCEDURES: Procedure[] = [
     benefits: ["Remoção rápida", "Cicatrização limpa", "Procedimento seguro"],
     duration: "30 min",
     indication: "Sinais elevados, verrugas e marcas benignas",
-    image: "https://images.unsplash.com/photo-1740350631565-6a5081a2f841?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "blefaroplastia-sem-corte",
@@ -315,7 +293,6 @@ export const PROCEDURES: Procedure[] = [
     benefits: ["Sem cortes ou pontos", "Efeito lifting imediato", "Estímulo de colágeno local"],
     duration: "45 min",
     indication: "Excesso de pele nas pálpebras e pálpebra caída",
-    image: "https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "tratamento-estrias-angelica",
@@ -326,7 +303,6 @@ export const PROCEDURES: Procedure[] = [
     benefits: ["Melhora a textura", "Estimula colágeno e elastina", "Suaviza cicatrizes lineares"],
     duration: "50 min",
     indication: "Estrias no abdômen, coxas e glúteos",
-    image: "https://images.unsplash.com/photo-1570454564834-efe597f09fe4?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "microderme",
@@ -337,7 +313,6 @@ export const PROCEDURES: Procedure[] = [
     benefits: ["Renovação celular", "Brilho natural instantâneo", "Melhora textura da pele"],
     duration: "40 min",
     indication: "Pele opaca, textura áspera e cravos",
-    image: "https://images.unsplash.com/photo-1552693673-1bf958298935?auto=format&fit=crop&w=800&q=80",
   },
 
   // --- Dra. Shay ---
@@ -350,7 +325,6 @@ export const PROCEDURES: Procedure[] = [
     benefits: ["Realça o olhar", "Simetria perfeita", "Acabamento impecável"],
     duration: "30 min",
     indication: "Definição do olhar feminino",
-    image: "https://images.unsplash.com/photo-1620508467736-0140acd17ce4?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "designer-sobrancelhas-masculina",
@@ -361,7 +335,6 @@ export const PROCEDURES: Procedure[] = [
     benefits: ["Aparência limpa", "Naturalidade", "Harmonia facial"],
     duration: "30 min",
     indication: "Definição do olhar masculino",
-    image: "https://images.unsplash.com/photo-1620508467736-0140acd17ce4?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "henna",
@@ -372,7 +345,6 @@ export const PROCEDURES: Procedure[] = [
     benefits: ["Preenche falhas", "Praticidade diária", "Destaque no olhar"],
     duration: "40 min",
     indication: "Sobrancelhas claras ou com falhas",
-    image: "https://images.unsplash.com/photo-1620508467736-0140acd17ce4?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "sobrancelha-definitiva",
@@ -383,7 +355,6 @@ export const PROCEDURES: Procedure[] = [
     benefits: ["Alta durabilidade", "Resultado hiper-realista", "Fim do lápis de sobrancelha"],
     duration: "120 min",
     indication: "Falta de pelos ou falhas permanentes",
-    image: "https://images.unsplash.com/photo-1620508467736-0140acd17ce4?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "plasma-shay",
@@ -394,7 +365,6 @@ export const PROCEDURES: Procedure[] = [
     benefits: ["Estimula colágeno", "Suaviza rugas finas", "Firmeza da pele"],
     duration: "45 min",
     indication: "Flacidez facial e rugas superficiais",
-    image: "https://images.unsplash.com/photo-1740350631565-6a5081a2f841?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "harmonizacao-shay",
@@ -405,7 +375,6 @@ export const PROCEDURES: Procedure[] = [
     benefits: ["Realça a beleza natural", "Restaura volumes faciais", "Aparência descansada"],
     duration: "60 min",
     indication: "Assimetrias, perda de contorno e volume",
-    image: "https://images.unsplash.com/photo-1737215398603-2ef701df8036?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "botox",
@@ -416,7 +385,6 @@ export const PROCEDURES: Procedure[] = [
     benefits: ["Suaviza rugas na testa e olhos", "Efeito preventivo", "Aparência rejuvenescida"],
     duration: "30 min",
     indication: "Linhas de expressão e prevenção do envelhecimento",
-    image: "https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "tratamento-flacidez",
@@ -427,7 +395,6 @@ export const PROCEDURES: Procedure[] = [
     benefits: ["Aumenta firmeza da pele", "Estimula elastina e colágeno", "Melhora o contorno corporal"],
     duration: "50 min",
     indication: "Flacidez tecidual no abdômen, coxas e braços",
-    image: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "tratamento-estrias-shay",
@@ -438,7 +405,6 @@ export const PROCEDURES: Procedure[] = [
     benefits: ["Atenua estrias", "Estimula circulação e colágeno", "Suaviza relevo da pele"],
     duration: "45 min",
     indication: "Estrias corporais avermelhadas ou esbranquiçadas",
-    image: "https://images.unsplash.com/photo-1570454564834-efe597f09fe4?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "lipo-enzimatica-shay",
@@ -449,7 +415,6 @@ export const PROCEDURES: Procedure[] = [
     benefits: ["Reduz gordura localizada", "Reduz medidas", "Sem repouso necessário"],
     duration: "50 min",
     indication: "Gordura na papada, abdômen, flancos e coxas",
-    image: "https://images.unsplash.com/photo-1570454564834-efe597f09fe4?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "preenchimento-labial-shay",
@@ -460,8 +425,51 @@ export const PROCEDURES: Procedure[] = [
     benefits: ["Lábios desenhados e hidratados", "Volume controlado e natural", "Equilibra proporções da boca"],
     duration: "45 min",
     indication: "Lábios finos, assimétricos ou sem contorno definido",
-    image: "https://images.unsplash.com/photo-1549153052-247abe00d6d9?auto=format&fit=crop&w=800&q=80",
   },
+];
+
+// ===== Investimento =====
+// Sem valores de propósito: preço varia por protocolo e sai na avaliação.
+// As formas de pagamento abaixo vêm do FAQ da clínica.
+export const PAYMENT = [
+  { label: "PIX", note: "À vista, com confirmação na hora" },
+  { label: "Cartão de crédito", note: "Até 10x sem juros, conforme o tratamento" },
+  { label: "Cartão de débito", note: "Direto na maquininha" },
+];
+
+// ===== Fotos do espaço =====
+// O que mais aparece nas avaliações do Google é o ambiente ("acolhedor, limpo
+// e organizado") — por isso ele tem lugar próprio na seção "A Clínica".
+// Coloque as fotos em `public/images/` e preencha `src`. Ajuste os rótulos
+// para os cômodos reais da casa. Vazio = espaço reservado.
+export interface ClinicPhoto {
+  label: string;
+  src: string;
+}
+
+export const CLINIC_PHOTOS: ClinicPhoto[] = [
+  { label: "Recepção", src: "" },
+  { label: "Sala de atendimento", src: "" },
+  { label: "Sala de massagem", src: "" },
+];
+
+// ===== Antes & Depois =====
+// Para publicar um resultado, coloque as duas fotos em `public/images/` e
+// preencha `before` e `after` (ex.: "/images/drenagem-antes.jpg").
+// Enquanto os dois campos estiverem vazios, a seção mostra um espaço
+// reservado no lugar — o comparador só aparece com as fotos reais.
+export interface ResultPair {
+  label: string;
+  pro: string;
+  before: string;
+  after: string;
+}
+
+export const RESULTS: ResultPair[] = [
+  { label: "Dreno Modeladora", pro: "Dra. Adriana", before: "", after: "" },
+  { label: "Limpeza de Pele", pro: "Dra. Adrielhe", before: "", after: "" },
+  { label: "Microagulhamento", pro: "Dra. Angélica", before: "", after: "" },
+  { label: "Harmonização Facial", pro: "Dra. Shay", before: "", after: "" },
 ];
 
 export interface Testimonial {
@@ -469,7 +477,6 @@ export interface Testimonial {
   treatment: string;
   text: string;
   initial: string;
-  accent: string;
 }
 
 // Avaliações REAIS do Google (transcritas dos prints do perfil da clínica).
@@ -480,56 +487,48 @@ export const TESTIMONIALS: Testimonial[] = [
     treatment: "Local Guide · 26 avaliações",
     text: "Espaço acolhedor, limpo e organizado e atendimento de excelência tanto pela massoterapeuta Adriana quanto pela enfermeira esteta Angélica. Ambas são cuidadosas, pacíficas, oferecem serviços de ótima qualidade e preços acessíveis. O tratamento com a Adriana melhorou muito minhas dores nos ombros por tensão, e a consultoria de skin care, limpeza de pele e peeling da Angélica são incríveis. Recomendo para todos!",
     initial: "C",
-    accent: "from-emerald-400 to-teal-600",
   },
   {
     name: "Gessyane Martins",
     treatment: "Avaliação no Google",
     text: "Amei o espaço, sou muito bem recebida sempre, atendimento de qualidade e preço excelente. Espaço super limpo e organizado. Super recomendo!",
     initial: "G",
-    accent: "from-rose-400 to-pink-600",
   },
   {
     name: "Arthur Wilkersson",
     treatment: "Local Guide · 21 avaliações",
     text: "Ótimo lugar, preços acessíveis e com um ótimo atendimento.",
     initial: "A",
-    accent: "from-amber-400 to-yellow-600",
   },
   {
     name: "Suelen Oliveira",
     treatment: "Avaliação no Google",
     text: "Espaço lindo, aconchegante, e ótimas profissionais. Super recomendo, nota mil! 😍",
     initial: "S",
-    accent: "from-violet-400 to-purple-600",
   },
   {
     name: "Juliana Lima Vieira",
     treatment: "Avaliação no Google",
     text: "Excelente espaço! Sempre sou muito bem recebida!",
     initial: "J",
-    accent: "from-sky-400 to-blue-600",
   },
   {
     name: "Alberto Monteiro",
     treatment: "Avaliação no Google",
     text: "Tem um ótimo serviço de pele, eu fiz, gostei e aprovo. 😊",
     initial: "A",
-    accent: "from-emerald-400 to-teal-600",
   },
   {
     name: "Jaqueline Albuquerque",
     treatment: "Local Guide · 5 avaliações",
     text: "Lugar muito bom, acolhedor. Aconselho demais, muito bom mesmo.",
     initial: "J",
-    accent: "from-rose-400 to-pink-600",
   },
   {
     name: "Luiz Gabriel",
     treatment: "Local Guide · 35 avaliações",
     text: "São incríveis!",
     initial: "L",
-    accent: "from-amber-400 to-yellow-600",
   },
 ];
 
@@ -586,7 +585,6 @@ export interface BlogPost {
   title: string;
   category: string;
   excerpt: string;
-  image: string;
   readTime: string;
   tips: string[];
   relatedPro: string;
@@ -597,7 +595,6 @@ export const BLOG: BlogPost[] = [
     title: "Como a Drenagem Linfática acelera seu metabolismo",
     category: "Estética Corporal",
     excerpt: "Entenda por que a técnica manual da Dra. Adriana vai muito além de reduzir o inchaço, combatendo a retenção de líquidos e celulite.",
-    image: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=800&q=80",
     readTime: "4 min",
     tips: [
       "Eliminação de toxinas e líquidos retidos",
@@ -610,7 +607,6 @@ export const BLOG: BlogPost[] = [
     title: "Limpeza de Pele Profunda vs. Cuidados de Casa",
     category: "Estética Facial",
     excerpt: "Sabia que a rotina diária não remove cravos profundos? Descubra como a extração profissional da Dra. Adrielhe purifica e renova a pele.",
-    image: "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&w=800&q=80",
     readTime: "5 min",
     tips: [
       "Remoção profunda de cravos e impurezas",
@@ -623,7 +619,6 @@ export const BLOG: BlogPost[] = [
     title: "O Poder do Estímulo de Colágeno Natural",
     category: "Estética Avançada",
     excerpt: "Microagulhamento e Jato de Plasma: entenda como as técnicas da Dra. Angélica induzem a cicatrização para suavizar rugas e marcas.",
-    image: "https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&w=800&q=80",
     readTime: "6 min",
     tips: [
       "Indução potente de novo colágeno",
@@ -636,7 +631,6 @@ export const BLOG: BlogPost[] = [
     title: "Harmonização Facial e Lábios: O Segredo",
     category: "Harmonização",
     excerpt: "Preenchimento labial e Botox com naturalidade. Veja como a Dra. Shay equilibra as proporções faciais realçando seus traços únicos.",
-    image: "https://images.unsplash.com/photo-1737215398603-2ef701df8036?auto=format&fit=crop&w=800&q=80",
     readTime: "5 min",
     tips: [
       "Volumização e contorno labial natural",
@@ -657,12 +651,12 @@ export interface InstaPost {
 }
 
 export const INSTAGRAM_POSTS: InstaPost[] = [
-  { image: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?auto=format&fit=crop&w=600&q=80", caption: "Cuidado facial sob medida" },
-  { image: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=600&q=80", caption: "Pele renovada e saudável" },
-  { image: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=600&q=80", caption: "Relaxamento e bem-estar" },
-  { image: "https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?auto=format&fit=crop&w=600&q=80", caption: "Resultados que dão confiança" },
-  { image: "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?auto=format&fit=crop&w=600&q=80", caption: "Ambiente acolhedor" },
-  { image: "https://images.unsplash.com/photo-1631730486572-226d1f595b68?auto=format&fit=crop&w=600&q=80", caption: "Beleza natural realçada" },
+  { image: "", caption: "Cuidado facial sob medida" },
+  { image: "", caption: "Pele renovada e saudável" },
+  { image: "", caption: "Relaxamento e bem-estar" },
+  { image: "", caption: "Resultados que dão confiança" },
+  { image: "", caption: "Ambiente acolhedor" },
+  { image: "", caption: "Beleza natural realçada" },
 ];
 
 export const STATS = [

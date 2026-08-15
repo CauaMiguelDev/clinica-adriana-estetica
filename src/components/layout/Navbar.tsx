@@ -2,18 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Moon, Sun } from "lucide-react";
-import { useTheme } from "@/components/providers/ThemeProvider";
-import { GoldButton } from "@/components/ui/GoldButton";
+import { Menu, X } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
 import { CLINIC, waLink } from "@/lib/data";
 
+// Todo link aponta para uma seção que existe — o scrollspy depende disso.
 const LINKS = [
-  { href: "#sobre", label: "Sobre" },
-  { href: "#equipe", label: "Equipe" },
-  { href: "#procedimentos", label: "Procedimentos" },
+  { href: "#servicos", label: "Serviços" },
   { href: "#resultados", label: "Resultados" },
-  { href: "#depoimentos", label: "Depoimentos" },
+  { href: "#sobre", label: "A Clínica" },
+  { href: "#equipe", label: "Equipe" },
+  { href: "#faq", label: "Dúvidas" },
   { href: "#contato", label: "Contato" },
 ];
 
@@ -21,7 +20,6 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<string>("");
-  const { theme, toggle } = useTheme();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -58,11 +56,11 @@ export function Navbar() {
     <header
       className={`fixed inset-x-0 top-0 z-50 w-full transition-all duration-300 ${
         scrolled
-          ? "border-b border-line bg-bg/85 py-3 shadow-luxe backdrop-blur-xl"
+          ? "border-b border-line bg-bg/85 py-3 shadow-lift backdrop-blur-xl"
           : "border-b border-transparent py-5"
       }`}
     >
-      <nav className="container-luxe flex w-full items-center justify-between gap-4">
+      <nav className="container-page flex w-full items-center justify-between gap-4">
         <a href="#inicio" aria-label={CLINIC.name}>
           <Logo />
         </a>
@@ -76,12 +74,12 @@ export function Navbar() {
                 href={l.href}
                 aria-current={isActive ? "true" : undefined}
                 className={`group relative rounded-full px-3.5 py-2 text-sm transition-colors ${
-                  isActive ? "text-gold" : "text-muted hover:text-fg"
+                  isActive ? "text-olive" : "text-muted hover:text-fg"
                 }`}
               >
                 {l.label}
                 <span
-                  className={`absolute inset-x-3.5 -bottom-0.5 h-px origin-left bg-gold-grad transition-transform duration-300 ${
+                  className={`absolute inset-x-3.5 -bottom-0.5 h-px origin-left bg-olive transition-transform duration-300 ${
                     isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
                   }`}
                 />
@@ -91,21 +89,14 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-2">
-          <button
-            onClick={toggle}
-            aria-label="Alternar tema"
-            className="grid h-10 w-10 place-items-center rounded-full border border-line text-fg transition-colors hover:border-gold hover:text-gold"
-          >
-            {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
-          <GoldButton
+          <a
             href={waLink(`Olá! Gostaria de agendar um horário no ${CLINIC.name}.`)}
             target="_blank"
             rel="noopener"
-            className="hidden sm:inline-flex"
+            className="hidden rounded-full bg-olive px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-300 hover:bg-olive-dark active:scale-[0.98] sm:inline-flex"
           >
             Agendar
-          </GoldButton>
+          </a>
           <button
             onClick={() => setOpen(true)}
             aria-label="Abrir menu"
@@ -127,7 +118,7 @@ export function Navbar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setOpen(false)}
-              className="fixed inset-0 z-[90] bg-black/70 backdrop-blur-sm"
+              className="fixed inset-0 z-[90] bg-fg/50 backdrop-blur-sm"
             />
             <motion.aside
               initial={{ x: "100%" }}
@@ -135,7 +126,7 @@ export function Navbar() {
               exit={{ x: "100%" }}
               transition={{ type: "spring", stiffness: 300, damping: 32 }}
               style={{ backgroundColor: "rgb(var(--surface))" }}
-              className="fixed right-0 top-0 z-[95] flex h-full w-[80%] max-w-sm flex-col gap-2 border-l border-line p-8 shadow-luxe"
+              className="fixed right-0 top-0 z-[95] flex h-full w-[80%] max-w-sm flex-col gap-2 border-l border-line p-8 shadow-lift"
             >
               <button
                 onClick={() => setOpen(false)}
@@ -149,19 +140,22 @@ export function Navbar() {
                   key={l.href}
                   href={l.href}
                   onClick={() => setOpen(false)}
-                  className="rounded-xl px-4 py-3 text-lg transition-colors hover:bg-gold/10 hover:text-gold"
+                  className="rounded-xl px-4 py-3 text-lg transition-colors hover:bg-olive/10 hover:text-olive"
                 >
                   {l.label}
                 </a>
               ))}
-              <GoldButton
+              <a
                 href={waLink(
-                  `Olá! Gostaria de agendar um horário na ${CLINIC.name}.`
+                  `Olá! Gostaria de agendar um horário no ${CLINIC.name}.`
                 )}
-                className="mt-4"
+                target="_blank"
+                rel="noopener"
+                onClick={() => setOpen(false)}
+                className="mt-4 flex items-center justify-center rounded-full bg-olive px-5 py-3.5 text-sm font-semibold text-white transition-colors duration-300 hover:bg-olive-dark"
               >
                 Agendar pelo WhatsApp
-              </GoldButton>
+              </a>
             </motion.aside>
           </div>
         )}

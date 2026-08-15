@@ -1,10 +1,20 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { Clock, Target, ArrowRight, LayoutGrid } from "lucide-react";
+import {
+  Clock,
+  Target,
+  ArrowRight,
+  ScanFace,
+  PersonStanding,
+  Zap,
+  HandHeart,
+  Gem,
+  Sparkles,
+} from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
+import { PICK_CATEGORY } from "@/components/sections/Services";
 import {
   PROCEDURES,
   CATEGORIES,
@@ -15,188 +25,166 @@ import {
 
 type Filter = "Todos" | Category;
 const FILTERS: Filter[] = ["Todos", ...CATEGORIES];
-const PROFESSIONALS = ["Todos", "Dra. Adriana", "Dra. Adrielhe", "Dra. Angélica", "Dra. Shay"];
+
+const CATEGORY_ICON: Record<Category, typeof ScanFace> = {
+  Facial: ScanFace,
+  Corporal: PersonStanding,
+  "Harmonização Facial": Gem,
+  Massoterapia: HandHeart,
+  "Estética Avançada": Zap,
+};
+
+const PAGE = 12;
 
 export function Procedures() {
-  const [filterType, setFilterType] = useState<"category" | "professional">("category");
-  const [activeCategory, setActiveCategory] = useState<string>("Todos");
-  const [activeProfessional, setActiveProfessional] = useState<string>("Todos");
-  const [visibleCount, setVisibleCount] = useState(6);
+  const [active, setActive] = useState<Filter>("Todos");
+  const [visibleCount, setVisibleCount] = useState(PAGE);
 
-  // Reseta a quantidade de itens visíveis ao mudar de filtro
+  // Os cartões da seção Serviços escolhem a categoria daqui.
+  // A âncora do link cuida da rolagem; este evento só aplica o filtro.
   useEffect(() => {
-    setVisibleCount(6);
-  }, [filterType, activeCategory, activeProfessional]);
+    const onPick = (e: Event) =>
+      setActive((e as CustomEvent<Category>).detail ?? "Todos");
+    window.addEventListener(PICK_CATEGORY, onPick);
+    return () => window.removeEventListener(PICK_CATEGORY, onPick);
+  }, []);
 
-  const list = PROCEDURES.filter((p) => {
-    if (filterType === "category") {
-      return activeCategory === "Todos" || p.category === activeCategory;
-    } else {
-      return activeProfessional === "Todos" || p.pro === activeProfessional;
-    }
-  });
+  useEffect(() => setVisibleCount(PAGE), [active]);
 
+  const list =
+    active === "Todos"
+      ? PROCEDURES
+      : PROCEDURES.filter((p) => p.category === active);
   const visibleList = list.slice(0, visibleCount);
 
   return (
-    <section id="procedimentos" className="section-pad relative">
-      <div className="container-luxe">
+    <section id="procedimentos" className="section-pad relative bg-sand">
+      <div className="container-page">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <span className="eyebrow"><LayoutGrid size={14} /> Catálogo</span>
-          <h2 className="mt-4 font-display text-3xl font-semibold sm:text-5xl">
-            Nossos <span className="text-gradient-gold italic">procedimentos</span>
+          <span className="eyebrow justify-center">
+            <Sparkles size={14} /> Catálogo completo
+          </span>
+          <h2 className="mt-4 font-display text-3xl font-semibold sm:text-4xl">
+            Todos os <span className="text-terracotta-dark">procedimentos</span>
           </h2>
           <p className="mt-4 text-muted">
-            Filtre por categoria e descubra o tratamento ideal para você.
+            {PROCEDURES.length} tratamentos conduzidos pelas nossas
+            especialistas.
           </p>
         </Reveal>
 
-        {/* Seletor de Tipo de Filtro */}
+        {/* Filtro único, por categoria. */}
         <Reveal delay={0.08}>
-          <div className="mt-8 flex justify-center">
-            <div className="inline-flex rounded-full bg-surface/80 p-1 border border-line backdrop-blur">
-              <button
-                onClick={() => {
-                  setFilterType("category");
-                  setActiveCategory("Todos");
-                }}
-                className={`rounded-full px-5 py-2 text-xs font-semibold uppercase tracking-wider transition-all duration-300 ${
-                  filterType === "category"
-                    ? "bg-gold-grad text-[#1b140a]"
-                    : "text-muted hover:text-fg"
-                }`}
-              >
-                Por Categoria
-              </button>
-              <button
-                onClick={() => {
-                  setFilterType("professional");
-                  setActiveProfessional("Todos");
-                }}
-                className={`rounded-full px-5 py-2 text-xs font-semibold uppercase tracking-wider transition-all duration-300 ${
-                  filterType === "professional"
-                    ? "bg-gold-grad text-[#1b140a]"
-                    : "text-muted hover:text-fg"
-                }`}
-              >
-                Por Profissional
-              </button>
-            </div>
+          <div
+            role="tablist"
+            aria-label="Filtrar por categoria"
+            className="mt-10 flex flex-wrap justify-center gap-2.5"
+          >
+            {FILTERS.map((f) => {
+              const isActive = active === f;
+              return (
+                <button
+                  key={f}
+                  role="tab"
+                  aria-selected={isActive}
+                  onClick={() => setActive(f)}
+                  className={`rounded-full border px-5 py-2 text-sm font-medium transition-colors duration-300 ${
+                    isActive
+                      ? "border-olive bg-olive text-white"
+                      : "border-line bg-surface text-muted hover:border-olive/40 hover:text-olive-dark"
+                  }`}
+                >
+                  {f}
+                </button>
+              );
+            })}
           </div>
         </Reveal>
 
-        {/* Filtros de Categoria ou Profissional */}
-        <Reveal delay={0.1}>
-          <div className="mt-6 flex flex-wrap justify-center gap-2.5">
-            {filterType === "category"
-              ? FILTERS.map((f) => (
-                  <button
-                    key={f}
-                    onClick={() => setActiveCategory(f)}
-                    className={`rounded-full border px-5 py-2 text-sm font-medium transition-all duration-300 ${
-                      activeCategory === f
-                        ? "border-gold bg-gold-grad text-[#1b140a]"
-                        : "border-line text-muted hover:border-gold hover:text-gold"
-                    }`}
-                  >
-                    {f}
-                  </button>
-                ))
-              : PROFESSIONALS.map((pro) => (
-                  <button
-                    key={pro}
-                    onClick={() => setActiveProfessional(pro)}
-                    className={`rounded-full border px-5 py-2 text-sm font-medium transition-all duration-300 ${
-                      activeProfessional === pro
-                        ? "border-gold bg-gold-grad text-[#1b140a]"
-                        : "border-line text-muted hover:border-gold hover:text-gold"
-                    }`}
-                  >
-                    {pro}
-                  </button>
-                ))}
-          </div>
-        </Reveal>
-
-        {/* Grade de cartões de procedimentos (2 colunas no mobile) */}
-        <motion.div layout className="mt-12 grid gap-3 sm:gap-7 grid-cols-2 sm:grid-cols-2 lg:grid-cols-3">
+        <motion.div
+          layout
+          className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+        >
           <AnimatePresence mode="popLayout">
-            {visibleList.map((p) => (
-              <motion.article
-                key={p.id}
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.4 }}
-                whileHover={{ y: -6 }}
-                className="group flex flex-col overflow-hidden rounded-[1.5rem] sm:rounded-3xl border border-line bg-surface/60 shadow-luxe transition-colors duration-300 hover:border-gold/40 hover:shadow-glow"
-              >
-                <div className="relative h-32 sm:h-52 overflow-hidden">
-                  <Image
-                    src={p.image}
-                    alt={p.name}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                  <span className="absolute left-2.5 top-2.5 sm:left-3 sm:top-3 rounded-full bg-gold-grad px-2 py-0.5 sm:px-3 sm:py-1 text-[9px] sm:text-xs font-semibold text-[#1b140a]">
-                    {p.category}
-                  </span>
-                </div>
-                <div className="flex flex-1 flex-col p-3 sm:p-6">
-                  <h3 className="font-display text-sm sm:text-xl font-semibold leading-tight line-clamp-2 min-h-[2.5rem] sm:min-h-0">
+            {visibleList.map((p) => {
+              const Icon = CATEGORY_ICON[p.category];
+              return (
+                <motion.article
+                  key={p.id}
+                  layout
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.3 }}
+                  className="group flex flex-col rounded-card border border-line bg-surface p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-olive/30 hover:shadow-lift"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-olive/10 text-olive">
+                      <Icon size={19} />
+                    </span>
+                    <span className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">
+                      {p.category}
+                    </span>
+                  </div>
+
+                  <h3 className="mt-4 font-display text-xl font-semibold leading-snug">
                     {p.name}
                   </h3>
-                  <p className="mt-1 text-[10px] sm:text-xs text-gold">{p.pro}</p>
-                  <p className="mt-2.5 text-xs sm:text-sm text-muted leading-relaxed hidden sm:block">
+                  <p className="mt-1 text-sm text-olive-dark">{p.pro}</p>
+
+                  <p className="mt-3 text-sm leading-relaxed text-muted">
                     {p.description}
                   </p>
 
-                  <div className="mt-4 flex-wrap gap-1.5 hidden sm:flex">
+                  <ul className="mt-4 space-y-1.5">
                     {p.benefits.map((b) => (
-                      <span
+                      <li
                         key={b}
-                        className="rounded-full bg-gold/10 px-2.5 py-1 text-xs text-gold-light"
+                        className="flex items-start gap-2.5 text-sm text-fg"
                       >
+                        <span
+                          className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-olive-light"
+                          aria-hidden
+                        />
                         {b}
-                      </span>
+                      </li>
                     ))}
+                  </ul>
+
+                  <div className="mt-5 flex flex-wrap gap-x-4 gap-y-1.5 border-t border-line pt-4 text-xs text-muted">
+                    <span className="inline-flex items-center gap-1.5">
+                      <Clock size={14} className="text-olive" /> {p.duration}
+                    </span>
+                    <span className="inline-flex items-center gap-1.5">
+                      <Target size={14} className="text-olive" /> {p.indication}
+                    </span>
                   </div>
 
-                  <div className="mt-3 sm:mt-5 flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-4 text-[10px] sm:text-xs text-muted">
-                    <span className="inline-flex items-center gap-1 sm:gap-1.5">
-                      <Clock className="text-gold h-3 w-3 sm:h-3.5 sm:w-3.5" /> {p.duration}
-                    </span>
-                    <span className="inline-flex items-center gap-1 sm:gap-1.5">
-                      <Target className="text-gold h-3 w-3 sm:h-3.5 sm:w-3.5" /> {p.indication}
-                    </span>
+                  <div className="mt-auto pt-5">
+                    <a
+                      href={waLink(
+                        `Olá! Tenho interesse no procedimento "${p.name}" (${p.pro}) na ${CLINIC.name}. Poderia me passar mais informações?`
+                      )}
+                      target="_blank"
+                      rel="noopener"
+                      className="flex w-full items-center justify-center gap-2 rounded-full border border-olive/50 py-2.5 text-sm font-semibold text-olive-dark transition-colors duration-300 hover:border-olive hover:bg-olive hover:text-white active:scale-[0.98]"
+                    >
+                      Agendar <ArrowRight size={15} />
+                    </a>
                   </div>
-
-                  <a
-                     href={waLink(
-                       `Olá! Tenho interesse no procedimento "${p.name}" (${p.pro}) na ${CLINIC.name}. Poderia me passar mais informações?`
-                     )}
-                    target="_blank"
-                    rel="noopener"
-                    className="mt-4 sm:mt-6 inline-flex items-center justify-center gap-1 sm:gap-2 rounded-full border border-gold/50 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold text-gold transition-all hover:bg-gold-grad hover:text-[#1b140a]"
-                  >
-                    Agendar <ArrowRight className="h-3 w-3 sm:h-[15px] sm:w-[15px]" />
-                  </a>
-                </div>
-              </motion.article>
-            ))}
+                </motion.article>
+              );
+            })}
           </AnimatePresence>
         </motion.div>
 
-        {/* Botão Carregar Mais */}
         {list.length > visibleCount && (
-          <div className="mt-12 flex justify-center">
+          <div className="mt-10 flex justify-center">
             <button
-              onClick={() => setVisibleCount((prev) => prev + 6)}
-              className="rounded-full bg-gold-grad px-6 py-2.5 text-sm font-semibold text-[#1b140a] transition-all hover:shadow-glow"
+              onClick={() => setVisibleCount((n) => n + PAGE)}
+              className="rounded-full border border-olive/50 px-6 py-3 text-sm font-semibold text-olive-dark transition-colors duration-300 hover:border-olive hover:bg-olive hover:text-white"
             >
-              Carregar mais procedimentos
+              Ver mais {Math.min(PAGE, list.length - visibleCount)} procedimentos
             </button>
           </div>
         )}
@@ -204,4 +192,3 @@ export function Procedures() {
     </section>
   );
 }
-

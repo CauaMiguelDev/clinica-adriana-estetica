@@ -26,11 +26,11 @@ export function LotusMark({ className = "" }: MarkProps) {
 export function Logo({ className = "" }: MarkProps) {
   return (
     <span className={`flex shrink-0 items-center gap-2.5 ${className}`}>
-      <span className="grid h-10 w-10 place-items-center rounded-xl bg-gold-grad text-[#1b140a] shadow-glow">
+      <span className="grid h-10 w-10 place-items-center rounded-xl bg-olive-grad text-white shadow-soft">
         <LotusMark className="h-6 w-6" />
       </span>
       <span className="flex flex-col leading-none">
-        <span className="text-[0.6rem] uppercase tracking-[0.3em] text-gold">
+        <span className="text-[0.6rem] uppercase tracking-[0.3em] text-olive">
           Espaço
         </span>
         <span className="font-display text-lg font-semibold">Cuide-se Bem</span>
