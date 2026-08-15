@@ -132,15 +132,72 @@ uma vitrine em vez de um espaço de cuidado.
 
 ## 5. Movimento
 
-O movimento **serve** ao conteúdo: entrada ao rolar, resposta ao toque, transição de
-estado. Nada balança sozinho.
+A direção é **site vivo**: movimento presente ao longo de toda a página. Mas vivo
+não é agitado — tudo aqui é lento, orgânico e de amplitude baixa. A régua é a
+elegância de spa: nada pisca, salta ou chama atenção para si.
 
-- **Proibido:** selo flutuando eternamente, anel girando sem parar, partícula sem função,
-  fundo pulsando. Isso cansa e transmite inquietação — o oposto de bem-estar.
-- **Entrada ao rolar:** `<Reveal>` — 700ms, `ease [0.22, 1, 0.36, 1]`, uma vez só.
-- **Transição de estado:** 200–300ms.
-- **`prefers-reduced-motion`:** todas as animações e transições são anuladas em
-  `globals.css`, e a cena 3D cai para um quadro estático.
+Os valores vivem em **`src/lib/motion.ts`**. Importe de lá; não digite números
+soltos no componente, ou o conjunto fica desigual.
+
+### Durações e curvas
+
+| Papel | Duração | Curva |
+|---|---|---|
+| Micro (hover, foco, clique) | 200ms | `[0.4, 0, 0.2, 1]` |
+| Troca de estado (acordeão, filtro) | 320ms | `[0.4, 0, 0.2, 1]` |
+| Entrada ao rolar | 700ms | `[0.22, 1, 0.36, 1]` |
+| Volta do tilt ao repouso | 400ms | spring (150 / 18) |
+| Ambiente (perpétuo) | 15–25s por ciclo | senoidal |
+
+A curva de entrada é uma expo-out: sai rápido e assenta devagar. É ela que faz o
+movimento parecer orgânico em vez de mecânico.
+
+### Vocabulário
+
+| Recurso | Regra |
+|---|---|
+| **Entrada ao rolar** | `<Reveal>` com variantes `fade / up / down / left / right / rise`. Uma vez só, nunca ao voltar. |
+| **Cascata** | `<RevealGroup>` ou `index` — 60ms entre irmãos, **teto de 8**. Além disso o último item demora demais. |
+| **Deslocamento** | 24px no padrão, 14px em itens de cascata. |
+| **Parallax** | 3 camadas: fundo `0.15`, meio `0.08`, frente `0.04` da rolagem. Valores baixos de propósito. |
+| **Tilt 3D** | Máximo **6°**, perspectiva 900px. Só com ponteiro fino — em tela de toque o card tremeria sob o dedo. |
+| **Clique** | Onda a partir do ponto tocado (`ActionButton`) + `active:scale-[0.98]`. No celular não há hover; sem isso o botão parece quebrado. |
+| **Ambiente** | Formas orgânicas grandes e desfocadas, 3 no desktop e 2 no celular, em órbitas elípticas de período diferente. |
+
+### Regras invioláveis de desempenho
+
+A versão original deste site tinha partículas, folhas caindo, tilt e feixes de
+luz — e **era o gargalo do celular**: dois `requestAnimationFrame` concorrentes
+mais blurs de 28–45px. As features voltaram; a arquitetura que as derrubava, não.
+
+1. **Um único rAF** para todo movimento perpétuo: `useAmbientMotion`. Nunca um
+   por componente. Springs do Framer (hover, tilt) são exceção — duram o gesto e
+   param sozinhas.
+
+   > **Pendência conhecida.** `WaterScene.tsx` ainda tem laço próprio. Hoje não
+   > há conflito porque ele vive em `/` e o fundo animado em `/amostra` — mas
+   > quando o fundo entrar na home seriam **dois laços concorrentes**, que foi
+   > exatamente o que derrubou o site original. A cena 3D da Fase 3 **tem de
+   > assinar `useAmbientMotion`** em vez de criar o seu. Verificação: `grep -rn
+   > "requestAnimationFrame(" src/` deve apontar só para `useAmbientMotion.ts`.
+2. **Só `transform` e `opacity`.** Nunca anime `width`, `top`, `filter`,
+   `box-shadow` ou `background-position`.
+3. **`blur` é estático.** Ele custa fill rate; fica no CSS e nunca no quadro.
+4. **Tudo pausa** fora da tela (`IntersectionObserver`) e com a aba oculta
+   (`visibilitychange`).
+5. **Celular primeiro:** contagens reduzidas por `matchMedia`, conferido em
+   390px antes do desktop.
+
+### Movimento reduzido
+
+`prefers-reduced-motion` **não é uma versão quebrada, é uma versão calma**.
+Parallax e ambiente causam desconforto vestibular real em parte das pessoas —
+aqui isso é requisito funcional, não detalhe de acessibilidade.
+
+- O relógio de ambiente desenha **um quadro parado** e não entra no laço.
+- A cena 3D renderiza um quadro e para.
+- As transições são anuladas em `globals.css`.
+- O conteúdo aparece **inteiro e legível** — nada fica preso em opacidade 0.
 
 ---
 

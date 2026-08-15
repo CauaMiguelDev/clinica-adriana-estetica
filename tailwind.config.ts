@@ -67,13 +67,20 @@ const config: Config = {
       },
 
       keyframes: {
-        float: {
-          "0%,100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-10px)" },
+        // Onda do clique: parte do ponto tocado e se dissolve.
+        wave: {
+          from: { transform: "translate(-50%,-50%) scale(1)", opacity: "0.25" },
+          to: { transform: "translate(-50%,-50%) scale(26)", opacity: "0" },
+        },
+        // Respiração do gradiente de fundo — só transform, nunca background.
+        breathe: {
+          "0%,100%": { transform: "scale(1)", opacity: "0.85" },
+          "50%": { transform: "scale(1.08)", opacity: "1" },
         },
       },
       animation: {
-        float: "float 7s ease-in-out infinite",
+        wave: "wave 700ms cubic-bezier(0.22,1,0.36,1) forwards",
+        breathe: "breathe 19s ease-in-out infinite",
       },
     },
   },
