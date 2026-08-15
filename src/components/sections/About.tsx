@@ -43,7 +43,7 @@ export function About() {
         {/* Números */}
         <div className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-panel border border-line bg-line lg:grid-cols-4">
           {STATS.map((s, i) => (
-            <Reveal key={s.label} delay={i * 0.06} className="h-full">
+            <Reveal key={s.label} variant="rise" index={i} className="h-full">
               <div className="flex h-full flex-col items-center justify-center bg-surface px-4 py-7 text-center">
                 <p className="font-display text-3xl font-semibold text-olive-dark sm:text-4xl">
                   <AnimatedCounter value={s.value} suffix={s.suffix} />
@@ -67,7 +67,7 @@ export function About() {
 
         <div className="mt-8 grid gap-5 sm:grid-cols-3">
           {CLINIC_PHOTOS.map((photo, i) => (
-            <Reveal key={photo.label} delay={i * 0.08}>
+            <Reveal key={photo.label} variant="rise" index={i}>
               {photo.src ? (
                 <figure className="group overflow-hidden rounded-panel border border-line shadow-soft">
                   <div className="relative aspect-[4/5]">
@@ -101,7 +101,7 @@ export function About() {
         {/* Valores */}
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {VALUES.map((v, i) => (
-            <Reveal key={v.title} delay={i * 0.06} className="h-full">
+            <Reveal key={v.title} variant="rise" index={i} className="h-full">
               <div className="group flex h-full gap-4 rounded-card border border-line bg-surface p-5 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-olive/30 hover:shadow-lift">
                 <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-olive/10 text-olive transition-colors duration-300 group-hover:bg-olive group-hover:text-white">
                   <v.icon size={20} />

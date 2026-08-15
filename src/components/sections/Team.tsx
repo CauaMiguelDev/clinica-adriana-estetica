@@ -33,7 +33,7 @@ export function Team() {
           {TEAM.map((p, i) => {
             const firstName = p.name.replace(/^Dra\.\s*/, "");
             return (
-              <Reveal key={p.id} delay={i * 0.07} className="h-full">
+              <Reveal key={p.id} variant="rise" index={i} className="h-full">
                 <article className="group flex h-full flex-col overflow-hidden rounded-card border border-line bg-surface shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-olive/30 hover:shadow-lift">
                   <div className="relative aspect-[4/5] w-full overflow-hidden bg-sand">
                     {p.image ? (

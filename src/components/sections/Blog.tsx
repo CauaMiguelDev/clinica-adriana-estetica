@@ -29,7 +29,7 @@ export function Blog() {
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2">
           {BLOG.map((post, i) => (
-            <Reveal key={post.title} delay={i * 0.07} className="h-full">
+            <Reveal key={post.title} variant="rise" index={i} className="h-full">
               <article className="flex h-full flex-col rounded-card border border-line bg-surface p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-olive/30 hover:shadow-lift sm:p-7">
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
                   <span className="rounded-full bg-olive/10 px-3 py-1 text-xs font-semibold text-olive-dark">

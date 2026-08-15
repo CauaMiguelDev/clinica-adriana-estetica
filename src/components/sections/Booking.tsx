@@ -11,6 +11,7 @@ import {
   MapPin,
 } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
+import { ActionButton } from "@/components/ui/ActionButton";
 import { CLINIC, CATEGORIES, PROCEDURES, waLink } from "@/lib/data";
 
 /**
@@ -86,7 +87,7 @@ export function Booking() {
         {/* Canais diretos */}
         <div className="mt-12 grid gap-4 sm:grid-cols-3">
           {CHANNELS.map((c, i) => (
-            <Reveal key={c.title} delay={i * 0.06} className="h-full">
+            <Reveal key={c.title} variant="rise" index={i} className="h-full">
               <a
                 href={c.href}
                 target={c.href.startsWith("tel:") ? undefined : "_blank"}
@@ -210,12 +211,9 @@ export function Booking() {
                 </div>
               </div>
 
-              <button
-                type="submit"
-                className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-olive px-6 py-3.5 text-sm font-semibold text-white shadow-soft transition-colors duration-300 hover:bg-olive-dark hover:shadow-lift active:scale-[0.98]"
-              >
+              <ActionButton type="submit" className="mt-6 w-full">
                 <Send size={16} /> Abrir conversa no WhatsApp
-              </button>
+              </ActionButton>
 
               <p className="mt-3 text-center text-xs text-muted">
                 Nada é enviado ou guardado por este site — a mensagem abre no

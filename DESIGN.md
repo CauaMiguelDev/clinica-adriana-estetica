@@ -174,12 +174,11 @@ mais blurs de 28–45px. As features voltaram; a arquitetura que as derrubava, n
    por componente. Springs do Framer (hover, tilt) são exceção — duram o gesto e
    param sozinhas.
 
-   > **Pendência conhecida.** `WaterScene.tsx` ainda tem laço próprio. Hoje não
-   > há conflito porque ele vive em `/` e o fundo animado em `/amostra` — mas
-   > quando o fundo entrar na home seriam **dois laços concorrentes**, que foi
-   > exatamente o que derrubou o site original. A cena 3D da Fase 3 **tem de
-   > assinar `useAmbientMotion`** em vez de criar o seu. Verificação: `grep -rn
-   > "requestAnimationFrame(" src/` deve apontar só para `useAmbientMotion.ts`.
+   > **Cumprido na Fase 3.** `SilkScene` assina o relógio compartilhado em vez
+   > de criar laço próprio, e o `WaterScene` (que tinha o seu) foi removido.
+   > Verificação, a repetir a cada fase:
+   > `grep -rn "requestAnimationFrame(" src/` **só pode apontar para
+   > `useAmbientMotion.ts`**.
 2. **Só `transform` e `opacity`.** Nunca anime `width`, `top`, `filter`,
    `box-shadow` ou `background-position`.
 3. **`blur` é estático.** Ele custa fill rate; fica no CSS e nunca no quadro.

@@ -11,6 +11,8 @@ import {
   LayoutGrid,
 } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
+import { TiltCard } from "@/components/ui/TiltCard";
+import { ActionButton } from "@/components/ui/ActionButton";
 import { PROCEDURES, CLINIC, waLink, type Category } from "@/lib/data";
 
 /**
@@ -75,7 +77,8 @@ export function Services() {
             const Icon = area.icon;
 
             return (
-              <Reveal key={area.category} delay={i * 0.06} className="h-full">
+              <Reveal key={area.category} variant="rise" index={i} className="h-full">
+                <TiltCard className="h-full">
                 <a
                   href="#procedimentos"
                   onClick={() =>
@@ -85,7 +88,7 @@ export function Services() {
                   }
                   className="group flex h-full flex-col rounded-card border border-line bg-surface p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-olive/30 hover:shadow-lift sm:p-7"
                 >
-                  <span className="grid h-12 w-12 place-items-center rounded-xl bg-olive/10 text-olive transition-colors duration-300 group-hover:bg-olive group-hover:text-white">
+                  <span className="grid h-12 w-12 place-items-center rounded-xl bg-olive/10 text-olive transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 group-hover:bg-olive group-hover:text-white">
                     <Icon size={22} />
                   </span>
 
@@ -120,12 +123,13 @@ export function Services() {
                     />
                   </span>
                 </a>
+                </TiltCard>
               </Reveal>
             );
           })}
 
           {/* Sexto cartão: para quem não sabe por onde começar. */}
-          <Reveal delay={AREAS.length * 0.06} className="h-full">
+          <Reveal variant="rise" index={AREAS.length} className="h-full">
             <div className="flex h-full flex-col justify-center rounded-card border border-dashed border-olive/40 bg-olive/5 p-6 text-center sm:p-7">
               <h3 className="font-display text-xl font-semibold">
                 Não sabe por onde começar?
@@ -134,16 +138,16 @@ export function Services() {
                 A avaliação com nossas especialistas define o protocolo certo
                 para você.
               </p>
-              <a
+              <ActionButton
                 href={waLink(
                   `Olá! Gostaria de agendar uma avaliação no ${CLINIC.name}.`
                 )}
                 target="_blank"
                 rel="noopener"
-                className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-olive px-6 py-3 text-sm font-semibold text-white shadow-soft transition-colors duration-300 hover:bg-olive-dark hover:shadow-lift active:scale-[0.98]"
+                className="mt-6"
               >
                 <MessageCircle size={16} /> Agendar avaliação
-              </a>
+              </ActionButton>
             </div>
           </Reveal>
         </div>

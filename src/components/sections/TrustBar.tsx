@@ -33,7 +33,7 @@ export function TrustBar() {
       <div className="container-page">
         <div className="grid gap-px overflow-hidden rounded-panel border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
           {ITEMS.map((item, i) => (
-            <Reveal key={item.title} delay={i * 0.06} className="h-full">
+            <Reveal key={item.title} variant="up" index={i} className="h-full">
               <div className="flex h-full items-center gap-4 bg-surface p-5 sm:p-6">
                 <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-olive/10 text-olive">
                   <item.icon size={20} />

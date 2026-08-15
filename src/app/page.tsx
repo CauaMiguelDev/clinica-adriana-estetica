@@ -17,10 +17,14 @@ import { FAQ } from "@/components/sections/FAQ";
 import { Contact } from "@/components/sections/Contact";
 import { WhatsappFloat } from "@/components/ui/WhatsappFloat";
 import { BackToTop } from "@/components/ui/BackToTop";
+import { AmbientShapes } from "@/components/ui/AmbientShapes";
 
 export default function Home() {
   return (
     <>
+      {/* Fundo vivo da página inteira. Fixo, atrás de tudo, assinando o
+          relógio único — 3 formas no desktop, 2 no celular. */}
+      <AmbientShapes className="fixed z-0" />
       <ScrollProgress />
       <Navbar />
 

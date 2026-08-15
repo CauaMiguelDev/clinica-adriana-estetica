@@ -117,7 +117,7 @@ export function BeforeAfter() {
           {RESULTS.map((pair, i) => {
             const ready = Boolean(pair.before && pair.after);
             return (
-              <Reveal key={pair.label} delay={i * 0.08}>
+              <Reveal key={pair.label} variant="rise" index={i}>
                 <div className="rounded-panel border border-line bg-surface p-4 shadow-soft transition-shadow duration-300 hover:shadow-lift sm:p-5">
                   {ready ? (
                     <Comparator pair={pair} />

@@ -38,7 +38,7 @@ export function InstagramFeed() {
 
         <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3">
           {INSTAGRAM_POSTS.map((post, i) => (
-            <Reveal key={post.caption} delay={i * 0.05}>
+            <Reveal key={post.caption} variant="rise" index={i}>
               {post.image ? (
                 <a
                   href={CLINIC.instagram}

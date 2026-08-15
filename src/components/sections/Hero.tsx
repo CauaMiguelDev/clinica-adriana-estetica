@@ -2,19 +2,21 @@
 
 import { motion } from "framer-motion";
 import { Star, ArrowRight, MessageCircle, Leaf } from "lucide-react";
-import { WaterScene } from "@/components/ui/WaterScene";
+import { SilkScene } from "@/components/ui/SilkScene";
+import { ActionButton } from "@/components/ui/ActionButton";
 import { CLINIC, waLink } from "@/lib/data";
+import { DUR, EASE, STAGGER, SHIFT } from "@/lib/motion";
 
 const container = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
+  show: { transition: { staggerChildren: STAGGER.step * 1.6, delayChildren: 0.1 } },
 };
 const item = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: SHIFT.normal },
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: DUR.enter, ease: EASE.enter },
   },
 };
 
@@ -22,11 +24,16 @@ export function Hero() {
   return (
     <section
       id="inicio"
-      className="relative flex min-h-[92svh] items-center overflow-hidden pb-24 pt-32 sm:pt-36"
+      className="relative flex min-h-[94svh] items-center overflow-hidden pb-24 pt-32 sm:pt-36"
     >
-      {/* Base em CSS (também é o fallback sem WebGL) + superfície d'água 3D. */}
+      {/* Camada 1 — base em CSS, também o fallback sem WebGL. */}
       <div className="pointer-events-none absolute inset-0 bg-sand-fade" />
-      <WaterScene className="pointer-events-none absolute inset-x-0 bottom-0 top-1/4 select-none" />
+
+      {/* Camada 2 — a seda. Peça de destaque. */}
+      <SilkScene className="pointer-events-none absolute inset-x-0 bottom-0 top-0 select-none" />
+
+      {/* Camada 3 — véu que garante o contraste do texto sobre as dobras. */}
+      <div className="pointer-events-none absolute inset-0 bg-bg/45" />
 
       <div className="container-page relative z-10 w-full">
         <motion.div
@@ -60,29 +67,29 @@ export function Hero() {
             variants={item}
             className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row"
           >
-            <a
+            <ActionButton
               href={waLink(
                 `Olá! Gostaria de agendar um horário no ${CLINIC.name}.`
               )}
               target="_blank"
               rel="noopener"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-olive px-7 py-3.5 text-sm font-semibold text-white shadow-soft transition-colors duration-300 hover:bg-olive-dark hover:shadow-lift active:scale-[0.98] sm:w-auto"
+              className="w-full sm:w-auto"
             >
               <MessageCircle size={16} /> Agendar pelo WhatsApp
-            </a>
-            <a
+            </ActionButton>
+            <ActionButton
               href="#servicos"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-terracotta/50 px-7 py-3.5 text-sm font-semibold text-terracotta-dark transition-colors duration-300 hover:border-terracotta hover:bg-terracotta hover:text-white active:scale-[0.98] sm:w-auto"
+              variant="outline"
+              className="w-full sm:w-auto"
             >
               Ver serviços <ArrowRight size={16} />
-            </a>
+            </ActionButton>
           </motion.div>
 
-          {/* Prova social real, sem decoração inventada. */}
           <motion.a
             variants={item}
             href="#depoimentos"
-            className="mt-10 inline-flex items-center gap-2.5 rounded-full border border-line bg-surface/80 px-5 py-2.5 text-sm shadow-soft backdrop-blur transition-colors hover:border-olive/40"
+            className="mt-10 inline-flex items-center gap-2.5 rounded-full border border-line bg-surface/85 px-5 py-2.5 text-sm shadow-soft backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:border-olive/40 hover:shadow-lift"
           >
             <span className="flex text-gold" aria-hidden>
               {Array.from({ length: 5 }).map((_, i) => (

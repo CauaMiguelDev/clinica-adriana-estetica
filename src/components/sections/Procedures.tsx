@@ -14,6 +14,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
+import { TiltCard } from "@/components/ui/TiltCard";
 import { PICK_CATEGORY } from "@/components/sections/Services";
 import {
   PROCEDURES,
@@ -117,10 +118,10 @@ export function Procedures() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
                   transition={{ duration: 0.3 }}
-                  className="group flex flex-col rounded-card border border-line bg-surface p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-olive/30 hover:shadow-lift"
+                  className="group flex h-full flex-col rounded-card border border-line bg-surface p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-olive/30 hover:shadow-lift"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-olive/10 text-olive">
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-olive/10 text-olive transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
                       <Icon size={19} />
                     </span>
                     <span className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">

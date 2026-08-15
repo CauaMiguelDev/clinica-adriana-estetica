@@ -2,6 +2,7 @@
 
 import { Wallet, ClipboardCheck, MessageCircle, Check } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
+import { ActionButton } from "@/components/ui/ActionButton";
 import { CLINIC, PAYMENT, waLink } from "@/lib/data";
 
 /**
@@ -75,16 +76,16 @@ export function Investment() {
               </ul>
 
               <div className="mt-auto pt-7">
-                <a
+                <ActionButton
                   href={waLink(
                     `Olá! Gostaria de um orçamento na ${CLINIC.name}.`
                   )}
                   target="_blank"
                   rel="noopener"
-                  className="flex w-full items-center justify-center gap-2 rounded-full bg-olive py-3.5 text-sm font-semibold text-white shadow-soft transition-colors duration-300 hover:bg-olive-dark hover:shadow-lift active:scale-[0.98]"
+                  className="w-full"
                 >
                   <MessageCircle size={16} /> Pedir um orçamento
-                </a>
+                </ActionButton>
               </div>
             </div>
           </Reveal>

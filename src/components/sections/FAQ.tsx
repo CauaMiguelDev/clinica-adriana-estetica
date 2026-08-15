@@ -53,7 +53,7 @@ export function FAQ() {
             const panelId = `faq-panel-${i}`;
 
             return (
-              <Reveal key={item.q} delay={i * 0.04}>
+              <Reveal key={item.q} variant="up" index={i}>
                 <div
                   className={`overflow-hidden rounded-card border bg-surface transition-colors duration-300 ${
                     isOpen ? "border-olive/40 shadow-soft" : "border-line"

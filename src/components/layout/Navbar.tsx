@@ -73,14 +73,21 @@ export function Navbar() {
                 key={l.href}
                 href={l.href}
                 aria-current={isActive ? "true" : undefined}
-                className={`group relative rounded-full px-3.5 py-2 text-sm transition-colors ${
-                  isActive ? "text-olive" : "text-muted hover:text-fg"
+                className={`group relative rounded-full px-3.5 py-2 text-sm transition-colors duration-200 ${
+                  isActive ? "text-olive-dark" : "text-muted hover:text-fg"
                 }`}
               >
-                {l.label}
+                {/* Pílula que cresce a partir do centro no hover. */}
                 <span
-                  className={`absolute inset-x-3.5 -bottom-0.5 h-px origin-left bg-olive transition-transform duration-300 ${
-                    isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                  aria-hidden
+                  className="absolute inset-0 -z-10 scale-75 rounded-full bg-olive/10 opacity-0 transition-all duration-200 group-hover:scale-100 group-hover:opacity-100"
+                />
+                {l.label}
+                {/* Sublinhado da seção ativa: desliza da esquerda. */}
+                <span
+                  aria-hidden
+                  className={`absolute inset-x-3.5 -bottom-0.5 h-0.5 origin-left rounded-full bg-olive transition-transform duration-300 ${
+                    isActive ? "scale-x-100" : "scale-x-0"
                   }`}
                 />
               </a>
