@@ -35,8 +35,15 @@ export function Navbar() {
       if (e.key === "Escape") setOpen(false);
     };
     window.addEventListener("keydown", onKey);
+
+    // Segura desktop e Android. O Safari iOS ignora isto no scroll por toque —
+    // lá quem trava é o `touch-action: none` do overlay e o `overscroll-contain`
+    // do drawer, logo abaixo. Fixar o body seria mais forte, mas exigiria
+    // devolver a posição ao fechar, e essa devolução cancela o pulo dos links
+    // de âncora do próprio menu.
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+
     return () => {
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = prev;
@@ -141,7 +148,7 @@ export function Navbar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setOpen(false)}
-              className="fixed inset-0 z-[90] bg-fg/50 backdrop-blur-sm"
+              className="fixed inset-0 z-[90] touch-none bg-fg/50 backdrop-blur-sm"
             />
             <motion.aside
               initial={{ x: "100%" }}
@@ -152,7 +159,7 @@ export function Navbar() {
               role="dialog"
               aria-modal="true"
               aria-label="Menu"
-              className="fixed right-0 top-0 z-[95] flex h-full w-[80%] max-w-sm flex-col gap-2 border-l border-line p-8 shadow-lift"
+              className="fixed right-0 top-0 z-[95] flex h-full w-[80%] max-w-sm flex-col gap-2 overflow-y-auto overscroll-contain border-l border-line p-8 shadow-lift"
             >
               {/* ponytail: autoFocus + aria-modal, sem armadilha de foco. São 6
                   links; se o drawer ganhar formulário, aí sim prender o Tab. */}
