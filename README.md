@@ -39,7 +39,8 @@ confiança → contato.
 |---|---|
 | Todo o conteúdo (clínica, equipe, procedimentos, FAQ, blog, pagamento) | `src/lib/data.ts` |
 | Cores, fontes, raios, sombras | `src/app/globals.css` (tokens) e `tailwind.config.ts` |
-| Cena 3D do Hero | `src/components/ui/WaterScene.tsx` |
+| Cena 3D do Hero | `src/components/ui/SilkScene.tsx` |
+| Durações e curvas de animação | `src/lib/motion.ts` |
 | Número do WhatsApp | `CLINIC.whatsapp` em `src/lib/data.ts` |
 
 ## Fotos
@@ -66,8 +67,7 @@ Nada aqui exige backend — são dados que só a clínica tem.
 | Place ID do Google | `CLINIC.googlePlaceId` | Sem ele, "Avaliar no Google" abre uma busca em vez do formulário de avaliação |
 | CNPJ real e Política de Privacidade | `src/components/layout/Footer.tsx` | Está com CNPJ zerado e link que não leva a lugar nenhum; o formulário coleta nome e telefone (LGPD) |
 | Registro profissional de cada especialista | `TEAM[].credential` | Hoje diz "certificada"; um número de registro é verificável |
-| Imagem de compartilhamento (OG image) | `src/app/layout.tsx` | Link mandado no WhatsApp aparece sem prévia |
-| Atualizar o Next.js | `package.json` | A 14.2.15 tem vulnerabilidade crítica conhecida |
+| As fotos | ver a tabela acima | O site não tem nenhuma; é a maior lacuna visual restante |
 
 O agendamento **não precisa de backend**: o formulário monta a mensagem e abre a
 conversa no WhatsApp para a pessoa revisar antes de enviar. Nada é armazenado

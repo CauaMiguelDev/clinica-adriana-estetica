@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Karla } from "next/font/google";
 import "./globals.css";
+import { Motion } from "@/components/ui/Motion";
 import { CLINIC } from "@/lib/data";
 
 // Títulos: serifada com personalidade. Leitura: humanista, calorosa e legível.
@@ -102,7 +103,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={`${display.variable} ${sans.variable}`}>
       <body className="font-sans antialiased">
-        {children}
+        <Motion>{children}</Motion>
         {/* Dados estruturados: sem isto o Google adivinha o que é a página.
             Só campos que a clínica realmente tem — nada inventado. */}
         <script

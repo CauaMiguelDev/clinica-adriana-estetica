@@ -4,6 +4,12 @@ import { CLINIC, waLink } from "@/lib/data";
 /**
  * Atalho de WhatsApp sempre acessível.
  * Sem anel pulsando: o canto inferior fica quieto até a pessoa passar o mouse.
+ *
+ * ponytail: exceção consciente à regra "só transform e opacity" do DESIGN.md —
+ * o rótulo expande animando `max-width`, `gap` e `pr`, que disparam layout.
+ * Vale porque hover não existe no celular (onde a regra importa): 300ms, uma
+ * vez, em dois nós. Teto: se este botão virar animação contínua ou ganhar
+ * irmãos com o mesmo padrão, remonte-o para expandir por `transform`.
  */
 export function WhatsappFloat() {
   return (

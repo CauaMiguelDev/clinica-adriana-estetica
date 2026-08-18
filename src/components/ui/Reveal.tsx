@@ -11,8 +11,10 @@ import { DUR, EASE, SHIFT, stagger } from "@/lib/motion";
  * página; com movimento em toda parte, isso lê como template. Agora há
  * variantes e cascata de verdade.
  *
- * O `prefers-reduced-motion` é tratado pelo próprio Framer: com ele ativo, o
- * componente pula para o estado final em vez de sumir.
+ * O `prefers-reduced-motion` vem do `<Motion>` na raiz (`MotionConfig
+ * reducedMotion="user"`), não daqui — e não vem do Framer sozinho, que ignora
+ * a preferência até alguém ligar. Com ele ativo, sobra só a opacidade: o
+ * conteúdo aparece inteiro, sem os 24px de deslocamento.
  */
 
 type Variant = "fade" | "up" | "down" | "left" | "right" | "rise";

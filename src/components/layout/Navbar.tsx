@@ -28,6 +28,21 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Drawer aberto: Esc fecha e o corpo para de rolar por baixo do overlay.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
+
   // Scrollspy: destaca no menu a seção que está no meio da tela.
   useEffect(() => {
     const ids = LINKS.map((l) => l.href.slice(1));
@@ -107,6 +122,7 @@ export function Navbar() {
           <button
             onClick={() => setOpen(true)}
             aria-label="Abrir menu"
+            aria-expanded={open}
             className="grid h-10 w-10 place-items-center rounded-full border border-line lg:hidden"
           >
             <Menu size={20} />
@@ -133,9 +149,15 @@ export function Navbar() {
               exit={{ x: "100%" }}
               transition={{ type: "spring", stiffness: 300, damping: 32 }}
               style={{ backgroundColor: "rgb(var(--surface))" }}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Menu"
               className="fixed right-0 top-0 z-[95] flex h-full w-[80%] max-w-sm flex-col gap-2 border-l border-line p-8 shadow-lift"
             >
+              {/* ponytail: autoFocus + aria-modal, sem armadilha de foco. São 6
+                  links; se o drawer ganhar formulário, aí sim prender o Tab. */}
               <button
+                autoFocus
                 onClick={() => setOpen(false)}
                 aria-label="Fechar menu"
                 className="mb-6 grid h-10 w-10 place-items-center self-end rounded-full border border-line"

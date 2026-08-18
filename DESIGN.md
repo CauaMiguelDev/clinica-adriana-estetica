@@ -179,8 +179,17 @@ mais blurs de 28–45px. As features voltaram; a arquitetura que as derrubava, n
    > Verificação, a repetir a cada fase:
    > `grep -rn "requestAnimationFrame(" src/` **só pode apontar para
    > `useAmbientMotion.ts`**.
-2. **Só `transform` e `opacity`.** Nunca anime `width`, `top`, `filter`,
-   `box-shadow` ou `background-position`.
+2. **Só `transform` e `opacity`** no que é perpétuo ou roda no celular. Nunca
+   anime `width`, `top`, `filter`, `box-shadow` ou `background-position` num
+   laço.
+
+   > **Exceção única e deliberada:** o `WhatsappFloat` expande o rótulo no
+   > hover animando `max-width`, `gap` e `padding-right` — as três disparam
+   > layout. Fica assim porque hover **não existe no celular**, que é onde a
+   > regra importa: dura 300ms, uma vez, numa subárvore de dois nós. Fazer o
+   > mesmo só com `transform` exigiria remontar o layout do botão — mais
+   > código que o problema merece. Se aparecer uma segunda exceção, a regra
+   > está sendo contornada em vez de aplicada; reveja as duas juntas.
 3. **`blur` é estático.** Ele custa fill rate; fica no CSS e nunca no quadro.
 4. **Tudo pausa** fora da tela (`IntersectionObserver`) e com a aba oculta
    (`visibilitychange`).
@@ -195,7 +204,16 @@ aqui isso é requisito funcional, não detalhe de acessibilidade.
 
 - O relógio de ambiente desenha **um quadro parado** e não entra no laço.
 - A cena 3D renderiza um quadro e para.
-- As transições são anuladas em `globals.css`.
+- As transições **de CSS** são anuladas em `globals.css`.
+- As animações **do Framer** são anuladas pelo `<Motion>` na raiz
+  (`src/components/ui/Motion.tsx`), que aplica `MotionConfig
+  reducedMotion="user"`. Um ponto só cobre `Reveal`, `RevealGroup`, `Hero`,
+  `TiltCard` e `ActionButton`.
+
+  > **Armadilha:** o Framer **não** respeita a preferência sozinho — é opt-in.
+  > E como ele anima por rAF em estilo inline, o bloco de `globals.css` não o
+  > alcança: aquele bloco só vale para CSS. Antes desta correção, movimento
+  > reduzido ligado ainda deslizava 24px em toda entrada ao rolar.
 - O conteúdo aparece **inteiro e legível** — nada fica preso em opacidade 0.
 
 ---
