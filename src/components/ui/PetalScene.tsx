@@ -45,11 +45,18 @@ type Petal = {
  * ## A regra da clareira
  *
  * O texto do Hero ocupa o meio da tela. Pétala atrás de título não é
- * profundidade, é ruído — mesmo com o véu de contraste por cima. Por isso as
- * duas composições deixam **o centro vago** e vivem nas bordas.
+ * profundidade, é ruído — mesmo com o véu de contraste por cima.
  *
- * `Float` ainda desloca ±0.25 e gira, então a margem embutida na clareira
- * precisa absorver isso.
+ * A primeira tentativa foi afastar as pétalas do centro na mão. Não fecha no
+ * celular: ali o bloco de texto vai de ~160px a ~665px de uma seção de ~793px,
+ * sobrando 0.8 unidade de cena em cima e 0.7 embaixo. Não cabe pétala nenhuma,
+ * e `Float` ainda desloca ±0.25 por cima disso. Empurrar mais o `y` não
+ * resolve, só joga a cena inteira para fora do enquadramento.
+ *
+ * Então a clareira é uma **máscara no canvas**, não uma coordenada: um
+ * gradiente radial some com o miolo da cena e deixa as bordas. Vale para
+ * qualquer tela, e sobrevive ao texto refluindo — o que arranjo calibrado à
+ * mão nunca faz. As posições abaixo cuidam só do enquadramento.
  *
  * ## Por que dois arranjos
  *
@@ -79,14 +86,27 @@ const PETALS_WIDE: Petal[] = [
   { position: [3.1, 0.6, -1.2], rotation: [0.7, 0.4, 0.9], scale: 0.6, color: "#C98E6F", speed: 1.6 },
 ];
 
-/** Celular: estreito em x, empurrado para o topo e o rodapé. */
+/**
+ * Celular: estreito em x, no topo e no rodapé — mas *dentro* do quadro. Em
+ * z=-2.5 a meia-altura visível é ~2.9 e a meia-largura ~1.4; passar disso é
+ * pagar por pétala que ninguém vê. Quem encostar no texto a máscara apaga.
+ */
 const PETALS_TALL: Petal[] = [
-  { position: [-1.0, 2.9, -2.2], rotation: [0.5, 0.3, -0.4], scale: 0.85, color: "#7C8B6B", speed: 1.1 },
-  { position: [1.1, 3.4, -3.0], rotation: [-0.3, 0.8, 0.6], scale: 1.0, color: "#C98E6F", speed: 0.8 },
-  { position: [0.9, -3.1, -2.4], rotation: [0.9, -0.4, 0.2], scale: 0.8, color: "#E4D9C8", speed: 1.35 },
-  { position: [-1.2, -3.6, -3.2], rotation: [0.2, 0.6, -0.9], scale: 1.05, color: "#9AA98A", speed: 0.65 },
-  { position: [0.2, 4.2, -4.0], rotation: [-0.6, 0.1, 0.5], scale: 0.7, color: "#D8C3AE", speed: 0.95 },
+  { position: [-0.9, 2.2, -2.2], rotation: [0.5, 0.3, -0.4], scale: 0.8, color: "#7C8B6B", speed: 1.1 },
+  { position: [0.95, 2.7, -3.0], rotation: [-0.3, 0.8, 0.6], scale: 0.95, color: "#C98E6F", speed: 0.8 },
+  { position: [0.8, -2.3, -2.4], rotation: [0.9, -0.4, 0.2], scale: 0.75, color: "#E4D9C8", speed: 1.35 },
+  { position: [-1.0, -2.8, -3.2], rotation: [0.2, 0.6, -0.9], scale: 1.0, color: "#9AA98A", speed: 0.65 },
+  { position: [0.1, 3.3, -4.0], rotation: [-0.6, 0.1, 0.5], scale: 0.7, color: "#D8C3AE", speed: 0.95 },
 ];
+
+/**
+ * A clareira. O miolo transparente é maior e mais alto no celular porque lá o
+ * texto ocupa quase a altura toda; no desktop ele é estreito, para não comer as
+ * pétalas laterais. Autoprefixer cuida do `-webkit-mask-image` do Safari.
+ */
+const CLEARING =
+  "[mask-image:radial-gradient(ellipse_92%_58%_at_50%_50%,transparent_38%,#000_100%)] " +
+  "md:[mask-image:radial-gradient(ellipse_48%_62%_at_50%_50%,transparent_44%,#000_100%)]";
 
 /**
  * Ponte entre o relógio compartilhado e o r3f.
@@ -173,7 +193,7 @@ export function PetalScene({ className = "" }: { className?: string }) {
   const dpr = useMemo<[number, number]>(() => [1, mobile ? 1.2 : 1.75], [mobile]);
 
   return (
-    <div ref={host} className={className} aria-hidden>
+    <div ref={host} className={`${className} ${CLEARING}`} aria-hidden>
       <Canvas
         frameloop="demand"
         dpr={dpr}
