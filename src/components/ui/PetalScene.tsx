@@ -28,7 +28,8 @@ import { useAmbientMotion, prefersReducedMotion } from "@/components/ui/useAmbie
  * os quadros no celular. Sem `Environment` do drei, que baixaria um HDR de um
  * CDN e viraria dependência de rede no LCP. As luzes são três, fixas.
  *
- * Degradação: 9 pétalas no desktop, 5 no celular, `dpr` limitado nos dois.
+ * Degradação: 9 pétalas no desktop, 5 no celular, `dpr` limitado nos dois. Não
+ * é só quantidade — são arranjos diferentes, ver "A regra da clareira".
  * Com `prefers-reduced-motion` a cena desenha **um quadro só** e congela.
  */
 
@@ -40,18 +41,51 @@ type Petal = {
   speed: number;
 };
 
-// Sequência fixa: nada de Math.random, que daria uma composição diferente a
-// cada carregamento e tornaria impossível ajustar o enquadramento.
-const PETALS: Petal[] = [
-  { position: [-2.6, 1.2, -1.5], rotation: [0.5, 0.3, -0.4], scale: 1.15, color: "#7C8B6B", speed: 1.1 },
-  { position: [2.3, 1.6, -2.2], rotation: [-0.3, 0.8, 0.6], scale: 0.9, color: "#C98E6F", speed: 0.8 },
-  { position: [-1.4, -1.5, -0.8], rotation: [0.9, -0.4, 0.2], scale: 0.75, color: "#E4D9C8", speed: 1.35 },
-  { position: [3.1, -1.1, -3.0], rotation: [0.2, 0.6, -0.9], scale: 1.3, color: "#9AA98A", speed: 0.65 },
-  { position: [0.4, 2.2, -3.4], rotation: [-0.6, 0.1, 0.5], scale: 1.0, color: "#D8C3AE", speed: 0.95 },
-  { position: [-3.4, -0.4, -2.6], rotation: [0.35, 0.9, 0.15], scale: 0.85, color: "#B5744F", speed: 1.2 },
-  { position: [1.5, -2.1, -1.9], rotation: [-0.8, -0.2, 0.7], scale: 0.7, color: "#7C8B6B", speed: 1.45 },
-  { position: [-0.6, 0.2, -4.2], rotation: [0.15, -0.7, -0.3], scale: 1.45, color: "#E9E2D5", speed: 0.5 },
-  { position: [2.9, 0.5, -1.2], rotation: [0.7, 0.4, 0.9], scale: 0.6, color: "#C98E6F", speed: 1.6 },
+/**
+ * ## A regra da clareira
+ *
+ * O texto do Hero ocupa o meio da tela. Pétala atrás de título não é
+ * profundidade, é ruído — mesmo com o véu de contraste por cima. Por isso as
+ * duas composições deixam **o centro vago** e vivem nas bordas.
+ *
+ * `Float` ainda desloca ±0.25 e gira, então a margem embutida na clareira
+ * precisa absorver isso.
+ *
+ * ## Por que dois arranjos
+ *
+ * A área visível da cena depende do formato da tela, não só da distância.
+ * Com `fov 38` e a câmera em z=6, a meia-altura em z=0 é `6·tan(19°) ≈ 2.07`,
+ * e a meia-largura é isso vezes a proporção da tela. Num desktop 16:9 dá
+ * ~3.7 de cada lado; num celular 390×844 dá **~0.95**.
+ *
+ * Ou seja: reaproveitar o arranjo largo no celular jogaria a maioria das
+ * pétalas para fora do enquadramento. O arranjo alto é estreito em x e
+ * espalhado em y, ocupando o topo e o rodapé em vez das laterais.
+ *
+ * Sequências fixas, nada de Math.random: com posição aleatória a composição
+ * mudaria a cada carregamento e não haveria o que calibrar.
+ */
+
+/** Desktop e tablet: clareira central, pétalas nas laterais. */
+const PETALS_WIDE: Petal[] = [
+  { position: [-2.9, 1.3, -1.5], rotation: [0.5, 0.3, -0.4], scale: 1.15, color: "#7C8B6B", speed: 1.1 },
+  { position: [2.7, 1.7, -2.2], rotation: [-0.3, 0.8, 0.6], scale: 0.9, color: "#C98E6F", speed: 0.8 },
+  { position: [-3.3, -1.4, -2.0], rotation: [0.9, -0.4, 0.2], scale: 0.95, color: "#E4D9C8", speed: 1.35 },
+  { position: [3.4, -1.3, -3.0], rotation: [0.2, 0.6, -0.9], scale: 1.3, color: "#9AA98A", speed: 0.65 },
+  { position: [-2.4, 2.6, -3.4], rotation: [-0.6, 0.1, 0.5], scale: 1.0, color: "#D8C3AE", speed: 0.95 },
+  { position: [-3.8, 0.1, -2.6], rotation: [0.35, 0.9, 0.15], scale: 0.85, color: "#B5744F", speed: 1.2 },
+  { position: [2.2, -2.4, -1.9], rotation: [-0.8, -0.2, 0.7], scale: 0.7, color: "#7C8B6B", speed: 1.45 },
+  { position: [3.9, 2.4, -4.2], rotation: [0.15, -0.7, -0.3], scale: 1.45, color: "#E9E2D5", speed: 0.5 },
+  { position: [3.1, 0.6, -1.2], rotation: [0.7, 0.4, 0.9], scale: 0.6, color: "#C98E6F", speed: 1.6 },
+];
+
+/** Celular: estreito em x, empurrado para o topo e o rodapé. */
+const PETALS_TALL: Petal[] = [
+  { position: [-1.0, 2.9, -2.2], rotation: [0.5, 0.3, -0.4], scale: 0.85, color: "#7C8B6B", speed: 1.1 },
+  { position: [1.1, 3.4, -3.0], rotation: [-0.3, 0.8, 0.6], scale: 1.0, color: "#C98E6F", speed: 0.8 },
+  { position: [0.9, -3.1, -2.4], rotation: [0.9, -0.4, 0.2], scale: 0.8, color: "#E4D9C8", speed: 1.35 },
+  { position: [-1.2, -3.6, -3.2], rotation: [0.2, 0.6, -0.9], scale: 1.05, color: "#9AA98A", speed: 0.65 },
+  { position: [0.2, 4.2, -4.0], rotation: [-0.6, 0.1, 0.5], scale: 0.7, color: "#D8C3AE", speed: 0.95 },
 ];
 
 /**
@@ -66,7 +100,7 @@ function Clock({ active }: { active: boolean }) {
 }
 
 /** Segue o cursor de longe. O `lerp` evita que a cena grude no ponteiro. */
-function PetalField({ count, calm }: { count: number; calm: boolean }) {
+function PetalField({ petals, calm }: { petals: Petal[]; calm: boolean }) {
   const group = useRef<Group>(null);
   const { pointer } = useThree();
 
@@ -80,7 +114,7 @@ function PetalField({ count, calm }: { count: number; calm: boolean }) {
 
   return (
     <group ref={group}>
-      {PETALS.slice(0, count).map((p, i) => (
+      {petals.map((p, i) => (
         <Float
           key={i}
           enabled={!calm}
@@ -135,7 +169,7 @@ export function PetalScene({ className = "" }: { className?: string }) {
     return () => io.disconnect();
   }, []);
 
-  const count = mobile ? 5 : PETALS.length;
+  const petals = mobile ? PETALS_TALL : PETALS_WIDE;
   const dpr = useMemo<[number, number]>(() => [1, mobile ? 1.2 : 1.75], [mobile]);
 
   return (
@@ -151,7 +185,7 @@ export function PetalScene({ className = "" }: { className?: string }) {
         <directionalLight position={[3, 4, 5]} intensity={1.2} />
         {/* Contraluz terracota: dá a borda quente que separa pétala do fundo. */}
         <directionalLight position={[-4, -2, 2]} intensity={0.5} color="#C97B5A" />
-        <PetalField count={count} calm={calm} />
+        <PetalField petals={petals} calm={calm} />
       </Canvas>
     </div>
   );
