@@ -162,7 +162,11 @@ movimento parecer orgânico em vez de mecânico.
 | **Parallax** | 3 camadas: fundo `0.15`, meio `0.08`, frente `0.04` da rolagem. Valores baixos de propósito. |
 | **Tilt 3D** | Máximo **6°**, perspectiva 900px. Só com ponteiro fino — em tela de toque o card tremeria sob o dedo. |
 | **Clique** | Onda a partir do ponto tocado (`ActionButton`) + `active:scale-[0.98]`. No celular não há hover; sem isso o botão parece quebrado. |
-| **Ambiente** | Formas orgânicas grandes e desfocadas, 3 no desktop e 2 no celular, em órbitas elípticas de período diferente. |
+| **Ambiente** | Formas orgânicas grandes e desfocadas, 3 no desktop e 2 no celular, em órbitas elípticas de período diferente, com parallax de 8–20vh por tela rolada e grão estático por cima. |
+| **Ímã** | Botões deslizam no máximo **6px** na direção do cursor (`MAGNET.maxPx`). Só ponteiro fino. Acima de ~8px vira piada. |
+| **Traçado de ícone** | `<DrawIcon>` — `stroke-dashoffset` de 1→0 via variável CSS. `stroke-dasharray: 100` cobre o traço mais longo de um ícone 24×24 sem medir path por path. |
+| **Cena 3D** | `PetalScene` no Hero: pétalas de vidro, parallax de cursor. 9 no desktop, 5 no celular. Sem `transmission` e sem `Environment` (ver regras de desempenho). |
+| **Scrubbed** | Progresso da rolagem vira posição, não tempo. Seção alta + filho `sticky` + `useScroll`. Deslocamento sempre em **%** do trilho, nunca em px. |
 
 ### Regras invioláveis de desempenho
 
@@ -174,11 +178,18 @@ mais blurs de 28–45px. As features voltaram; a arquitetura que as derrubava, n
    por componente. Springs do Framer (hover, tilt) são exceção — duram o gesto e
    param sozinhas.
 
-   > **Cumprido na Fase 3.** `SilkScene` assina o relógio compartilhado em vez
-   > de criar laço próprio, e o `WaterScene` (que tinha o seu) foi removido.
-   > Verificação, a repetir a cada fase:
+   > **Cumprido.** Verificação, a repetir a cada fase:
    > `grep -rn "requestAnimationFrame(" src/` **só pode apontar para
    > `useAmbientMotion.ts`**.
+   >
+   > **O caso do react-three-fiber (`PetalScene`).** O r3f roda um laço próprio
+   > por padrão, o que quebraria esta regra. Em vez de abrir exceção, o Canvas
+   > fica em `frameloop="demand"`: ele só desenha quando alguém chama
+   > `invalidate()`, e quem chama é o relógio compartilhado, pelo componente
+   > `<Clock/>` dentro da cena. O laço continua sendo um só, e o benefício é
+   > concreto — Hero fora da tela ou aba oculta significa GPU ociosa, não 60fps
+   > desenhando o que ninguém vê. **Nunca instancie um `<Canvas>` sem
+   > `frameloop="demand"` + ponte para o relógio.**
 2. **Só `transform` e `opacity`** no que é perpétuo ou roda no celular. Nunca
    anime `width`, `top`, `filter`, `box-shadow` ou `background-position` num
    laço.
@@ -214,6 +225,14 @@ aqui isso é requisito funcional, não detalhe de acessibilidade.
   > E como ele anima por rAF em estilo inline, o bloco de `globals.css` não o
   > alcança: aquele bloco só vale para CSS. Antes desta correção, movimento
   > reduzido ligado ainda deslizava 24px em toda entrada ao rolar.
+- As seções **scrubbed** trocam de forma, não de velocidade: `ProcedureRail` e
+  `ValuesStory` abandonam a altura falsa e o `sticky` e viram grade e lista
+  verticais comuns. Prender 3 ou 4 telas de rolagem de quem pediu menos
+  movimento seria hostil; "a mesma coisa mais devagar" não resolve.
+- O traçado do `<DrawIcon>` é **variável CSS**, que o `MotionConfig` não anula
+  (ele cobre transform e escala). Por isso `globals.css` fixa `--draw: 0` no
+  bloco de movimento reduzido — mesma classe de armadilha do Framer, um andar
+  abaixo.
 - O conteúdo aparece **inteiro e legível** — nada fica preso em opacidade 0.
 
 ---

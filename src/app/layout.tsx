@@ -2,6 +2,12 @@ import type { Metadata, Viewport } from "next";
 import { Fraunces, Karla } from "next/font/google";
 import "./globals.css";
 import { Motion } from "@/components/ui/Motion";
+import { Navbar } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
+import { ScrollProgress } from "@/components/layout/ScrollProgress";
+import { AmbientShapes } from "@/components/ui/AmbientShapes";
+import { WhatsappFloat } from "@/components/ui/WhatsappFloat";
+import { BackToTop } from "@/components/ui/BackToTop";
 import { CLINIC } from "@/lib/data";
 
 // Títulos: serifada com personalidade. Leitura: humanista, calorosa e legível.
@@ -103,7 +109,20 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={`${display.variable} ${sans.variable}`}>
       <body className="font-sans antialiased">
-        <Motion>{children}</Motion>
+        <Motion>
+          {/* O shell vive aqui, não nas páginas: `layout` sobrevive à troca de
+              rota, então o fundo animado não reinicia e a navbar não pisca.
+              Quem remonta a cada rota é o `template.tsx`, e é lá que mora a
+              transição de entrada. */}
+          <AmbientShapes className="fixed z-0" />
+          <ScrollProgress />
+          <Navbar />
+          {/* z-10 mantém o conteúdo acima do AmbientShapes, que é fixed z-0. */}
+          <main className="relative z-10">{children}</main>
+          <Footer />
+          <WhatsappFloat />
+          <BackToTop />
+        </Motion>
         {/* Dados estruturados: sem isto o Google adivinha o que é a página.
             Só campos que a clínica realmente tem — nada inventado. */}
         <script

@@ -98,7 +98,7 @@ export function Team() {
 
                     {p.procedures.length > 3 && (
                       <a
-                        href="#procedimentos"
+                        href="/servicos#procedimentos"
                         className="mt-2.5 text-sm font-medium text-olive-dark hover:underline"
                       >
                         + {p.procedures.length - 3} no catálogo

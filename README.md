@@ -22,16 +22,25 @@ npm start        # servir a build
 > `.next` e o build derruba os artefatos do dev (a página passa a carregar sem
 > CSS nem JS). Se acontecer, pare tudo, apague `.next` e suba o dev de novo.
 
-## Seções
+## Rotas
 
-Hero (com cena 3D) · Faixa de confiança · **Serviços** · **Catálogo de
-procedimentos** (filtro por categoria) · **Agendamento** · Resultados (antes &
-depois) · A Clínica · Equipe · Depoimentos · Investimento · Dúvidas · Blog ·
-Instagram · Contato + mapa · Rodapé. Mais o WhatsApp flutuante e o "voltar ao
-topo".
+| Rota | O que tem |
+|---|---|
+| `/` | Hero com cena 3D · Faixa de confiança · Teaser de serviços · Prova social + CTA |
+| `/servicos` | Serviços · Trilho horizontal de destaques · Catálogo com filtro · Dúvidas |
+| `/precos` | Investimento |
+| `/resultados` | Antes & depois · Depoimentos · Instagram |
+| `/sobre` | A Clínica · Valores (painel fixo) · Equipe |
+| `/contato` | Agendamento · Contato + mapa |
+| `/blog` | Dicas de cuidado. **Fora do menu** — chega-se pelo rodapé. |
 
-A ordem segue a prioridade do visitante: serviços → agendar → resultados →
-confiança → contato.
+O shell (navbar, rodapé, fundo animado, WhatsApp flutuante, voltar ao topo)
+vive em `src/app/layout.tsx` e **persiste entre as rotas** — por isso o fundo
+não reinicia ao navegar. A transição de entrada de cada página está em
+`src/app/template.tsx`, que é a única parte que remonta a cada navegação.
+
+A home é curta de propósito: quatro dobras, uma pergunta respondida por dobra.
+Tudo que aprofunda mora nas rotas.
 
 ## Onde mexer
 
@@ -39,7 +48,9 @@ confiança → contato.
 |---|---|
 | Todo o conteúdo (clínica, equipe, procedimentos, FAQ, blog, pagamento) | `src/lib/data.ts` |
 | Cores, fontes, raios, sombras | `src/app/globals.css` (tokens) e `tailwind.config.ts` |
-| Cena 3D do Hero | `src/components/ui/SilkScene.tsx` |
+| Cena 3D do Hero (pétalas) | `src/components/ui/PetalScene.tsx` |
+| Fundo animado da página inteira | `src/components/ui/AmbientShapes.tsx` |
+| Composição das rotas | `src/app/<rota>/page.tsx` |
 | Durações e curvas de animação | `src/lib/motion.ts` |
 | Número do WhatsApp | `CLINIC.whatsapp` em `src/lib/data.ts` |
 

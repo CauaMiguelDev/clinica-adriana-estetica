@@ -1,25 +1,29 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
 import { CLINIC, waLink } from "@/lib/data";
 
-// Todo link aponta para uma seção que existe — o scrollspy depende disso.
+// Uma rota por destino. `/blog` fica fora daqui de propósito — chega-se a ele
+// pelo rodapé, para o menu não crescer além do que cabe no desktop.
 const LINKS = [
-  { href: "#servicos", label: "Serviços" },
-  { href: "#resultados", label: "Resultados" },
-  { href: "#sobre", label: "A Clínica" },
-  { href: "#equipe", label: "Equipe" },
-  { href: "#faq", label: "Dúvidas" },
-  { href: "#contato", label: "Contato" },
+  { href: "/servicos", label: "Serviços" },
+  { href: "/precos", label: "Preços" },
+  { href: "/resultados", label: "Resultados" },
+  { href: "/sobre", label: "A Clínica" },
+  { href: "/contato", label: "Contato" },
 ];
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState<string>("");
+  // A rota atual substituiu o antigo scrollspy de âncoras: com o conteúdo
+  // dividido em páginas, o destaque do menu é a página em que você está.
+  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -50,29 +54,6 @@ export function Navbar() {
     };
   }, [open]);
 
-  // Scrollspy: destaca no menu a seção que está no meio da tela.
-  useEffect(() => {
-    const ids = LINKS.map((l) => l.href.slice(1));
-
-    const onScroll = () => {
-      const line = window.scrollY + window.innerHeight * 0.35;
-      let current = "";
-      for (const id of ids) {
-        const el = document.getElementById(id);
-        if (el && el.offsetTop <= line) current = `#${id}`;
-      }
-      setActive(current);
-    };
-
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, []);
-
   return (
     <>
     <header
@@ -83,18 +64,18 @@ export function Navbar() {
       }`}
     >
       <nav className="container-page flex w-full items-center justify-between gap-4">
-        <a href="#inicio" aria-label={CLINIC.name}>
+        <Link href="/" aria-label={CLINIC.name}>
           <Logo />
-        </a>
+        </Link>
 
         <div className="hidden items-center gap-1 lg:flex">
           {LINKS.map((l) => {
-            const isActive = active === l.href;
+            const isActive = pathname === l.href;
             return (
-              <a
+              <Link
                 key={l.href}
                 href={l.href}
-                aria-current={isActive ? "true" : undefined}
+                aria-current={isActive ? "page" : undefined}
                 className={`group relative rounded-full px-3.5 py-2 text-sm transition-colors duration-200 ${
                   isActive ? "text-olive-dark" : "text-muted hover:text-fg"
                 }`}
@@ -112,7 +93,7 @@ export function Navbar() {
                     isActive ? "scale-x-100" : "scale-x-0"
                   }`}
                 />
-              </a>
+              </Link>
             );
           })}
         </div>
@@ -171,16 +152,24 @@ export function Navbar() {
               >
                 <X size={20} />
               </button>
-              {LINKS.map((l) => (
-                <a
-                  key={l.href}
-                  href={l.href}
-                  onClick={() => setOpen(false)}
-                  className="rounded-xl px-4 py-3 text-lg transition-colors hover:bg-olive/10 hover:text-olive"
-                >
-                  {l.label}
-                </a>
-              ))}
+              {LINKS.map((l) => {
+                const isActive = pathname === l.href;
+                return (
+                  <Link
+                    key={l.href}
+                    href={l.href}
+                    onClick={() => setOpen(false)}
+                    aria-current={isActive ? "page" : undefined}
+                    className={`rounded-xl px-4 py-3 text-lg transition-colors ${
+                      isActive
+                        ? "bg-olive/10 font-semibold text-olive-dark"
+                        : "hover:bg-olive/10 hover:text-olive"
+                    }`}
+                  >
+                    {l.label}
+                  </Link>
+                );
+              })}
               <a
                 href={waLink(
                   `Olá! Gostaria de agendar um horário no ${CLINIC.name}.`

@@ -28,7 +28,17 @@ type Blob = {
   radiusY: number;
   period: number;
   phase: number;
+  /** Deslocamento em vh a cada tela rolada. Valores diferentes = profundidade. */
+  parallax: number;
 };
+
+/**
+ * Grão. É um `feTurbulence` estático em data-URI: nunca anima, então custa uma
+ * textura e zero quadros. Sem ele os gradientes largos exibem faixas (banding)
+ * em telas de 8 bits, que é o que faz um fundo bonito parecer barato.
+ */
+const GRAIN =
+  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")";
 
 const BLOBS: Blob[] = [
   {
@@ -40,6 +50,7 @@ const BLOBS: Blob[] = [
     radiusY: 7,
     period: AMBIENT.slow,
     phase: 0,
+    parallax: 14,
   },
   {
     color: "rgb(var(--terracotta) / 0.08)",
@@ -50,6 +61,7 @@ const BLOBS: Blob[] = [
     radiusY: 5,
     period: AMBIENT.medium,
     phase: 2.1,
+    parallax: 8,
   },
   {
     color: "rgb(var(--gold) / 0.07)",
@@ -60,6 +72,7 @@ const BLOBS: Blob[] = [
     radiusY: 4,
     period: AMBIENT.fast,
     phase: 4.3,
+    parallax: 20,
   },
 ];
 
@@ -69,16 +82,35 @@ export function AmbientShapes({ className = "" }: { className?: string }) {
   const [onScreen, setOnScreen] = useState(true);
   const [count, setCount] = useState(BLOBS.length);
 
+  // Lidos no listener, nunca dentro do laço: `scrollY` e `innerHeight` forçam
+  // o navegador a recalcular layout, e a 60fps isso é o gargalo.
+  const scroll = useRef(0);
+  const vh = useRef(1);
+
   useEffect(() => {
     setCount(window.matchMedia("(max-width: 768px)").matches ? 2 : 3);
 
+    const read = () => {
+      scroll.current = window.scrollY;
+      vh.current = window.innerHeight || 1;
+    };
+    read();
+    window.addEventListener("scroll", read, { passive: true });
+    window.addEventListener("resize", read);
+
     const host = hostRef.current;
-    if (!host) return;
-    const io = new IntersectionObserver(([e]) => setOnScreen(e.isIntersecting), {
-      threshold: 0,
-    });
-    io.observe(host);
-    return () => io.disconnect();
+    const io = host
+      ? new IntersectionObserver(([e]) => setOnScreen(e.isIntersecting), {
+          threshold: 0,
+        })
+      : null;
+    if (host && io) io.observe(host);
+
+    return () => {
+      window.removeEventListener("scroll", read);
+      window.removeEventListener("resize", read);
+      io?.disconnect();
+    };
   }, []);
 
   useAmbientMotion((t) => {
@@ -90,7 +122,10 @@ export function AmbientShapes({ className = "" }: { className?: string }) {
       // Elipse: eixos com períodos diferentes evitam órbita circular óbvia.
       const x = Math.cos(a) * b.radiusX;
       const y = Math.sin(a * 0.8) * b.radiusY;
-      node.style.transform = `translate3d(${x}vw, ${y}vh, 0)`;
+      // Parallax: cada forma sobe numa taxa própria conforme a página desce.
+      // Como o host é `fixed`, isso lê como profundidade e não como conteúdo.
+      const par = -(scroll.current / vh.current) * b.parallax;
+      node.style.transform = `translate3d(${x}vw, ${y + par}vh, 0)`;
     }
   }, onScreen);
 
@@ -119,6 +154,12 @@ export function AmbientShapes({ className = "" }: { className?: string }) {
           }}
         />
       ))}
+
+      {/* Grão por cima dos blobs, abaixo do conteúdo. Estático. */}
+      <span
+        className="absolute inset-0 opacity-[0.045] mix-blend-multiply"
+        style={{ backgroundImage: GRAIN, backgroundRepeat: "repeat" }}
+      />
     </div>
   );
 }

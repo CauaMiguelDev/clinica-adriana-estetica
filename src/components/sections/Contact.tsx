@@ -39,7 +39,7 @@ const ITEMS = [
 
 export function Contact() {
   return (
-    <section id="contato" className="section-pad relative">
+    <section id="contato" className="section-pad relative bg-sand">
       <div className="container-page">
         <Reveal className="mx-auto max-w-2xl text-center">
           <span className="eyebrow justify-center">

@@ -2,7 +2,9 @@
 
 import { BadgeCheck, ShieldCheck, Sparkles, Star } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
+import { DrawIcon } from "@/components/ui/DrawIcon";
 import { CLINIC } from "@/lib/data";
+import { STAGGER } from "@/lib/motion";
 
 const ITEMS = [
   {
@@ -35,9 +37,12 @@ export function TrustBar() {
           {ITEMS.map((item, i) => (
             <Reveal key={item.title} variant="up" index={i} className="h-full">
               <div className="flex h-full items-center gap-4 bg-surface p-5 sm:p-6">
-                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-olive/10 text-olive">
+                <DrawIcon
+                  delay={i * STAGGER.step}
+                  className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-olive/10 text-olive"
+                >
                   <item.icon size={20} />
-                </span>
+                </DrawIcon>
                 <div>
                   <p className="font-display text-base font-semibold leading-tight">
                     {item.title}

@@ -1,17 +1,20 @@
 import { Instagram, Phone, Mail, MapPin, Clock, MessageCircle } from "lucide-react";
+import Link from "next/link";
 import { LotusMark } from "@/components/ui/Logo";
 import { CLINIC, waLink } from "@/lib/data";
 
+// O rodapé é o mapa completo do site: aqui entram as âncoras internas e o
+// /blog, que ficou fora do menu principal.
 const NAV = [
-  { href: "#servicos", label: "Serviços" },
-  { href: "#procedimentos", label: "Procedimentos" },
-  { href: "#agendar", label: "Agendamento" },
-  { href: "#resultados", label: "Resultados" },
-  { href: "#sobre", label: "A clínica" },
-  { href: "#equipe", label: "Equipe" },
-  { href: "#investimento", label: "Investimento" },
-  { href: "#faq", label: "Dúvidas" },
-  { href: "#blog", label: "Blog" },
+  { href: "/servicos", label: "Serviços" },
+  { href: "/servicos#procedimentos", label: "Procedimentos" },
+  { href: "/precos", label: "Preços" },
+  { href: "/contato#agendar", label: "Agendamento" },
+  { href: "/resultados", label: "Resultados" },
+  { href: "/sobre", label: "A clínica" },
+  { href: "/sobre#equipe", label: "Equipe" },
+  { href: "/servicos#faq", label: "Dúvidas" },
+  { href: "/blog", label: "Blog" },
 ];
 
 const CONTACT = [
@@ -67,9 +70,9 @@ export function Footer() {
           <ul className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2.5 text-sm text-muted sm:grid-cols-1">
             {NAV.map((l) => (
               <li key={l.href}>
-                <a href={l.href} className="hover:text-olive-dark hover:underline">
+                <Link href={l.href} className="hover:text-olive-dark hover:underline">
                   {l.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -86,12 +89,12 @@ export function Footer() {
             ))}
           </ul>
 
-          <a
-            href="#contato"
+          <Link
+            href="/contato#contato"
             className="mt-4 inline-block text-sm font-semibold text-olive-dark hover:underline"
           >
             Ver no mapa
-          </a>
+          </Link>
         </div>
       </div>
 

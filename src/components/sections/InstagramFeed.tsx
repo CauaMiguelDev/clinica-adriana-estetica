@@ -14,7 +14,7 @@ import { CLINIC, INSTAGRAM_POSTS } from "@/lib/data";
  */
 export function InstagramFeed() {
   return (
-    <section id="instagram" className="section-pad relative bg-sand">
+    <section id="instagram" className="section-pad relative">
       <div className="container-page">
         <Reveal className="mx-auto max-w-2xl text-center">
           <span className="eyebrow justify-center">

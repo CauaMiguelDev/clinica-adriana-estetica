@@ -1,7 +1,15 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { MS } from "@/lib/motion";
+import Link from "next/link";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { MAGNET, MS } from "@/lib/motion";
+
+// Definidos no módulo, não dentro do componente: `motion()` cria um componente
+// novo a cada chamada, e recriá-lo por render desmontaria o botão a cada quadro.
+const MotionLink = motion.create(Link);
+const MotionA = motion.a;
+const MotionButton = motion.button;
 
 /**
  * Botão de ação com resposta ao clique.
@@ -50,6 +58,37 @@ export function ActionButton({
 }: Props) {
   const [waves, setWaves] = useState<{ id: number; x: number; y: number }[]>([]);
   const nextId = useRef(0);
+  const box = useRef<HTMLElement>(null);
+
+  // Ímã: o botão desliza alguns pixels na direção do cursor. Mesma mecânica do
+  // TiltCard — motionValue cru entra, spring sai, e só ponteiro fino dispara.
+  // O `x`/`y` é transform, então o MotionConfig da raiz já o anula em
+  // prefers-reduced-motion; não precisa de guarda própria.
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const spring = { stiffness: 260, damping: 20, mass: 0.4 };
+  const x = useSpring(useTransform(mx, [-0.5, 0.5], [-MAGNET.maxPx, MAGNET.maxPx]), spring);
+  const y = useSpring(useTransform(my, [-0.5, 0.5], [-MAGNET.maxPx, MAGNET.maxPx]), spring);
+
+  function onMove(e: React.PointerEvent) {
+    if (e.pointerType !== "mouse") return;
+    const r = box.current?.getBoundingClientRect();
+    if (!r) return;
+    mx.set((e.clientX - r.left) / r.width - 0.5);
+    my.set((e.clientY - r.top) / r.height - 0.5);
+  }
+
+  function onLeave() {
+    mx.set(0);
+    my.set(0);
+  }
+
+  const magnet = {
+    ref: box as React.Ref<never>,
+    style: { x, y },
+    onPointerMove: onMove,
+    onPointerLeave: onLeave,
+  };
 
   function handleClick(e: React.MouseEvent) {
     const r = e.currentTarget.getBoundingClientRect();
@@ -80,13 +119,24 @@ export function ActionButton({
 
   const cls = `${BASE} ${STYLES[variant]} ${className}`;
 
+  // Rota interna vai por `next/link`: um `<a>` cru recarregaria a página
+  // inteira e mataria a transição de entrada do template. Externos (WhatsApp,
+  // Instagram) e âncoras continuam em `<a>`.
+  if (href?.startsWith("/")) {
+    return (
+      <MotionLink href={href} className={cls} onClick={handleClick} {...magnet} {...rest}>
+        {inner}
+      </MotionLink>
+    );
+  }
+
   return href ? (
-    <a href={href} className={cls} onClick={handleClick} {...rest}>
+    <MotionA href={href} className={cls} onClick={handleClick} {...magnet} {...rest}>
       {inner}
-    </a>
+    </MotionA>
   ) : (
-    <button className={cls} onClick={handleClick} {...rest}>
+    <MotionButton className={cls} onClick={handleClick} {...magnet} {...rest}>
       {inner}
-    </button>
+    </MotionButton>
   );
 }

@@ -48,6 +48,9 @@ export const SHIFT = { normal: 24, small: 14 } as const;
  */
 export const PARALLAX = { back: 0.15, mid: 0.08, front: 0.04 } as const;
 
+/** Atração magnética dos botões ao cursor, em px. Acima de ~8 vira piada. */
+export const MAGNET = { maxPx: 6 } as const;
+
 /** Tilt 3D dos cards. 6° é perceptível sem distorcer o texto. */
 export const TILT = { maxDeg: 6, perspective: 900 } as const;
 

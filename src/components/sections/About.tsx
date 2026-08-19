@@ -1,24 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import {
-  ShieldCheck,
-  HeartHandshake,
-  Gem,
-  Leaf,
-  Building2,
-  ImagePlus,
-} from "lucide-react";
+import { Building2, ImagePlus } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
+import { Parallax } from "@/components/ui/Parallax";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { CLINIC_PHOTOS, STATS } from "@/lib/data";
-
-const VALUES = [
-  { icon: Gem, title: "Excelência", text: "Padrão premium em cada atendimento." },
-  { icon: ShieldCheck, title: "Segurança", text: "Protocolos rigorosos e certificados." },
-  { icon: HeartHandshake, title: "Acolhimento", text: "Atendimento humano e personalizado." },
-  { icon: Leaf, title: "Bem-estar", text: "Cuidado integral do corpo e da mente." },
-];
 
 export function About() {
   return (
@@ -65,9 +52,13 @@ export function About() {
           </p>
         </Reveal>
 
-        <div className="mt-8 grid gap-5 sm:grid-cols-3">
+        {/* As três colunas derivam em camadas diferentes: é o que transforma
+            uma grade parada em profundidade. `items-start` porque as camadas
+            deslocam e um `stretch` brigaria com o transform. */}
+        <div className="mt-8 grid items-start gap-5 sm:grid-cols-3">
           {CLINIC_PHOTOS.map((photo, i) => (
             <Reveal key={photo.label} variant="rise" index={i}>
+              <Parallax layer={(["front", "back", "mid"] as const)[i % 3]}>
               {photo.src ? (
                 <figure className="group overflow-hidden rounded-panel border border-line shadow-soft">
                   <div className="relative aspect-[4/5]">
@@ -94,28 +85,13 @@ export function About() {
                   <p className="text-sm text-muted">Foto em breve</p>
                 </div>
               )}
+              </Parallax>
             </Reveal>
           ))}
         </div>
 
-        {/* Valores */}
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {VALUES.map((v, i) => (
-            <Reveal key={v.title} variant="rise" index={i} className="h-full">
-              <div className="group flex h-full gap-4 rounded-card border border-line bg-surface p-5 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-olive/30 hover:shadow-lift">
-                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-olive/10 text-olive transition-colors duration-300 group-hover:bg-olive group-hover:text-white">
-                  <v.icon size={20} />
-                </span>
-                <div>
-                  <h4 className="font-display text-lg font-semibold">
-                    {v.title}
-                  </h4>
-                  <p className="mt-0.5 text-sm text-muted">{v.text}</p>
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
+        {/* Os valores saíram daqui: agora são a seção ValuesStory, logo abaixo
+            nesta mesma página, com o painel fixo. */}
       </div>
     </section>
   );

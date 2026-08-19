@@ -38,6 +38,27 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Guarda de overflow horizontal.
+ *
+ * `clip` e não `hidden` de propósito: `overflow-x: hidden` transforma o
+ * elemento em contêiner de rolagem, e isso quebra `position: sticky` nos
+ * descendentes — que é exatamente do que ProcedureRail e ValuesStory vivem.
+ * `clip` corta sem criar contêiner de rolagem, então o sticky continua de pé.
+ */
+html,
+body {
+  overflow-x: clip;
+}
+
+/* Nenhuma mídia empurra a página para os lados, venha de onde vier. */
+img,
+video,
+canvas,
+svg,
+iframe {
+  max-width: 100%;
+}
+
 body {
   background: rgb(var(--bg));
   color: rgb(var(--fg));
@@ -110,4 +131,24 @@ section[id] {
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
+
+  /* O traçado do DrawIcon é variável CSS, que o MotionConfig não anula.
+     Fixar em 0 aqui entrega o ícone inteiro, sem desenho. */
+  .draw-icon {
+    --draw: 0 !important;
+  }
+}
+
+/* ============================================================
+   Traçado dos ícones — ver components/ui/DrawIcon.tsx.
+
+   100 é um dasharray maior que o traço mais longo de qualquer
+   ícone lucide (viewBox 24×24), então um único valor cobre a
+   linha inteira sem medir path por path. Traços curtos terminam
+   de desenhar antes — e é justamente isso que dá o ritmo de mão
+   humana em vez de máquina.
+   ============================================================ */
+.draw-icon svg > * {
+  stroke-dasharray: 100;
+  stroke-dashoffset: calc(var(--draw, 0) * 100);
 }
