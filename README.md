@@ -26,7 +26,7 @@ npm start        # servir a build
 
 | Rota | O que tem |
 |---|---|
-| `/` | Hero com cena 3D · Faixa de confiança · Teaser de serviços · Prova social + CTA |
+| `/` | Hero com linhas de nível · Faixa de confiança · Teaser de serviços · Prova social + CTA |
 | `/servicos` | Serviços · Trilho horizontal de destaques · Catálogo com filtro · Dúvidas |
 | `/precos` | Investimento |
 | `/resultados` | Antes & depois · Depoimentos · Instagram |
@@ -48,8 +48,8 @@ Tudo que aprofunda mora nas rotas.
 |---|---|
 | Todo o conteúdo (clínica, equipe, procedimentos, FAQ, blog, pagamento) | `src/lib/data.ts` |
 | Cores, fontes, raios, sombras | `src/app/globals.css` (tokens) e `tailwind.config.ts` |
-| Cena 3D do Hero (pétalas) | `src/components/ui/PetalScene.tsx` |
-| Fundo animado da página inteira | `src/components/ui/AmbientShapes.tsx` |
+| Textura do Hero e fundo de todas as páginas | `src/components/ui/Contours.tsx` |
+| Itens e agrupamento do menu | `PRIMARY` / `SECONDARY` em `src/components/layout/Navbar.tsx` |
 | Composição das rotas | `src/app/<rota>/page.tsx` |
 | Durações e curvas de animação | `src/lib/motion.ts` |
 | Número do WhatsApp | `CLINIC.whatsapp` em `src/lib/data.ts` |

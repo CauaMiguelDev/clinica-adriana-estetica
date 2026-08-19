@@ -1,25 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { Star, ArrowRight, MessageCircle, Leaf } from "lucide-react";
 import { ActionButton } from "@/components/ui/ActionButton";
+import { Contours } from "@/components/ui/Contours";
 import { CLINIC, waLink } from "@/lib/data";
-import { DUR, EASE, STAGGER, SHIFT } from "@/lib/motion";
-
-/**
- * A cena 3D entra fora do bundle inicial e sem SSR — three, r3f e drei somam
- * mais que o resto da home junta, e não existe WebGL no servidor.
- *
- * Não há `loading`: a Camada 1 em CSS já está desenhada atrás e é o fallback.
- * Quem não tem WebGL, ou está com movimento reduzido, fica com ela e o Hero
- * continua inteiro.
- */
-const PetalScene = dynamic(
-  () => import("@/components/ui/PetalScene").then((m) => m.PetalScene),
-  { ssr: false }
-);
+import { AMBIENT, DUR, EASE, STAGGER, SHIFT } from "@/lib/motion";
 
 const container = {
   hidden: {},
@@ -40,14 +27,28 @@ export function Hero() {
       id="inicio"
       className="relative flex min-h-[94svh] items-center overflow-hidden pb-24 pt-32 sm:pt-36"
     >
-      {/* Camada 1 — base em CSS, também o fallback sem WebGL. */}
+      {/* Camada 1 — base em CSS. */}
       <div className="pointer-events-none absolute inset-0 bg-sand-fade" />
 
-      {/* Camada 2 — as pétalas de vidro. Peça de destaque. */}
-      <PetalScene className="pointer-events-none absolute inset-0 select-none" />
+      {/* Camada 2 — as linhas de nível, aqui maiores e mais presentes que no
+          resto do site: é o Hero que carrega o peso visual da página.
 
-      {/* Camada 3 — véu que garante o contraste do texto sobre as pétalas. */}
-      <div className="pointer-events-none absolute inset-0 bg-bg/45" />
+          Não há mais véu de contraste por cima, e não é esquecimento. O véu
+          existia porque as pétalas 3D eram massas opacas atrás do título; linha
+          de 0.35px não disputa leitura com texto de 60px, e o véu só serviria
+          para apagar a textura que acabou de entrar. */}
+      <div className="pointer-events-none absolute inset-0 select-none">
+        <Contours
+          tone="olive"
+          className="absolute -left-[22vw] -top-[26vh] h-[92vw] w-[92vw] sm:-left-[10vw] sm:h-[64vw] sm:w-[64vw]"
+        />
+        <Contours
+          tone="terracotta"
+          period={AMBIENT.medium}
+          phase={7}
+          className="absolute -bottom-[30vh] -right-[26vw] h-[80vw] w-[80vw] sm:h-[52vw] sm:w-[52vw]"
+        />
+      </div>
 
       <div className="container-page relative z-10 w-full">
         <motion.div

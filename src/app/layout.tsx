@@ -5,7 +5,7 @@ import { Motion } from "@/components/ui/Motion";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
-import { AmbientShapes } from "@/components/ui/AmbientShapes";
+import { PageTexture } from "@/components/ui/Contours";
 import { WhatsappFloat } from "@/components/ui/WhatsappFloat";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { CLINIC } from "@/lib/data";
@@ -114,10 +114,10 @@ export default function RootLayout({
               rota, então o fundo animado não reinicia e a navbar não pisca.
               Quem remonta a cada rota é o `template.tsx`, e é lá que mora a
               transição de entrada. */}
-          <AmbientShapes className="fixed z-0" />
+          <PageTexture className="fixed z-0" />
           <ScrollProgress />
           <Navbar />
-          {/* z-10 mantém o conteúdo acima do AmbientShapes, que é fixed z-0. */}
+          {/* z-10 mantém o conteúdo acima do PageTexture, que é fixed z-0. */}
           <main className="relative z-10">{children}</main>
           <Footer />
           <WhatsappFloat />

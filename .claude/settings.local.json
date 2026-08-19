@@ -55,7 +55,10 @@
       "Bash(npx kill-port *)",
       "PowerShell(git *)",
       "PowerShell(\\(Get-NetIPAddress -AddressFamily IPv4 | Where-Object { $_.InterfaceAlias -notmatch 'Loopback|vEthernet|WSL' -and $_.IPAddress -notmatch '^169\\\\.' }\\).IPAddress; \\(Invoke-WebRequest -Uri http://localhost:3000/ -UseBasicParsing\\).StatusCode)",
-      "PowerShell($c = Get-NetTCPConnection -LocalPort 3000 -State Listen -ErrorAction SilentlyContinue; if \\($c\\) { \"ainda escutando: PID $\\($c.OwningProcess\\)\" } else { \"porta 3000 livre\" })"
+      "PowerShell($c = Get-NetTCPConnection -LocalPort 3000 -State Listen -ErrorAction SilentlyContinue; if \\($c\\) { \"ainda escutando: PID $\\($c.OwningProcess\\)\" } else { \"porta 3000 livre\" })",
+      "PowerShell(Start-Sleep -Seconds 4; Get-Content \"C:\\\\Users\\\\Queiros\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-Queiros-Documents-clinica-adriana-estetica\\\\f84b0348-4090-4885-b041-3e52d41fda40\\\\tasks\\\\bt3fct127.output\"; \\(Invoke-WebRequest -Uri http://localhost:3000/ -UseBasicParsing\\).StatusCode)",
+      "PowerShell(Start-Sleep -Seconds 4; \\(Invoke-WebRequest -Uri http://localhost:3000/ -UseBasicParsing\\).StatusCode)",
+      "PowerShell(Start-Sleep -Seconds 4; \\(Invoke-WebRequest -Uri http://localhost:3000/ -UseBasicParsing\\).StatusCode; cd \"C:\\\\Users\\\\Queiros\\\\Documents\\\\clinica-adriana-estetica\"; git status --short)"
     ]
   }
 }

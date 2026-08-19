@@ -162,10 +162,10 @@ movimento parecer orgânico em vez de mecânico.
 | **Parallax** | 3 camadas: fundo `0.15`, meio `0.08`, frente `0.04` da rolagem. Valores baixos de propósito. |
 | **Tilt 3D** | Máximo **6°**, perspectiva 900px. Só com ponteiro fino — em tela de toque o card tremeria sob o dedo. |
 | **Clique** | Onda a partir do ponto tocado (`ActionButton`) + `active:scale-[0.98]`. No celular não há hover; sem isso o botão parece quebrado. |
-| **Ambiente** | Formas orgânicas grandes e desfocadas, 3 no desktop e 2 no celular, em órbitas elípticas de período diferente, com parallax de 8–20vh por tela rolada e grão estático por cima. |
+| **Ambiente** | `<Contours>` — agrupamentos de linhas de nível girando devagar (25s e 19s por volta), 2 no desktop e 1 no celular, com grão estático por cima. |
 | **Ímã** | Botões deslizam no máximo **6px** na direção do cursor (`MAGNET.maxPx`). Só ponteiro fino. Acima de ~8px vira piada. |
 | **Traçado de ícone** | `<DrawIcon>` — `stroke-dashoffset` de 1→0 via variável CSS. `stroke-dasharray: 100` cobre o traço mais longo de um ícone 24×24 sem medir path por path. |
-| **Cena 3D** | `PetalScene` no Hero: pétalas de vidro, parallax de cursor. 9 no desktop, 5 no celular. Sem `transmission` e sem `Environment` (ver regras de desempenho). |
+| **Textura** | `<Contours>` — 8 anéis concêntricos com raio perturbado por dois senos, em SVG calculado uma vez na carga do módulo. É o fundo das páginas e, em escala maior, o visual do Hero. |
 | **Scrubbed** | Progresso da rolagem vira posição, não tempo. Seção alta + filho `sticky` + `useScroll`. Deslocamento sempre em **%** do trilho, nunca em px. |
 
 ### Regras invioláveis de desempenho
@@ -182,14 +182,10 @@ mais blurs de 28–45px. As features voltaram; a arquitetura que as derrubava, n
    > `grep -rn "requestAnimationFrame(" src/` **só pode apontar para
    > `useAmbientMotion.ts`**.
    >
-   > **O caso do react-three-fiber (`PetalScene`).** O r3f roda um laço próprio
-   > por padrão, o que quebraria esta regra. Em vez de abrir exceção, o Canvas
-   > fica em `frameloop="demand"`: ele só desenha quando alguém chama
-   > `invalidate()`, e quem chama é o relógio compartilhado, pelo componente
-   > `<Clock/>` dentro da cena. O laço continua sendo um só, e o benefício é
-   > concreto — Hero fora da tela ou aba oculta significa GPU ociosa, não 60fps
-   > desenhando o que ninguém vê. **Nunca instancie um `<Canvas>` sem
-   > `frameloop="demand"` + ponte para o relógio.**
+   > Houve aqui uma exceção documentada para o react-three-fiber, que roda laço
+   > próprio: o `<Canvas>` ficava em `frameloop="demand"` com ponte para o
+   > relógio. Ela caiu junto com o 3D. Se WebGL voltar algum dia, volte também
+   > essa ponte — r3f no padrão abre um segundo rAF sem avisar.
 2. **Só `transform` e `opacity`** no que é perpétuo ou roda no celular. Nunca
    anime `width`, `top`, `filter`, `box-shadow` ou `background-position` num
    laço.
@@ -214,7 +210,7 @@ Parallax e ambiente causam desconforto vestibular real em parte das pessoas —
 aqui isso é requisito funcional, não detalhe de acessibilidade.
 
 - O relógio de ambiente desenha **um quadro parado** e não entra no laço.
-- A cena 3D renderiza um quadro e para.
+- As linhas de nível desenham um quadro parado e não giram.
 - As transições **de CSS** são anuladas em `globals.css`.
 - As animações **do Framer** são anuladas pelo `<Motion>` na raiz
   (`src/components/ui/Motion.tsx`), que aplica `MotionConfig
@@ -250,7 +246,9 @@ serviço, meio de contato, item de FAQ. Nunca como enfeite.
 | Removido | Motivo |
 |---|---|
 | Tema escuro (`ThemeProvider`, botão de lua/sol) | Um tema calibrado vale mais que dois medianos. |
-| `AmbientBackground`, `ParticlesBackground`, `LeavesBackground` | Três fundos animados simultâneos — dois loops de `requestAnimationFrame` e blurs de 28–45px eram o gargalo do celular. Substituídos por **uma** cena 3D. |
+| `AmbientBackground`, `ParticlesBackground`, `LeavesBackground` | Três fundos animados simultâneos — dois loops de `requestAnimationFrame` e blurs de 28–45px eram o gargalo do celular. |
+| `PetalScene` + `three`, `@react-three/fiber`, `@react-three/drei` | A cena 3D nunca assentou: no celular disputava o texto do Hero, e o custo era desproporcional ao que entregava. Trocada por `<Contours>`, em SVG. **−66 pacotes** e o WebGL inteiro fora do projeto. |
+| `AmbientShapes` (blobs desfocados) | `blur(60px)` sobre 10% de opacidade não vira atmosfera, vira sujeira — e em monitor mais claro sumia. Trocado por linha fina, que tem forma e aparece igual nos dois. |
 | `Preloader` | `setTimeout` fixo de 1,6s que não esperava carregamento nenhum. Atraso puro. |
 | `ChatWidget` | Respostas fixas, e disputava o canto inferior com o WhatsApp. |
 | Gradiente dourado em texto | Cortava descendentes e exigia remendos de `padding` nos títulos. |
