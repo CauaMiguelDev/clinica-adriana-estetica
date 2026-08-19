@@ -52,7 +52,10 @@
       "Bash(echo \"EXIT=$?\")",
       "Bash(grep -rn \"min-w-\\\\[\\\\|w-\\\\[[0-9]\\\\{3,\\\\}px\\\\]\\\\|whitespace-nowrap\" src/components/ --include=\"*.tsx\")",
       "Bash(echo \"TSC_EXIT=$?\")",
-      "Bash(npx kill-port *)"
+      "Bash(npx kill-port *)",
+      "PowerShell(git *)",
+      "PowerShell(\\(Get-NetIPAddress -AddressFamily IPv4 | Where-Object { $_.InterfaceAlias -notmatch 'Loopback|vEthernet|WSL' -and $_.IPAddress -notmatch '^169\\\\.' }\\).IPAddress; \\(Invoke-WebRequest -Uri http://localhost:3000/ -UseBasicParsing\\).StatusCode)",
+      "PowerShell($c = Get-NetTCPConnection -LocalPort 3000 -State Listen -ErrorAction SilentlyContinue; if \\($c\\) { \"ainda escutando: PID $\\($c.OwningProcess\\)\" } else { \"porta 3000 livre\" })"
     ]
   }
 }
