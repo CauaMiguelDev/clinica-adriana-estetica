@@ -32,7 +32,7 @@ export function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="section-pad relative">
+    <section id="faq" className="section-pad relative bg-bg">
       <div className="container-page">
         <Reveal className="mx-auto max-w-2xl text-center">
           <span className="eyebrow justify-center">

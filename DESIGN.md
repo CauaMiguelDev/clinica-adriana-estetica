@@ -165,7 +165,7 @@ movimento parecer orgânico em vez de mecânico.
 | **Ambiente** | `<Contours>` — agrupamentos de linhas de nível girando devagar (25s e 19s por volta), 2 no desktop e 1 no celular, com grão estático por cima. |
 | **Ímã** | Botões deslizam no máximo **6px** na direção do cursor (`MAGNET.maxPx`). Só ponteiro fino. Acima de ~8px vira piada. |
 | **Traçado de ícone** | `<DrawIcon>` — `stroke-dashoffset` de 1→0 via variável CSS. `stroke-dasharray: 100` cobre o traço mais longo de um ícone 24×24 sem medir path por path. |
-| **Textura** | `<Contours>` — 8 anéis concêntricos com raio perturbado por dois senos, em SVG calculado uma vez na carga do módulo. É o fundo das páginas e, em escala maior, o visual do Hero. |
+| **Textura** | `<Contours>` — 8 anéis concêntricos com raio perturbado por dois senos, em SVG calculado uma vez na carga do módulo. É o fundo das páginas e, em escala maior, o visual do Hero. Toda `<section>` fora o Hero tem fundo sólido (`bg-bg` ou `bg-sand`): a textura aparece no Hero e nos respiros entre blocos, nunca atrás de conteúdo. |
 | **Scrubbed** | Progresso da rolagem vira posição, não tempo. Seção alta + filho `sticky` + `useScroll`. Deslocamento sempre em **%** do trilho, nunca em px. |
 
 ### Regras invioláveis de desempenho

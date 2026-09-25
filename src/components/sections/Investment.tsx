@@ -13,7 +13,7 @@ import { CLINIC, PAYMENT, waLink } from "@/lib/data";
  */
 export function Investment() {
   return (
-    <section id="investimento" className="section-pad relative">
+    <section id="investimento" className="section-pad relative bg-bg">
       <div className="container-page">
         <Reveal className="mx-auto max-w-2xl text-center">
           <span className="eyebrow justify-center">

@@ -69,7 +69,7 @@ export function Booking() {
   const label = "block text-sm font-medium text-fg";
 
   return (
-    <section id="agendar" className="section-pad relative">
+    <section id="agendar" className="section-pad relative bg-bg">
       <div className="container-page">
         <Reveal className="mx-auto max-w-2xl text-center">
           <span className="eyebrow justify-center">

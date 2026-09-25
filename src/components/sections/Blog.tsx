@@ -13,7 +13,7 @@ import { BLOG, CLINIC, waLink } from "@/lib/data";
  */
 export function Blog() {
   return (
-    <section id="blog" className="section-pad relative">
+    <section id="blog" className="section-pad relative bg-bg">
       <div className="container-page">
         <Reveal className="mx-auto max-w-2xl text-center">
           <span className="eyebrow justify-center">

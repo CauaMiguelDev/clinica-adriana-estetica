@@ -96,7 +96,7 @@ export function BeforeAfter() {
   const anyReady = RESULTS.some((p) => p.before && p.after);
 
   return (
-    <section id="resultados" className="section-pad relative">
+    <section id="resultados" className="section-pad relative bg-bg">
       <div className="container-page">
         <Reveal className="mx-auto max-w-2xl text-center">
           <span className="eyebrow justify-center">

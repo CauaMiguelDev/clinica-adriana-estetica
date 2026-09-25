@@ -31,7 +31,7 @@ const ITEMS = [
 
 export function TrustBar() {
   return (
-    <section aria-label="Diferenciais da clínica" className="relative pb-4">
+    <section aria-label="Diferenciais da clínica" className="relative bg-bg pb-4">
       <div className="container-page">
         <div className="grid gap-px overflow-hidden rounded-panel border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
           {ITEMS.map((item, i) => (
