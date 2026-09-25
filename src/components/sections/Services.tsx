@@ -61,9 +61,9 @@ export function Services() {
           <span className="eyebrow justify-center">
             <LayoutGrid size={14} /> O que fazemos
           </span>
-          <h2 className="mt-4 text-balance font-display text-4xl font-semibold leading-[1.05] tracking-[-0.01em] sm:text-5xl">
+          <h2 className="mt-4 font-display text-3xl font-semibold sm:text-4xl">
             Cuidado para o corpo{" "}
-            <span className="font-normal italic text-terracotta-dark">e para a mente</span>
+            <span className="text-terracotta-dark">e para a mente</span>
           </h2>
           <p className="mt-4 text-muted">
             Cinco áreas de atendimento. Escolha a sua para ver todos os
@@ -86,9 +86,9 @@ export function Services() {
                       new CustomEvent(PICK_CATEGORY, { detail: area.category })
                     )
                   }
-                  className="group flex h-full flex-col rounded-card border border-line bg-surface p-6 shadow-soft transition-all duration-500 hover:-translate-y-1 hover:border-olive/30 hover:shadow-lift sm:p-7"
+                  className="group flex h-full flex-col rounded-card border border-line bg-surface p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-olive/30 hover:shadow-lift sm:p-7"
                 >
-                  <span className="grid h-12 w-12 place-items-center rounded-xl bg-olive/10 text-olive transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 group-hover:bg-olive group-hover:text-white">
+                  <span className="grid h-12 w-12 place-items-center rounded-xl bg-olive/10 text-olive transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 group-hover:bg-olive group-hover:text-white">
                     <Icon size={22} />
                   </span>
 
@@ -119,7 +119,7 @@ export function Services() {
                     {list.length === 1 ? "procedimento" : "procedimentos"}
                     <ArrowRight
                       size={16}
-                      className="transition-transform duration-500 group-hover:translate-x-1"
+                      className="transition-transform duration-300 group-hover:translate-x-1"
                     />
                   </span>
                 </a>

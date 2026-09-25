@@ -18,16 +18,10 @@ export const DUR = {
   enter: 0.7,
   /** Volta do tilt ao repouso quando o cursor sai. */
   settle: 0.4,
-  /**
-   * Hover de botão e link. Mais longo que `micro` de propósito: o preenchimento
-   * que sobe dentro do botão precisa ser **visto** subindo, ou vira um pisca.
-   */
-  hover: 0.6,
 } as const;
 
 export const MS = {
   micro: 200,
-  hover: 600,
   state: 320,
   enter: 700,
 } as const;
@@ -40,16 +34,6 @@ export const EASE = {
   enter: [0.22, 1, 0.36, 1],
   micro: [0.4, 0, 0.2, 1],
   exit: [0.4, 0, 1, 1],
-} as const;
-
-/**
- * Springs. `soft` é o do ímã e da pílula do menu: massa maior e amortecimento
- * alto — chega sem quicar. O ímã antigo (260/20/0.4) respondia rápido demais e
- * lia como tremida.
- */
-export const SPRING = {
-  soft: { stiffness: 140, damping: 22, mass: 0.7 },
-  pill: { type: "spring", stiffness: 260, damping: 32, mass: 0.9 },
 } as const;
 
 /** Atraso entre irmãos em cascata. Acima de 8 itens o último demora demais. */

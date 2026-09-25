@@ -8,8 +8,6 @@ import { ScrollProgress } from "@/components/layout/ScrollProgress";
 import { PageTexture } from "@/components/ui/Contours";
 import { WhatsappFloat } from "@/components/ui/WhatsappFloat";
 import { BackToTop } from "@/components/ui/BackToTop";
-import { SmoothScroll } from "@/components/ui/SmoothScroll";
-import "lenis/dist/lenis.css";
 import { CLINIC } from "@/lib/data";
 
 // Títulos: serifada com personalidade. Leitura: humanista, calorosa e legível.
@@ -17,8 +15,6 @@ import { CLINIC } from "@/lib/data";
 const display = Fraunces({
   subsets: ["latin"],
   weight: ["400", "600"],
-  // Itálico só no 400: é o da palavra de destaque dos títulos ("cuidar").
-  style: ["normal", "italic"],
   variable: "--font-display",
   display: "swap",
 });
@@ -124,7 +120,6 @@ export default function RootLayout({
               rota, então o fundo animado não reinicia e a navbar não pisca.
               Quem remonta a cada rota é o `template.tsx`, e é lá que mora a
               transição de entrada. */}
-          <SmoothScroll />
           <PageTexture className="fixed z-0" />
           <ScrollProgress />
           <Navbar />

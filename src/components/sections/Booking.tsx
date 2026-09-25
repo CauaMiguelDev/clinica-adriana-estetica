@@ -75,8 +75,8 @@ export function Booking() {
           <span className="eyebrow justify-center">
             <CalendarCheck size={14} /> Agendamento
           </span>
-          <h2 className="mt-4 text-balance font-display text-4xl font-semibold leading-[1.05] tracking-[-0.01em] sm:text-5xl">
-            Marque o seu <span className="font-normal italic text-terracotta-dark">horário</span>
+          <h2 className="mt-4 font-display text-3xl font-semibold sm:text-4xl">
+            Marque o seu <span className="text-terracotta-dark">horário</span>
           </h2>
           <p className="mt-4 text-muted">
             Fale com a gente pelo canal que preferir, ou preencha e a conversa
@@ -92,7 +92,7 @@ export function Booking() {
                 href={c.href}
                 target={c.href.startsWith("tel:") ? undefined : "_blank"}
                 rel="noopener"
-                className={`group flex h-full flex-col gap-1 rounded-card border p-6 shadow-soft transition-all duration-500 hover:-translate-y-1 hover:shadow-lift ${
+                className={`group flex h-full flex-col gap-1 rounded-card border p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-lift ${
                   c.primary
                     ? "border-olive bg-olive text-white"
                     : "border-line bg-surface hover:border-olive/30"

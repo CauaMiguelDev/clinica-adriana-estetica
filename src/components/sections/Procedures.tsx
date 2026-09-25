@@ -65,8 +65,8 @@ export function Procedures() {
           <span className="eyebrow justify-center">
             <Sparkles size={14} /> Catálogo completo
           </span>
-          <h2 className="mt-4 text-balance font-display text-4xl font-semibold leading-[1.05] tracking-[-0.01em] sm:text-5xl">
-            Todos os <span className="font-normal italic text-terracotta-dark">procedimentos</span>
+          <h2 className="mt-4 font-display text-3xl font-semibold sm:text-4xl">
+            Todos os <span className="text-terracotta-dark">procedimentos</span>
           </h2>
           <p className="mt-4 text-muted">
             {PROCEDURES.length} tratamentos conduzidos pelas nossas
@@ -90,7 +90,7 @@ export function Procedures() {
                   key={f}
                   aria-pressed={isActive}
                   onClick={() => setActive(f)}
-                  className={`rounded-full border px-5 py-2 text-sm font-medium transition-colors duration-500 ${
+                  className={`rounded-full border px-5 py-2 text-sm font-medium transition-colors duration-300 ${
                     isActive
                       ? "border-olive bg-olive text-white"
                       : "border-line bg-surface text-muted hover:border-olive/40 hover:text-olive-dark"
@@ -118,10 +118,10 @@ export function Procedures() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
                   transition={{ duration: 0.3 }}
-                  className="group flex h-full flex-col rounded-card border border-line bg-surface p-6 shadow-soft transition-all duration-500 hover:-translate-y-1 hover:border-olive/30 hover:shadow-lift"
+                  className="group flex h-full flex-col rounded-card border border-line bg-surface p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-olive/30 hover:shadow-lift"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-olive/10 text-olive transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-olive/10 text-olive transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
                       <Icon size={19} />
                     </span>
                     <span className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">
@@ -169,7 +169,7 @@ export function Procedures() {
                       )}
                       target="_blank"
                       rel="noopener"
-                      className="flex w-full items-center justify-center gap-2 rounded-full border border-olive/50 py-2.5 text-sm font-semibold text-olive-dark transition-colors duration-500 hover:border-olive hover:bg-olive hover:text-white active:scale-[0.98]"
+                      className="flex w-full items-center justify-center gap-2 rounded-full border border-olive/50 py-2.5 text-sm font-semibold text-olive-dark transition-colors duration-300 hover:border-olive hover:bg-olive hover:text-white active:scale-[0.98]"
                     >
                       Agendar <ArrowRight size={15} />
                     </a>
@@ -184,7 +184,7 @@ export function Procedures() {
           <div className="mt-10 flex justify-center">
             <button
               onClick={() => setVisibleCount((n) => n + PAGE)}
-              className="rounded-full border border-olive/50 px-6 py-3 text-sm font-semibold text-olive-dark transition-colors duration-500 hover:border-olive hover:bg-olive hover:text-white"
+              className="rounded-full border border-olive/50 px-6 py-3 text-sm font-semibold text-olive-dark transition-colors duration-300 hover:border-olive hover:bg-olive hover:text-white"
             >
               Ver mais {Math.min(PAGE, list.length - visibleCount)} procedimentos
             </button>

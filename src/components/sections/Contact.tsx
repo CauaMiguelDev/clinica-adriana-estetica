@@ -45,8 +45,8 @@ export function Contact() {
           <span className="eyebrow justify-center">
             <Navigation size={14} /> Onde estamos
           </span>
-          <h2 className="mt-4 text-balance font-display text-4xl font-semibold leading-[1.05] tracking-[-0.01em] sm:text-5xl">
-            Venha nos <span className="font-normal italic text-terracotta-dark">visitar</span>
+          <h2 className="mt-4 font-display text-3xl font-semibold sm:text-4xl">
+            Venha nos <span className="text-terracotta-dark">visitar</span>
           </h2>
           <p className="mt-4 text-muted">
             Estamos em Ceilândia Norte, com estacionamento público na porta.
@@ -60,12 +60,12 @@ export function Contact() {
                 {ITEMS.map((c) => {
                   const inner = (
                     <>
-                      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-olive/10 text-olive transition-colors duration-500 group-hover:bg-olive group-hover:text-white">
+                      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-olive/10 text-olive transition-colors duration-300 group-hover:bg-olive group-hover:text-white">
                         <c.icon size={20} />
                       </span>
                       <div className="min-w-0">
                         <p className="text-sm text-muted">{c.label}</p>
-                        <p className="break-words font-medium transition-colors duration-500 group-hover:text-olive-dark">
+                        <p className="break-words font-medium transition-colors duration-300 group-hover:text-olive-dark">
                           {c.value}
                         </p>
                       </div>
@@ -99,7 +99,7 @@ export function Contact() {
                   )}
                   target="_blank"
                   rel="noopener"
-                  className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-olive px-6 py-3 text-sm font-semibold text-white shadow-soft transition-colors duration-500 hover:bg-olive-dark hover:shadow-lift active:scale-[0.98]"
+                  className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-olive px-6 py-3 text-sm font-semibold text-white shadow-soft transition-colors duration-300 hover:bg-olive-dark hover:shadow-lift active:scale-[0.98]"
                 >
                   <MessageCircle size={16} /> WhatsApp
                 </a>
@@ -107,7 +107,7 @@ export function Contact() {
                   href={mapsSearch}
                   target="_blank"
                   rel="noopener"
-                  className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-olive/50 px-6 py-3 text-sm font-semibold text-olive-dark transition-colors duration-500 hover:border-olive hover:bg-olive hover:text-white"
+                  className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-olive/50 px-6 py-3 text-sm font-semibold text-olive-dark transition-colors duration-300 hover:border-olive hover:bg-olive hover:text-white"
                 >
                   <Navigation size={16} /> Como chegar
                 </a>

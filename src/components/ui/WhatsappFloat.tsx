@@ -7,7 +7,7 @@ import { CLINIC, waLink } from "@/lib/data";
  *
  * ponytail: exceção consciente à regra "só transform e opacity" do DESIGN.md —
  * o rótulo expande animando `max-width`, `gap` e `pr`, que disparam layout.
- * Vale porque hover não existe no celular (onde a regra importa): 500ms, uma
+ * Vale porque hover não existe no celular (onde a regra importa): 300ms, uma
  * vez, em dois nós. Teto: se este botão virar animação contínua ou ganhar
  * irmãos com o mesmo padrão, remonte-o para expandir por `transform`.
  */
@@ -17,10 +17,10 @@ export function WhatsappFloat() {
       href={waLink(`Olá! Gostaria de agendar um horário no ${CLINIC.name}.`)}
       target="_blank"
       rel="noopener"
-      className="group fixed bottom-5 right-5 z-40 inline-flex items-center gap-0 rounded-full bg-[#25d366] p-4 text-white shadow-lift transition-all duration-500 hover:gap-2 hover:pr-5 sm:bottom-6 sm:right-6"
+      className="group fixed bottom-5 right-5 z-40 inline-flex items-center gap-0 rounded-full bg-[#25d366] p-4 text-white shadow-lift transition-all duration-300 hover:gap-2 hover:pr-5 sm:bottom-6 sm:right-6"
     >
       <MessageCircle size={24} aria-hidden />
-      <span className="max-w-0 overflow-hidden whitespace-nowrap text-sm font-semibold transition-all duration-500 group-hover:max-w-[9rem]">
+      <span className="max-w-0 overflow-hidden whitespace-nowrap text-sm font-semibold transition-all duration-300 group-hover:max-w-[9rem]">
         Fale conosco
       </span>
       <span className="sr-only">Falar no WhatsApp</span>

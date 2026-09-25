@@ -68,9 +68,9 @@ export function ValuesStory() {
           <span className="eyebrow justify-center">
             <Compass size={14} /> No que acreditamos
           </span>
-          <h2 className="mt-4 text-balance font-display text-4xl font-semibold leading-[1.05] tracking-[-0.01em] sm:text-5xl">
+          <h2 className="mt-4 font-display text-3xl font-semibold sm:text-4xl">
             Quatro coisas que{" "}
-            <span className="font-normal italic text-terracotta-dark">não negociamos</span>
+            <span className="text-terracotta-dark">não negociamos</span>
           </h2>
         </Reveal>
       </div>
@@ -127,7 +127,7 @@ export function ValuesStory() {
                   {VALUES.map((v, i) => (
                     <span
                       key={v.title}
-                      className={`h-1 flex-1 rounded-full transition-colors duration-500 ${
+                      className={`h-1 flex-1 rounded-full transition-colors duration-300 ${
                         i <= active ? "bg-olive" : "bg-line"
                       }`}
                     />

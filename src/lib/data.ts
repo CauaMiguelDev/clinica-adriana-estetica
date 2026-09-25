@@ -1,30 +1,3 @@
-import type { StaticImageData } from "next/image";
-import fotoSala from "@/assets/instagram/sala.jpg";
-import fotoFacial from "@/assets/instagram/facial.jpg";
-import fotoProdutos from "@/assets/instagram/produtos.jpg";
-import fotoMassagem from "@/assets/instagram/massagem.jpg";
-import fotoDrenagem from "@/assets/instagram/drenagem.jpg";
-
-/**
- * Fotos reais do perfil da clínica (@espacocuide_se_bem).
- *
- * Import estático e não string em `public/`: o site vive sob `/<repo>/` no
- * GitHub Pages, e o `next/image` com `unoptimized` **não** acrescenta o
- * `basePath` a uma string — a foto quebraria só em produção. O import passa
- * pelo bundler, que já devolve o caminho certo.
- *
- * ponytail: recortadas de uma captura de tela do perfil (cerca de 180px de
- * origem, ampliadas). Servem no tamanho em que aparecem; trocar pelos arquivos
- * originais dos posts melhora a nitidez sem mexer em mais nada.
- */
-export const PHOTOS = {
-  sala: fotoSala,
-  facial: fotoFacial,
-  produtos: fotoProdutos,
-  massagem: fotoMassagem,
-  drenagem: fotoDrenagem,
-} satisfies Record<string, StaticImageData>;
-
 // ===== Dados centrais do Espaço Cuide-se Bem =====
 
 export const CLINIC = {
@@ -467,16 +440,17 @@ export const PAYMENT = [
 // ===== Fotos do espaço =====
 // O que mais aparece nas avaliações do Google é o ambiente ("acolhedor, limpo
 // e organizado") — por isso ele tem lugar próprio na seção "A Clínica".
-// As fotos vêm de PHOTOS (topo do arquivo). `null` = espaço reservado.
+// Coloque as fotos em `public/images/` e preencha `src`. Ajuste os rótulos
+// para os cômodos reais da casa. Vazio = espaço reservado.
 export interface ClinicPhoto {
   label: string;
-  src: StaticImageData | null;
+  src: string;
 }
 
 export const CLINIC_PHOTOS: ClinicPhoto[] = [
-  { label: "Sala de atendimento", src: PHOTOS.sala },
-  { label: "Cabine de estética facial", src: PHOTOS.facial },
-  { label: "Os produtos que usamos", src: PHOTOS.produtos },
+  { label: "Recepção", src: "" },
+  { label: "Sala de atendimento", src: "" },
+  { label: "Sala de massagem", src: "" },
 ];
 
 // ===== Antes & Depois =====
@@ -670,18 +644,19 @@ export const BLOG: BlogPost[] = [
 // ===== Feed do Instagram =====
 // Para um feed REAL e automático (atualiza sozinho ao postar), conecte um widget
 // gratuito como SnapWidget, Behold.so ou Elfsight e cole o embed na seção InstagramFeed.
-// Enquanto isso, as fotos abaixo são posts reais do perfil (ver PHOTOS).
+// Enquanto isso, troque as imagens abaixo pelas fotos reais dos posts da clínica.
 export interface InstaPost {
-  image: StaticImageData | null;
+  image: string;
   caption: string;
 }
 
 export const INSTAGRAM_POSTS: InstaPost[] = [
-  { image: PHOTOS.facial, caption: "Cuidado facial sob medida" },
-  { image: PHOTOS.massagem, caption: "Massagem e liberação" },
-  { image: PHOTOS.sala, caption: "Ambiente acolhedor" },
-  { image: PHOTOS.drenagem, caption: "Drenagem modeladora" },
-  { image: PHOTOS.produtos, caption: "Produtos profissionais" },
+  { image: "", caption: "Cuidado facial sob medida" },
+  { image: "", caption: "Pele renovada e saudável" },
+  { image: "", caption: "Relaxamento e bem-estar" },
+  { image: "", caption: "Resultados que dão confiança" },
+  { image: "", caption: "Ambiente acolhedor" },
+  { image: "", caption: "Beleza natural realçada" },
 ];
 
 export const STATS = [

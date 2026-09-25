@@ -21,5 +21,7 @@ são requisito, não sugestão.
 
 ## Imagens
 
-Sempre por `import` de `src/assets/`, nunca por string em `public/` — ver a
-seção "Fotos" do README (o `basePath` do GitHub Pages quebra strings).
+O site vive sob `/clinica-adriana-estetica/` no GitHub Pages, e o `next/image`
+do export estático **não** acrescenta esse prefixo a uma string em `public/`:
+a foto funciona no `npm run dev` e quebra só no ar. Prefira `import` do
+arquivo (o bundler resolve o caminho certo).

@@ -101,9 +101,9 @@ function Header() {
       <span className="eyebrow justify-center">
         <Sparkles size={14} /> Em destaque
       </span>
-      <h2 className="mt-4 text-balance font-display text-4xl font-semibold leading-[1.05] tracking-[-0.01em] sm:text-5xl">
+      <h2 className="mt-4 font-display text-3xl font-semibold sm:text-4xl">
         Role para percorrer{" "}
-        <span className="font-normal italic text-terracotta-dark">os procedimentos</span>
+        <span className="text-terracotta-dark">os procedimentos</span>
       </h2>
     </div>
   );
@@ -130,7 +130,7 @@ function Card({ p }: { p: (typeof PROCEDURES)[number] }) {
           No catálogo
           <ArrowRight
             size={14}
-            className="transition-transform duration-500 group-hover:translate-x-1"
+            className="transition-transform duration-300 group-hover:translate-x-1"
           />
         </a>
       </div>

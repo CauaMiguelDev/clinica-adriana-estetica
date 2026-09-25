@@ -38,8 +38,8 @@ export function FAQ() {
           <span className="eyebrow justify-center">
             <HelpCircle size={14} /> Dúvidas frequentes
           </span>
-          <h2 className="mt-4 text-balance font-display text-4xl font-semibold leading-[1.05] tracking-[-0.01em] sm:text-5xl">
-            Perguntas <span className="font-normal italic text-terracotta-dark">frequentes</span>
+          <h2 className="mt-4 font-display text-3xl font-semibold sm:text-4xl">
+            Perguntas <span className="text-terracotta-dark">frequentes</span>
           </h2>
           <p className="mt-4 text-muted">
             Atendimento, pagamento e segurança — o que mais nos perguntam.
@@ -55,7 +55,7 @@ export function FAQ() {
             return (
               <Reveal key={item.q} variant="up" index={i}>
                 <div
-                  className={`overflow-hidden rounded-card border bg-surface transition-colors duration-500 ${
+                  className={`overflow-hidden rounded-card border bg-surface transition-colors duration-300 ${
                     isOpen ? "border-olive/40 shadow-soft" : "border-line"
                   }`}
                 >
@@ -67,7 +67,7 @@ export function FAQ() {
                       className="flex w-full items-center gap-4 p-5 text-left"
                     >
                       <span
-                        className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl transition-colors duration-500 ${
+                        className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl transition-colors duration-300 ${
                           isOpen
                             ? "bg-olive text-white"
                             : "bg-olive/10 text-olive"

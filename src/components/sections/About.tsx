@@ -15,9 +15,9 @@ export function About() {
           <span className="eyebrow justify-center">
             <Building2 size={14} /> A clínica
           </span>
-          <h2 className="mt-4 text-balance font-display text-4xl font-semibold leading-[1.05] tracking-[-0.01em] sm:text-5xl">
+          <h2 className="mt-4 font-display text-3xl font-semibold sm:text-4xl">
             Um espaço para você{" "}
-            <span className="font-normal italic text-terracotta-dark">se sentir em casa</span>
+            <span className="text-terracotta-dark">se sentir em casa</span>
           </h2>
           <p className="mt-4 text-muted">
             O Espaço Cuide-se Bem nasceu para unir tecnologia de ponta,
@@ -66,8 +66,7 @@ export function About() {
                       src={photo.src}
                       alt={`${photo.label} do Espaço Cuide-se Bem`}
                       fill
-                      placeholder="blur"
-                      className="object-cover transition-transform duration-1200 group-hover:scale-105"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
                       sizes="(max-width: 640px) 100vw, 33vw"
                     />
                   </div>

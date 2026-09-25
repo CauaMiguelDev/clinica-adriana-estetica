@@ -34,10 +34,9 @@
   --header-h: 4.5rem;
 }
 
-/* Sem `scroll-behavior: smooth` aqui: quem suaviza a rolagem é o Lenis
-   (SmoothScroll.tsx), e os dois juntos brigam — cada salto do Lenis vira uma
-   animação nativa por cima da dele. Com movimento reduzido o Lenis nem liga, e
-   a rolagem fica nativa e seca, que é o que a preferência pede. */
+html {
+  scroll-behavior: smooth;
+}
 
 /* Guarda de overflow horizontal.
  *
@@ -113,13 +112,6 @@ section[id] {
     @apply py-16 sm:py-24 lg:py-28;
   }
 
-  /* Link com sublinhado que se desenha: entra pela esquerda no hover e sai
-     pela direita ao tirar o cursor — o traço atravessa, não pisca. Só
-     transform, então não custa layout. */
-  .link-line {
-    @apply relative inline-block after:pointer-events-none after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-full after:origin-right after:scale-x-0 after:bg-current after:transition-transform after:duration-600 hover:after:origin-left hover:after:scale-x-100;
-  }
-
   /* Rótulo acima do título da seção. */
   .eyebrow {
     @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-olive-dark;
@@ -159,14 +151,4 @@ section[id] {
 .draw-icon svg > * {
   stroke-dasharray: 100;
   stroke-dashoffset: calc(var(--draw, 0) * 100);
-}
-
-/* O sublinhado do `.link-line` também se desenha quando o hover é no card
-   inteiro (`.group`), não só no texto. Só onde existe hover de verdade — no
-   toque o traço ficaria preso depois do dedo sair. */
-@media (hover: hover) {
-  .group:hover .link-line::after {
-    transform-origin: left;
-    transform: scaleX(1);
-  }
 }

@@ -121,11 +121,9 @@ uma vitrine em vez de um espaço de cuidado.
 
 | Estado | Regra |
 |---|---|
-| **Hover** (botão) | `ActionButton`: uma elipse da cor escura **sobe por baixo** (preenchimento líquido) e o rótulo **rola** — sai por cima, a cópia entra por baixo. 600ms, expo-out, só `transform`. `shadow-soft` → `shadow-lift`. Sem escala. |
-| **Hover** (card) | `-translate-y-1`/`-1.5` + `shadow-lift` + borda `olive/30`; foto do card aproxima 6–7% em 1200ms. |
-| **Hover** (link) | `.link-line`: o sublinhado **se desenha** da esquerda e sai pela direita. Dentro de um `.group`, desenha com o hover do card inteiro. |
-| **Hover** (menu) | Uma única pílula (`layoutId`) desliza até o link sob o cursor e volta à página atual ao sair. |
-| **Hover no toque** | Não existe: `hoverOnlyWhenSupported` na config do Tailwind. Sem isso, o toque deixava o botão preso no estado de hover. |
+| **Hover** (botão primário) | fundo `olive` → `olive-dark`, `shadow-soft` → `shadow-lift`. Sem escala. |
+| **Hover** (card) | `-translate-y-1` + `shadow-lift` + borda `olive/30`. Nada mais. |
+| **Hover** (link) | `text-muted` → `text-olive-dark`, sublinhado aparece. |
 | **Foco** | Contorno oliva de 2px com 3px de afastamento. Definido **uma vez** em `globals.css` via `:focus-visible` — vale para todo link, botão, campo e elemento focável do site. |
 | **Ativo** | `active:scale-[0.98]`, curto. |
 | **Desabilitado** | `opacity-50 cursor-not-allowed`. |
@@ -145,8 +143,7 @@ soltos no componente, ou o conjunto fica desigual.
 
 | Papel | Duração | Curva |
 |---|---|---|
-| Micro (foco, clique) | 200ms | `[0.4, 0, 0.2, 1]` |
-| Hover (botão, link, card) | 500–600ms | `[0.22, 1, 0.36, 1]` — é também o **padrão** do `transition` no Tailwind |
+| Micro (hover, foco, clique) | 200ms | `[0.4, 0, 0.2, 1]` |
 | Troca de estado (acordeão, filtro) | 320ms | `[0.4, 0, 0.2, 1]` |
 | Entrada ao rolar | 700ms | `[0.22, 1, 0.36, 1]` |
 | Volta do tilt ao repouso | 400ms | spring (150 / 18) |
@@ -165,11 +162,6 @@ movimento parecer orgânico em vez de mecânico.
 | **Parallax** | 3 camadas: fundo `0.15`, meio `0.08`, frente `0.04` da rolagem. Valores baixos de propósito. |
 | **Tilt 3D** | Máximo **6°**, perspectiva 900px. Só com ponteiro fino — em tela de toque o card tremeria sob o dedo. |
 | **Clique** | Onda a partir do ponto tocado (`ActionButton`) + `active:scale-[0.98]`. No celular não há hover; sem isso o botão parece quebrado. |
-| **Rolagem suave** | Lenis (`SmoothScroll.tsx`), 1,1s expo-out, **sem rAF próprio**: é alimentado pelo relógio compartilhado. Só roda da roda do mouse — o toque fica nativo — e nem é criado com movimento reduzido. |
-| **Aurora** | `<Aurora>` — o fundo próprio: três campos de cor da paleta (`radial-gradient(closest-side)`, **sem `blur`**) em órbita lenta de Lissajous. Tom claro no Hero, escuro no rodapé. Desassina o relógio fora da tela. |
-| **Título do Hero** | Palavra a palavra, cada uma subindo de dentro de uma máscara; depois o traço dourado sob *cuidar* se desenha (`pathLength`). |
-| **Colagem do Hero** | Fotos em arco entram por cortina (`clip-path`) com a foto recuando de 1.18 para 1; ao rolar, ficam para trás em três ritmos (parallax **para baixo**, nunca para cima — no celular subiria sobre o texto). |
-| **Faixa de serviços** | Marquee em CSS (`animate-marquee`, 40s), lista duplicada e -50% para fechar sem emenda. Pausa no hover. |
 | **Ambiente** | `<Contours>` — agrupamentos de linhas de nível girando devagar (25s e 19s por volta), 2 no desktop e 1 no celular, com grão estático por cima. |
 | **Ímã** | Botões deslizam no máximo **6px** na direção do cursor (`MAGNET.maxPx`). Só ponteiro fino. Acima de ~8px vira piada. |
 | **Traçado de ícone** | `<DrawIcon>` — `stroke-dashoffset` de 1→0 via variável CSS. `stroke-dasharray: 100` cobre o traço mais longo de um ícone 24×24 sem medir path por path. |
@@ -201,7 +193,7 @@ mais blurs de 28–45px. As features voltaram; a arquitetura que as derrubava, n
    > **Exceção única e deliberada:** o `WhatsappFloat` expande o rótulo no
    > hover animando `max-width`, `gap` e `padding-right` — as três disparam
    > layout. Fica assim porque hover **não existe no celular**, que é onde a
-   > regra importa: dura 500ms, uma vez, numa subárvore de dois nós. Fazer o
+   > regra importa: dura 300ms, uma vez, numa subárvore de dois nós. Fazer o
    > mesmo só com `transform` exigiria remontar o layout do botão — mais
    > código que o problema merece. Se aparecer uma segunda exceção, a regra
    > está sendo contornada em vez de aplicada; reveja as duas juntas.
@@ -256,7 +248,7 @@ serviço, meio de contato, item de FAQ. Nunca como enfeite.
 | Tema escuro (`ThemeProvider`, botão de lua/sol) | Um tema calibrado vale mais que dois medianos. |
 | `AmbientBackground`, `ParticlesBackground`, `LeavesBackground` | Três fundos animados simultâneos — dois loops de `requestAnimationFrame` e blurs de 28–45px eram o gargalo do celular. |
 | `PetalScene` + `three`, `@react-three/fiber`, `@react-three/drei` | A cena 3D nunca assentou: no celular disputava o texto do Hero, e o custo era desproporcional ao que entregava. Trocada por `<Contours>`, em SVG. **−66 pacotes** e o WebGL inteiro fora do projeto. |
-| `AmbientShapes` (blobs desfocados) | `blur(60px)` sobre 10% de opacidade não vira atmosfera, vira sujeira — e em monitor mais claro sumia. Trocado por linha fina, que tem forma e aparece igual nos dois. A cor voltou depois como `<Aurora>`, **sem filtro nenhum** e com opacidade que se vê — as duas coisas que derrubavam esta. |
+| `AmbientShapes` (blobs desfocados) | `blur(60px)` sobre 10% de opacidade não vira atmosfera, vira sujeira — e em monitor mais claro sumia. Trocado por linha fina, que tem forma e aparece igual nos dois. |
 | `Preloader` | `setTimeout` fixo de 1,6s que não esperava carregamento nenhum. Atraso puro. |
 | `ChatWidget` | Respostas fixas, e disputava o canto inferior com o WhatsApp. |
 | Gradiente dourado em texto | Cortava descendentes e exigia remendos de `padding` nos títulos. |
