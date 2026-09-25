@@ -26,9 +26,9 @@ export function ResultsTeaser() {
           <span className="eyebrow justify-center">
             <Sparkles size={14} /> Quem já passou por aqui
           </span>
-          <h2 className="mt-4 font-display text-3xl font-semibold sm:text-4xl">
+          <h2 className="mt-4 text-balance font-display text-4xl font-semibold leading-[1.05] tracking-[-0.01em] sm:text-5xl">
             Nota {CLINIC.rating.toFixed(1)}{" "}
-            <span className="text-terracotta-dark">no Google</span>
+            <span className="font-normal italic text-terracotta-dark">no Google</span>
           </h2>
           <p className="mt-4 text-muted">
             {CLINIC.reviews} avaliações de quem já sentou na nossa maca.
@@ -89,7 +89,7 @@ export function ResultsTeaser() {
             Ver antes e depois
             <ArrowRight
               size={16}
-              className="transition-transform duration-300 group-hover:translate-x-1"
+              className="transition-transform duration-500 group-hover:translate-x-1"
             />
           </Link>
         </Reveal>

@@ -22,12 +22,15 @@ export function LotusMark({ className = "" }: MarkProps) {
   );
 }
 
-/** Logo completa (marca + nome) usada no header. */
+/**
+ * Logo completa (marca + nome) usada no header. Dentro de um `group` (o link do
+ * cabeçalho), a flor abre um pouco no hover — gira e cresce, devagar.
+ */
 export function Logo({ className = "" }: MarkProps) {
   return (
     <span className={`flex shrink-0 items-center gap-2.5 ${className}`}>
-      <span className="grid h-10 w-10 place-items-center rounded-xl bg-olive-grad text-white shadow-soft">
-        <LotusMark className="h-6 w-6" />
+      <span className="grid h-10 w-10 place-items-center rounded-xl bg-olive-grad text-white shadow-soft transition-[border-radius] duration-800 group-hover:rounded-[50%]">
+        <LotusMark className="h-6 w-6 transition-transform duration-800 group-hover:rotate-[18deg] group-hover:scale-110" />
       </span>
       <span className="flex flex-col leading-none">
         <span className="text-[0.6rem] uppercase tracking-[0.3em] text-olive">

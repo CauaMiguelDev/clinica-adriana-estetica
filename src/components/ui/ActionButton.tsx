@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import Link from "next/link";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { MAGNET, MS } from "@/lib/motion";
+import { MAGNET, MS, SPRING } from "@/lib/motion";
 
 // Definidos no módulo, não dentro do componente: `motion()` cria um componente
 // novo a cada chamada, e recriá-lo por render desmontaria o botão a cada quadro.
@@ -18,27 +18,63 @@ const MotionButton = motion.button;
  * existe hover para dar a pista. A onda parte do ponto tocado e é feita só com
  * `transform` e `opacity`.
  *
+ * ## Hover
+ *
+ * Duas camadas, ambas só `transform`, ambas em 600ms com a expo-out do site:
+ *
+ * 1. **Preenchimento líquido** — uma elipse maior que o botão sobe por baixo.
+ *    Enquanto sobe, a borda curva atravessa o rótulo; parada, cobre tudo. Troca
+ *    de `background-color` seria um pisca de cor; aqui a cor *entra*.
+ * 2. **Rótulo que rola** — o texto sai por cima e uma cópia entra por baixo.
+ *    A cópia é `aria-hidden`: leitor de tela ouve o rótulo uma vez.
+ *
+ * O `hover:` do Tailwind só vale onde existe hover de verdade
+ * (`hoverOnlyWhenSupported` na config) — no toque o estado não gruda depois do
+ * dedo sair.
+ *
  * Renderiza `<a>` quando recebe `href` e `<button>` caso contrário — os CTAs
  * do site são links, os filtros e o acordeão são botões.
  */
 
-type Variant = "solid" | "outline" | "ghost";
+type Variant = "solid" | "outline" | "ghost" | "light" | "glass";
 
 const BASE =
-  "group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full text-sm font-semibold transition-[background-color,border-color,color,box-shadow] active:scale-[0.98]";
+  "group relative isolate inline-flex items-center justify-center overflow-hidden rounded-full text-sm font-semibold transition-[color,border-color,box-shadow] duration-600 active:scale-[0.98]";
 
 const STYLES: Record<Variant, string> = {
-  solid:
-    "bg-olive px-7 py-3.5 text-white shadow-soft hover:bg-olive-dark hover:shadow-lift",
+  solid: "bg-olive text-white shadow-soft hover:shadow-lift",
   outline:
-    "border border-terracotta/50 px-7 py-3.5 text-terracotta-dark hover:border-terracotta hover:bg-terracotta hover:text-white",
+    "border border-terracotta/50 text-terracotta-dark hover:border-terracotta hover:text-white",
   ghost:
-    "border border-line bg-surface px-5 py-2.5 text-muted hover:border-olive/40 hover:text-olive-dark",
+    "border border-line bg-surface text-muted hover:border-olive/40 hover:text-olive-dark",
+  light: "bg-white text-olive-dark shadow-soft hover:shadow-lift",
+  /** Secundário sobre fundo escuro (rodapé). */
+  glass: "border border-white/25 bg-white/5 text-white hover:border-white hover:text-olive-dark",
+};
+
+/**
+ * Tamanho separado da variante: sobrescrever `px-7` com um `px-5` vindo de
+ * `className` depende da ordem das regras no CSS gerado, não da ordem das
+ * classes no atributo — funciona por sorte até o dia em que não funciona.
+ */
+const SIZES = {
+  md: "px-7 py-3.5",
+  sm: "px-5 py-2.5",
+} as const;
+
+/** Cor da elipse que sobe no hover, por variante. */
+const FILL: Record<Variant, string> = {
+  solid: "bg-olive-dark",
+  outline: "bg-terracotta",
+  ghost: "bg-olive/10",
+  light: "bg-sand",
+  glass: "bg-white",
 };
 
 interface Props {
   children: React.ReactNode;
   variant?: Variant;
+  size?: keyof typeof SIZES;
   href?: string;
   target?: string;
   rel?: string;
@@ -51,6 +87,7 @@ interface Props {
 export function ActionButton({
   children,
   variant = "solid",
+  size,
   href,
   className = "",
   onClick,
@@ -66,7 +103,7 @@ export function ActionButton({
   // prefers-reduced-motion; não precisa de guarda própria.
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
-  const spring = { stiffness: 260, damping: 20, mass: 0.4 };
+  const spring = SPRING.soft;
   const x = useSpring(useTransform(mx, [-0.5, 0.5], [-MAGNET.maxPx, MAGNET.maxPx]), spring);
   const y = useSpring(useTransform(my, [-0.5, 0.5], [-MAGNET.maxPx, MAGNET.maxPx]), spring);
 
@@ -103,8 +140,20 @@ export function ActionButton({
 
   const inner = (
     <>
-      <span className="relative z-10 inline-flex items-center gap-2">
-        {children}
+      <span
+        aria-hidden
+        className={`pointer-events-none absolute -inset-x-[15%] top-full -z-10 h-[220%] rounded-[50%] transition-transform duration-600 group-hover:-translate-y-[62%] ${FILL[variant]}`}
+      />
+      <span className="relative block overflow-hidden py-0.5">
+        <span className="flex items-center justify-center gap-2 transition-transform duration-600 group-hover:-translate-y-[120%]">
+          {children}
+        </span>
+        <span
+          aria-hidden
+          className="absolute inset-0 flex translate-y-[120%] items-center justify-center gap-2 transition-transform duration-600 group-hover:translate-y-0"
+        >
+          {children}
+        </span>
       </span>
       {waves.map((w) => (
         <span
@@ -117,7 +166,9 @@ export function ActionButton({
     </>
   );
 
-  const cls = `${BASE} ${STYLES[variant]} ${className}`;
+  // `ghost` nasceu menor; os outros, no tamanho de CTA.
+  const pad = SIZES[size ?? (variant === "ghost" ? "sm" : "md")];
+  const cls = `${BASE} ${STYLES[variant]} ${pad} ${className}`;
 
   // Rota interna vai por `next/link`: um `<a>` cru recarregaria a página
   // inteira e mataria a transição de entrada do template. Externos (WhatsApp,

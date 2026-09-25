@@ -19,8 +19,8 @@ export function Blog() {
           <span className="eyebrow justify-center">
             <BookOpen size={14} /> Blog de estética
           </span>
-          <h2 className="mt-4 font-display text-3xl font-semibold sm:text-4xl">
-            Dicas &amp; <span className="text-terracotta-dark">novidades</span>
+          <h2 className="mt-4 text-balance font-display text-4xl font-semibold leading-[1.05] tracking-[-0.01em] sm:text-5xl">
+            Dicas &amp; <span className="font-normal italic text-terracotta-dark">novidades</span>
           </h2>
           <p className="mt-4 text-muted">
             O que nossas especialistas explicam sobre cada tratamento.
@@ -30,7 +30,7 @@ export function Blog() {
         <div className="mt-12 grid gap-6 sm:grid-cols-2">
           {BLOG.map((post, i) => (
             <Reveal key={post.title} variant="rise" index={i} className="h-full">
-              <article className="flex h-full flex-col rounded-card border border-line bg-surface p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-olive/30 hover:shadow-lift sm:p-7">
+              <article className="flex h-full flex-col rounded-card border border-line bg-surface p-6 shadow-soft transition-all duration-500 hover:-translate-y-1 hover:border-olive/30 hover:shadow-lift sm:p-7">
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
                   <span className="rounded-full bg-olive/10 px-3 py-1 text-xs font-semibold text-olive-dark">
                     {post.category}
@@ -69,7 +69,7 @@ export function Blog() {
                     Saber mais sobre {post.relatedPro}
                     <ArrowRight
                       size={15}
-                      className="transition-transform duration-300 group-hover:translate-x-1"
+                      className="transition-transform duration-500 group-hover:translate-x-1"
                     />
                   </a>
                 </div>

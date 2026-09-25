@@ -10,6 +10,9 @@ const rgb = (v: string) => `rgb(var(${v}) / <alpha-value>)`;
 
 const config: Config = {
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
+  // `hover:` só onde há hover de verdade. Sem isto, no celular o toque deixa o
+  // botão preso no estado de hover (preenchimento subido) até tocar fora.
+  future: { hoverOnlyWhenSupported: true },
   theme: {
     extend: {
       colors: {
@@ -66,6 +69,15 @@ const config: Config = {
         lift: "0 2px 4px rgba(46,42,36,0.05), 0 20px 40px -20px rgba(46,42,36,0.16)",
       },
 
+      // Transição padrão do site: mais longa e com a mesma expo-out das
+      // entradas. Quem escreve só `transition` já ganha o hover macio; o 150ms
+      // linear-ish do Tailwind era o que fazia os botões "estalarem".
+      transitionDuration: { DEFAULT: "500ms", 400: "400ms", 600: "600ms", 800: "800ms", 1200: "1200ms" },
+      transitionTimingFunction: {
+        DEFAULT: "cubic-bezier(0.22, 1, 0.36, 1)",
+        soft: "cubic-bezier(0.22, 1, 0.36, 1)",
+      },
+
       keyframes: {
         // Onda do clique: parte do ponto tocado e se dissolve.
         wave: {
@@ -77,9 +89,23 @@ const config: Config = {
           "0%,100%": { transform: "scale(1)", opacity: "0.85" },
           "50%": { transform: "scale(1.08)", opacity: "1" },
         },
+        // Faixa de serviços do Hero: a lista vem duplicada, então -50% fecha
+        // o laço sem emenda.
+        marquee: {
+          from: { transform: "translate3d(0,0,0)" },
+          to: { transform: "translate3d(-50%,0,0)" },
+        },
+        // Flutuação das fotos do Hero e dos selos. Amplitude pequena de propósito.
+        float: {
+          "0%,100%": { transform: "translate3d(0,0,0)" },
+          "50%": { transform: "translate3d(0,-10px,0)" },
+        },
       },
       animation: {
         wave: "wave 700ms cubic-bezier(0.22,1,0.36,1) forwards",
+        marquee: "marquee 40s linear infinite",
+        float: "float 7s ease-in-out infinite",
+        "float-slow": "float 9s ease-in-out infinite",
         breathe: "breathe 19s ease-in-out infinite",
       },
     },

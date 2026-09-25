@@ -18,9 +18,9 @@ export function Testimonials() {
           <span className="eyebrow justify-center">
             <Quote size={14} /> Depoimentos
           </span>
-          <h2 className="mt-4 font-display text-3xl font-semibold sm:text-4xl">
+          <h2 className="mt-4 text-balance font-display text-4xl font-semibold leading-[1.05] tracking-[-0.01em] sm:text-5xl">
             Quem se cuida,{" "}
-            <span className="text-terracotta-dark">recomenda</span>
+            <span className="font-normal italic text-terracotta-dark">recomenda</span>
           </h2>
           <p className="mt-4 inline-flex flex-wrap items-center justify-center gap-2 text-muted">
             <span className="flex text-gold" aria-hidden>
@@ -80,7 +80,7 @@ export function Testimonials() {
             href={googleReviewLink()}
             target="_blank"
             rel="noopener"
-            className="inline-flex items-center gap-2 rounded-full border border-olive/50 px-6 py-3 text-sm font-semibold text-olive-dark transition-colors duration-300 hover:border-olive hover:bg-olive hover:text-white"
+            className="inline-flex items-center gap-2 rounded-full border border-olive/50 px-6 py-3 text-sm font-semibold text-olive-dark transition-colors duration-500 hover:border-olive hover:bg-olive hover:text-white"
           >
             <Star size={16} /> Avaliar no Google
           </a>

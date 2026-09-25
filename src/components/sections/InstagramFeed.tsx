@@ -8,9 +8,10 @@ import { CLINIC, INSTAGRAM_POSTS } from "@/lib/data";
 /**
  * Instagram.
  *
- * As imagens ficam vazias até serem trocadas pelos posts reais (ver
- * INSTAGRAM_POSTS em src/lib/data.ts) — mostrar fotos de banco como se fossem
- * publicações da clínica seria enganoso. O link para o perfil funciona sempre.
+ * Fotos reais do perfil (INSTAGRAM_POSTS em src/lib/data.ts), em grade bento:
+ * a primeira ocupa 2×2 e as outras quatro fecham o retângulo — 4 colunas por 2
+ * linhas no desktop, 2 colunas no celular, sem buraco em nenhum dos dois.
+ * Um post sem foto cai no espaço reservado em vez de uma foto de banco.
  */
 export function InstagramFeed() {
   return (
@@ -20,8 +21,8 @@ export function InstagramFeed() {
           <span className="eyebrow justify-center">
             <Instagram size={14} /> Nosso dia a dia
           </span>
-          <h2 className="mt-4 font-display text-3xl font-semibold sm:text-4xl">
-            Siga no <span className="text-terracotta-dark">Instagram</span>
+          <h2 className="mt-4 text-balance font-display text-4xl font-semibold leading-[1.05] tracking-[-0.01em] sm:text-5xl">
+            Siga no <span className="font-normal italic text-terracotta-dark">Instagram</span>
           </h2>
           <p className="mt-4 text-muted">
             Resultados, bastidores e novidades da clínica.
@@ -30,15 +31,23 @@ export function InstagramFeed() {
             href={CLINIC.instagram}
             target="_blank"
             rel="noopener"
-            className="mt-6 inline-flex items-center gap-2 rounded-full bg-olive px-6 py-3 text-sm font-semibold text-white shadow-soft transition-colors duration-300 hover:bg-olive-dark hover:shadow-lift active:scale-[0.98]"
+            className="group mt-6 inline-flex items-center gap-3 rounded-full border border-line bg-surface py-1.5 pl-1.5 pr-5 text-sm font-semibold shadow-soft transition-[box-shadow,border-color] duration-600 hover:border-olive/40 hover:shadow-lift"
           >
-            <Instagram size={17} /> {CLINIC.instagramHandle}
+            <span className="grid h-9 w-9 place-items-center rounded-full bg-terracotta-grad text-white transition-transform duration-800 group-hover:rotate-[-12deg] group-hover:scale-110">
+              <Instagram size={17} />
+            </span>
+            {CLINIC.instagramHandle}
           </a>
         </Reveal>
 
-        <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3">
+        <div className="mt-12 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
           {INSTAGRAM_POSTS.map((post, i) => (
-            <Reveal key={post.caption} variant="rise" index={i}>
+            <Reveal
+              key={post.caption}
+              variant="rise"
+              index={i}
+              className={i === 0 ? "col-span-2 row-span-2" : ""}
+            >
               {post.image ? (
                 <a
                   href={CLINIC.instagram}
@@ -51,11 +60,15 @@ export function InstagramFeed() {
                     src={post.image}
                     alt={post.caption}
                     fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    sizes="(max-width: 640px) 50vw, 33vw"
+                    placeholder="blur"
+                    className="object-cover transition-transform duration-1200 group-hover:scale-[1.06]"
+                    sizes={i === 0 ? "(max-width: 1024px) 100vw, 50vw" : "(max-width: 1024px) 50vw, 25vw"}
                   />
-                  <span className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-fg/60 px-3 text-center text-sm text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                    <Instagram size={24} />
+                  {/* Legenda sobe de baixo junto com um véu em gradiente: o
+                      texto entra, a foto continua visível atrás. */}
+                  <span className="absolute inset-0 bg-gradient-to-t from-fg/70 via-fg/10 to-transparent opacity-0 transition-opacity duration-600 group-hover:opacity-100" />
+                  <span className="absolute inset-x-0 bottom-0 flex translate-y-3 items-center gap-2 p-4 text-sm font-medium text-white opacity-0 transition-[opacity,transform] duration-600 group-hover:translate-y-0 group-hover:opacity-100">
+                    <Instagram size={16} className="shrink-0" />
                     {post.caption}
                   </span>
                 </a>
@@ -80,10 +93,12 @@ export function InstagramFeed() {
             href={CLINIC.instagram}
             target="_blank"
             rel="noopener"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-olive-dark transition-all hover:gap-2.5 hover:underline"
+            className="group inline-flex items-center gap-1.5 text-sm font-semibold text-olive-dark"
           >
-            Ver todas as publicações <ArrowUpRight size={15} />
+            <span className="link-line">Ver todas as publicações</span>
+            <ArrowUpRight size={15} className="transition-transform duration-600 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
           </a>
+
         </Reveal>
       </div>
     </section>

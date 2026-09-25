@@ -20,9 +20,9 @@ export function Team() {
           <span className="eyebrow justify-center">
             <Users size={14} /> Equipe
           </span>
-          <h2 className="mt-4 font-display text-3xl font-semibold sm:text-4xl">
+          <h2 className="mt-4 text-balance font-display text-4xl font-semibold leading-[1.05] tracking-[-0.01em] sm:text-5xl">
             Especialistas que{" "}
-            <span className="text-terracotta-dark">cuidam de você</span>
+            <span className="font-normal italic text-terracotta-dark">cuidam de você</span>
           </h2>
           <p className="mt-4 text-muted">
             Quatro profissionais, cada uma com a sua especialidade.
@@ -34,7 +34,7 @@ export function Team() {
             const firstName = p.name.replace(/^Dra\.\s*/, "");
             return (
               <Reveal key={p.id} variant="rise" index={i} className="h-full">
-                <article className="group flex h-full flex-col overflow-hidden rounded-card border border-line bg-surface shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-olive/30 hover:shadow-lift">
+                <article className="group flex h-full flex-col overflow-hidden rounded-card border border-line bg-surface shadow-soft transition-all duration-500 hover:-translate-y-1 hover:border-olive/30 hover:shadow-lift">
                   <div className="relative aspect-[4/5] w-full overflow-hidden bg-sand">
                     {p.image ? (
                       <Image
@@ -42,7 +42,7 @@ export function Team() {
                         alt={p.name}
                         fill
                         quality={88}
-                        className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                        className="object-cover object-top transition-transform duration-1200 group-hover:scale-105"
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                       />
                     ) : (
@@ -112,7 +112,7 @@ export function Team() {
                         )}
                         target="_blank"
                         rel="noopener"
-                        className="flex w-full items-center justify-center gap-2 rounded-full bg-olive py-3 text-sm font-semibold text-white transition-colors duration-300 hover:bg-olive-dark active:scale-[0.98]"
+                        className="flex w-full items-center justify-center gap-2 rounded-full bg-olive py-3 text-sm font-semibold text-white transition-colors duration-500 hover:bg-olive-dark active:scale-[0.98]"
                       >
                         Agendar com {firstName} <ArrowRight size={15} />
                       </a>

@@ -4,18 +4,21 @@ Site de página única da clínica de estética Espaço Cuide-se Bem, em Ceilân
 Brasília. O objetivo é levar o visitante de *conhecer os serviços* a *agendar
 pelo WhatsApp* no menor caminho possível.
 
-**No ar:** https://cauamigueldev.github.io/clinica-adriana-estetica/
+### 🔗 Site no ar: **[cauamigueldev.github.io/clinica-adriana-estetica](https://cauamigueldev.github.io/clinica-adriana-estetica/)**
 
-**Next.js 14 (App Router) · TypeScript · Tailwind CSS · Framer Motion · Three.js · Lucide**
+> O site publicado é atualizado a cada mudança (`npm run deploy`, ver
+> [Publicação](#publicação-github-pages)).
+
+**Next.js 14 (App Router) · TypeScript · Tailwind CSS · Framer Motion · Lenis · Lucide**
 
 ## Características
 
 - **Página única expandida em rotas** — home curta (quatro dobras) + páginas de aprofundamento; o shell (navbar, rodapé, fundo animado, WhatsApp flutuante) persiste entre navegações.
 - **Agendamento sem backend** — o formulário monta a mensagem e abre a conversa no WhatsApp; nada é armazenado nem enviado por este site.
-- **Fundo com linhas de nível animadas** em canvas, ligado ao scroll, com a clareira do Hero recortada como máscara.
+- **Visual com movimento suave** — Hero com colagem em arcos de fotos reais da clínica, título revelado palavra a palavra e faixa de serviços correndo; fundo próprio (`Aurora`, campos de cor em deriva lenta) no Hero e no rodapé; linhas de nível em SVG no fundo das páginas; rolagem suave (Lenis) e hover líquido nos botões. Tudo com versão calma para quem pede menos movimento.
 - **SEO e prévia de link prontos** — metadados, JSON-LD de negócio local e imagem de Open Graph (`opengraph-image.png`) montada com a marca.
 - **Publicação estática** — exportado com `output: export` e servido de graça no GitHub Pages.
-- **Sem dependência de fotos** — todos os espaços de imagem já existem e degradam para monograma/placeholder enquanto as fotos reais não chegam.
+- **Fotos reais do Instagram** da clínica no Hero, nos cards de serviço, no espaço e no feed; os espaços ainda sem foto degradam para monograma/placeholder.
 
 O sistema de design — paleta, tipografia, escala, estados e regras de movimento —
 está documentado em [`DESIGN.md`](./DESIGN.md). Leia antes de mexer no visual.
@@ -62,13 +65,13 @@ npm start        # servir a build
 
 | Rota | O que tem |
 |---|---|
-| `/` | Hero com linhas de nível · Faixa de confiança · Teaser de serviços · Prova social + CTA |
+| `/` | Hero com colagem de fotos e faixa de serviços · Faixa de confiança · Teaser de serviços · Prova social + CTA |
 | `/servicos` | Serviços · Trilho horizontal de destaques · Catálogo com filtro · Dúvidas |
 | `/precos` | Investimento |
 | `/resultados` | Antes & depois · Depoimentos · Instagram |
 | `/sobre` | A Clínica · Valores (painel fixo) · Equipe |
 | `/contato` | Agendamento · Contato + mapa |
-| `/blog` | Dicas de cuidado. **Fora do menu** — chega-se pelo rodapé. |
+| `/blog` | Dicas de cuidado. No grupo discreto do menu e no rodapé. |
 
 O shell (navbar, rodapé, fundo animado, WhatsApp flutuante, voltar ao topo)
 vive em `src/app/layout.tsx` e **persiste entre as rotas** — por isso o fundo
@@ -85,6 +88,8 @@ Tudo que aprofunda mora nas rotas.
 | Todo o conteúdo (clínica, equipe, procedimentos, FAQ, blog, pagamento) | `src/lib/data.ts` |
 | Cores, fontes, raios, sombras | `src/app/globals.css` (tokens) e `tailwind.config.ts` |
 | Textura do Hero e fundo de todas as páginas | `src/components/ui/Contours.tsx` |
+| Fundo de cor do Hero e do rodapé | `src/components/ui/Aurora.tsx` |
+| Rolagem suave | `src/components/ui/SmoothScroll.tsx` |
 | Itens e agrupamento do menu | `PRIMARY` / `SECONDARY` em `src/components/layout/Navbar.tsx` |
 | Composição das rotas | `src/app/<rota>/page.tsx` |
 | Durações e curvas de animação | `src/lib/motion.ts` |
@@ -92,18 +97,31 @@ Tudo que aprofunda mora nas rotas.
 
 ## Fotos
 
-**O site não tem nenhuma foto no momento** — as de banco de imagens foram
-removidas para não apresentar pessoas e resultados que não são da clínica. Todos
-os lugares já estão preparados: coloque o arquivo em `public/images/` e preencha
-o campo correspondente em `src/lib/data.ts`, que o espaço reservado dá lugar à
-foto sozinho.
+As fotos em uso vêm do Instagram da clínica
+([@espacocuide_se_bem](https://www.instagram.com/espacocuide_se_bem/)) e ficam em
+`src/assets/instagram/`, reunidas em `PHOTOS` no topo de `src/lib/data.ts`.
 
-| Onde aparece | Campo |
-|---|---|
-| Retratos da equipe | `TEAM[].image` |
-| Fotos do espaço | `CLINIC_PHOTOS[].src` |
-| Antes & depois (liga o comparador) | `RESULTS[].before` e `.after` |
-| Publicações do Instagram | `INSTAGRAM_POSTS[].image` |
+> **Nitidez:** foram recortadas de uma captura de tela do perfil (≈180px na
+> origem), então só aguentam o tamanho em que aparecem hoje. Trocar cada arquivo
+> pelo original do post, com o mesmo nome, melhora tudo sem mexer em código.
+
+**Foto nova sempre por `import`, nunca por string em `public/`.** O site vive
+sob `/clinica-adriana-estetica/` no GitHub Pages, e o `next/image` do export
+estático **não** acrescenta esse prefixo a uma string — a foto funciona no
+`npm run dev` e quebra só no ar. O import passa pelo bundler, que resolve o
+caminho certo:
+
+```ts
+import retrato from "@/assets/equipe/adriana.jpg";
+```
+
+| Onde aparece | Campo | Situação |
+|---|---|---|
+| Hero, cards de serviço | `PHOTOS` | Fotos do Instagram |
+| Fotos do espaço (`/sobre`) | `CLINIC_PHOTOS[].src` | Fotos do Instagram |
+| Publicações do Instagram (`/resultados`) | `INSTAGRAM_POSTS[].image` | Fotos do Instagram |
+| Retratos da equipe | `TEAM[].image` | Vazio — o tipo ainda é `string`; ao preencher, troque por `StaticImageData` como nos campos acima |
+| Antes & depois (liga o comparador) | `RESULTS[].before` e `.after` | Vazio — idem |
 
 ## Pendências
 
@@ -114,7 +132,7 @@ Nada aqui exige backend — são dados que só a clínica tem.
 | Place ID do Google | `CLINIC.googlePlaceId` | Sem ele, "Avaliar no Google" abre uma busca em vez do formulário de avaliação |
 | CNPJ real e Política de Privacidade | `src/components/layout/Footer.tsx` | Está com CNPJ zerado e link que não leva a lugar nenhum; o formulário coleta nome e telefone (LGPD) |
 | Registro profissional de cada especialista | `TEAM[].credential` | Hoje diz "certificada"; um número de registro é verificável |
-| As fotos | ver a tabela acima | O site não tem nenhuma; é a maior lacuna visual restante |
+| Fotos em alta e da equipe | ver [Fotos](#fotos) | As do Instagram vieram de captura de tela; retratos e antes & depois ainda não existem |
 
 O agendamento **não precisa de backend**: o formulário monta a mensagem e abre a
 conversa no WhatsApp para a pessoa revisar antes de enviar. Nada é armazenado

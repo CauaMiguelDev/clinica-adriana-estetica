@@ -19,8 +19,8 @@ export function Investment() {
           <span className="eyebrow justify-center">
             <Wallet size={14} /> Investimento
           </span>
-          <h2 className="mt-4 font-display text-3xl font-semibold sm:text-4xl">
-            Quanto <span className="text-terracotta-dark">custa</span>
+          <h2 className="mt-4 text-balance font-display text-4xl font-semibold leading-[1.05] tracking-[-0.01em] sm:text-5xl">
+            Quanto <span className="font-normal italic text-terracotta-dark">custa</span>
           </h2>
           <p className="mt-4 text-muted">
             Cada protocolo é montado para um caso — por isso o valor sai na

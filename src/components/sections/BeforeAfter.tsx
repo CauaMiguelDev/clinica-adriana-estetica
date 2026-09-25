@@ -102,9 +102,9 @@ export function BeforeAfter() {
           <span className="eyebrow justify-center">
             <Images size={14} /> Antes &amp; Depois
           </span>
-          <h2 className="mt-4 font-display text-3xl font-semibold sm:text-4xl">
+          <h2 className="mt-4 text-balance font-display text-4xl font-semibold leading-[1.05] tracking-[-0.01em] sm:text-5xl">
             Resultados que{" "}
-            <span className="text-terracotta-dark">falam por si</span>
+            <span className="font-normal italic text-terracotta-dark">falam por si</span>
           </h2>
           <p className="mt-4 text-muted">
             {anyReady
@@ -118,7 +118,7 @@ export function BeforeAfter() {
             const ready = Boolean(pair.before && pair.after);
             return (
               <Reveal key={pair.label} variant="rise" index={i}>
-                <div className="rounded-panel border border-line bg-surface p-4 shadow-soft transition-shadow duration-300 hover:shadow-lift sm:p-5">
+                <div className="rounded-panel border border-line bg-surface p-4 shadow-soft transition-shadow duration-500 hover:shadow-lift sm:p-5">
                   {ready ? (
                     <Comparator pair={pair} />
                   ) : (
