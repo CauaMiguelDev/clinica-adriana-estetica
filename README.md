@@ -95,11 +95,19 @@ Tudo que aprofunda mora nas rotas.
 
 ## Fotos
 
-**O site não tem nenhuma foto no momento** — as de banco de imagens foram
-removidas para não apresentar pessoas e resultados que não são da clínica. Todos
-os lugares já estão preparados: coloque o arquivo em `public/images/` e preencha
-o campo correspondente em `src/lib/data.ts`, que o espaço reservado dá lugar à
-foto sozinho.
+**O site não tem nenhuma foto no momento, e foi feito para funcionar assim** —
+as de banco de imagens foram removidas para não apresentar pessoas e resultados
+que não são da clínica. Onde a foto faltaria, o site mostra outra coisa pronta,
+não um aviso de "em breve":
+
+- **Equipe:** retrato desenhado (inicial sobre o degradê da marca).
+- **Conheça o espaço:** as três qualidades mais citadas nas avaliações.
+- **Antes & depois:** a seção não aparece.
+- **Instagram:** só o convite para seguir o perfil, sem grade.
+
+Cada lugar volta a mostrar foto sozinho quando o campo abaixo é preenchido em
+`src/lib/data.ts`. Use `import` do arquivo, não string em `public/` (ver
+`CLAUDE.md`: o `basePath` do GitHub Pages quebra strings).
 
 | Onde aparece | Campo |
 |---|---|

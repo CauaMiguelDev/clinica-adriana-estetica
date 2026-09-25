@@ -1,13 +1,27 @@
 "use client";
 
 import Image from "next/image";
-import { Building2, ImagePlus } from "lucide-react";
+import { Building2, Heart, Sparkles, LayoutGrid } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
 import { Parallax } from "@/components/ui/Parallax";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { CLINIC_PHOTOS, STATS } from "@/lib/data";
 
+/**
+ * Sem foto do espaço, o bloco mostra o que as fotos iam provar: os três
+ * adjetivos que mais aparecem nas avaliações do Google ("acolhedor, limpo e
+ * organizado" — ver TESTIMONIALS). Com a primeira foto preenchida em
+ * CLINIC_PHOTOS, a grade de fotos volta sozinha.
+ */
+const QUALITIES = [
+  { icon: Heart, title: "Acolhedor", text: "Um ambiente calmo, pensado para você relaxar do começo ao fim." },
+  { icon: Sparkles, title: "Limpo", text: "Protocolos de higiene rigorosos e material descartável." },
+  { icon: LayoutGrid, title: "Organizado", text: "Cada atendimento no seu horário, com tudo preparado." },
+];
+
 export function About() {
+  const photos = CLINIC_PHOTOS.filter((p) => p.src);
+
   return (
     <section id="sobre" className="section-pad relative bg-sand">
       <div className="container-page">
@@ -52,43 +66,47 @@ export function About() {
           </p>
         </Reveal>
 
-        {/* As três colunas derivam em camadas diferentes: é o que transforma
-            uma grade parada em profundidade. `items-start` porque as camadas
-            deslocam e um `stretch` brigaria com o transform. */}
-        <div className="mt-8 grid items-start gap-5 sm:grid-cols-3">
-          {CLINIC_PHOTOS.map((photo, i) => (
-            <Reveal key={photo.label} variant="rise" index={i}>
-              <Parallax layer={(["front", "back", "mid"] as const)[i % 3]}>
-              {photo.src ? (
-                <figure className="group overflow-hidden rounded-panel border border-line shadow-soft">
-                  <div className="relative aspect-[4/5]">
-                    <Image
-                      src={photo.src}
-                      alt={`${photo.label} do Espaço Cuide-se Bem`}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
-                      sizes="(max-width: 640px) 100vw, 33vw"
-                    />
-                  </div>
-                  <figcaption className="bg-surface px-4 py-3 text-sm font-medium">
-                    {photo.label}
-                  </figcaption>
-                </figure>
-              ) : (
-                <div className="flex aspect-[4/5] flex-col items-center justify-center gap-3 rounded-panel border border-dashed border-olive/35 bg-surface/60 px-6 text-center">
-                  <span className="grid h-12 w-12 place-items-center rounded-full bg-olive/10 text-olive">
-                    <ImagePlus size={22} />
+        {photos.length === 0 ? (
+          <div className="mt-8 grid gap-5 sm:grid-cols-3">
+            {QUALITIES.map((q, i) => (
+              <Reveal key={q.title} variant="rise" index={i} className="h-full">
+                <div className="flex h-full flex-col items-center rounded-panel border border-line bg-surface px-6 py-9 text-center shadow-soft">
+                  <span className="grid h-14 w-14 place-items-center rounded-full bg-terracotta/10 text-terracotta-dark">
+                    <q.icon size={24} />
                   </span>
-                  <p className="font-display text-lg font-semibold">
-                    {photo.label}
-                  </p>
-                  <p className="text-sm text-muted">Foto em breve</p>
+                  <p className="mt-5 font-display text-2xl font-semibold">{q.title}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-muted">{q.text}</p>
                 </div>
-              )}
-              </Parallax>
-            </Reveal>
-          ))}
-        </div>
+              </Reveal>
+            ))}
+          </div>
+        ) : (
+          /* As colunas derivam em camadas diferentes: é o que transforma uma
+             grade parada em profundidade. `items-start` porque as camadas
+             deslocam e um `stretch` brigaria com o transform. */
+          <div className="mt-8 grid items-start gap-5 sm:grid-cols-3">
+            {photos.map((photo, i) => (
+              <Reveal key={photo.label} variant="rise" index={i}>
+                <Parallax layer={(["front", "back", "mid"] as const)[i % 3]}>
+                  <figure className="group overflow-hidden rounded-panel border border-line shadow-soft">
+                    <div className="relative aspect-[4/5]">
+                      <Image
+                        src={photo.src}
+                        alt={`${photo.label} do Espaço Cuide-se Bem`}
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        sizes="(max-width: 640px) 100vw, 33vw"
+                      />
+                    </div>
+                    <figcaption className="bg-surface px-4 py-3 text-sm font-medium">
+                      {photo.label}
+                    </figcaption>
+                  </figure>
+                </Parallax>
+              </Reveal>
+            ))}
+          </div>
+        )}
 
         {/* Os valores saíram daqui: agora são a seção ValuesStory, logo abaixo
             nesta mesma página, com o painel fixo. */}

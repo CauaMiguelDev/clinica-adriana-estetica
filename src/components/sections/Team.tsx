@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowRight, BadgeCheck, Users, ImagePlus } from "lucide-react";
+import { ArrowRight, BadgeCheck, Users } from "lucide-react";
+import { LotusMark } from "@/components/ui/Logo";
 import { Reveal } from "@/components/ui/Reveal";
 import { TEAM, CLINIC, waLink } from "@/lib/data";
 
@@ -10,7 +11,9 @@ import { TEAM, CLINIC, waLink } from "@/lib/data";
  *
  * O card mostra só três especialidades por profissional; o catálogo completo
  * já vive na seção Procedimentos e não precisa ser repetido aqui.
- * Sem retrato real, exibimos o monograma — nunca uma pessoa de banco de imagens.
+ * Sem retrato real, o card mostra um retrato desenhado — inicial grande sobre o
+ * degradê da marca — e não um aviso de "foto em breve": o site precisa parecer
+ * pronto sem foto nenhuma. Nunca uma pessoa de banco de imagens.
  */
 export function Team() {
   return (
@@ -46,21 +49,19 @@ export function Team() {
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                       />
                     ) : (
-                      // Espaço reservado que se explica, em vez de parecer
-                      // imagem quebrada: monograma sólido + rótulo.
-                      <div className="flex h-full flex-col items-center justify-center gap-3 border border-dashed border-olive/30 px-4 text-center">
+                      // Retrato desenhado: alterna oliva e terracota para os
+                      // quatro cards não virarem uma fileira de clones.
+                      <div
+                        className={`relative flex h-full items-center justify-center overflow-hidden ${
+                          i % 2 ? "bg-terracotta-grad" : "bg-olive-grad"
+                        }`}
+                      >
+                        <LotusMark className="absolute -bottom-10 -right-10 h-48 w-48 text-white/10 transition-transform duration-700 group-hover:rotate-12" />
                         <span
-                          className="grid h-20 w-20 place-items-center rounded-full bg-olive/10 font-display text-3xl font-semibold text-olive-dark"
+                          className="font-display text-8xl font-semibold text-white/90"
                           aria-hidden
                         >
                           {firstName.charAt(0)}
-                        </span>
-                        <span className="inline-flex items-center gap-1.5 text-xs text-muted">
-                          <ImagePlus size={13} className="text-olive" />
-                          Foto em breve
-                        </span>
-                        <span className="sr-only">
-                          Retrato de {p.name} em breve
                         </span>
                       </div>
                     )}

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { MoveHorizontal, ImagePlus, Images } from "lucide-react";
+import { MoveHorizontal, Images } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
 import { RESULTS, type ResultPair } from "@/lib/data";
 
@@ -74,26 +74,13 @@ function Comparator({ pair }: { pair: ResultPair }) {
   );
 }
 
-function Placeholder({ pair }: { pair: ResultPair }) {
-  return (
-    <div className="grid aspect-[4/3] w-full place-items-center rounded-panel border border-dashed border-olive/35 bg-sand px-6 text-center">
-      <div>
-        <span className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-olive/10 text-olive">
-          <ImagePlus size={24} />
-        </span>
-        <p className="mt-4 font-display text-lg font-semibold">
-          Espaço reservado
-        </p>
-        <p className="mx-auto mt-1.5 max-w-xs text-sm text-muted">
-          As fotos de antes e depois de {pair.label.toLowerCase()} entram aqui.
-        </p>
-      </div>
-    </div>
-  );
-}
-
 export function BeforeAfter() {
   const anyReady = RESULTS.some((p) => p.before && p.after);
+
+  // Sem nenhum par pronto, a seção não aparece: uma seção inteira de "espaço
+  // reservado" faz o site parecer inacabado. Ela volta sozinha com o primeiro
+  // par de fotos em RESULTS.
+  if (!anyReady) return null;
 
   return (
     <section id="resultados" className="section-pad relative bg-bg">
@@ -107,23 +94,16 @@ export function BeforeAfter() {
             <span className="text-terracotta-dark">falam por si</span>
           </h2>
           <p className="mt-4 text-muted">
-            {anyReady
-              ? "Arraste o controle de cada imagem para revelar a transformação."
-              : "Estamos reunindo as fotos das nossas clientes, com autorização de cada uma. Em breve, aqui."}
+            Arraste o controle de cada imagem para revelar a transformação.
           </p>
         </Reveal>
 
         <div className="mt-12 grid grid-cols-1 gap-8 lg:grid-cols-2">
-          {RESULTS.map((pair, i) => {
-            const ready = Boolean(pair.before && pair.after);
+          {RESULTS.filter((p) => p.before && p.after).map((pair, i) => {
             return (
               <Reveal key={pair.label} variant="rise" index={i}>
                 <div className="rounded-panel border border-line bg-surface p-4 shadow-soft transition-shadow duration-300 hover:shadow-lift sm:p-5">
-                  {ready ? (
-                    <Comparator pair={pair} />
-                  ) : (
-                    <Placeholder pair={pair} />
-                  )}
+                  <Comparator pair={pair} />
 
                   <div className="mt-5 flex items-center justify-between gap-4 px-1">
                     <h3 className="font-display text-lg font-semibold">
@@ -139,12 +119,10 @@ export function BeforeAfter() {
           })}
         </div>
 
-        {anyReady && (
-          <p className="mt-8 text-center text-xs text-muted">
-            Fotos publicadas com autorização. Resultados variam conforme cada
-            cliente.
-          </p>
-        )}
+        <p className="mt-8 text-center text-xs text-muted">
+          Fotos publicadas com autorização. Resultados variam conforme cada
+          cliente.
+        </p>
       </div>
     </section>
   );

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Star, ArrowRight, Sparkles, MessageCircle } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
 import { ActionButton } from "@/components/ui/ActionButton";
-import { CLINIC, TESTIMONIALS, waLink } from "@/lib/data";
+import { CLINIC, RESULTS, TESTIMONIALS, waLink } from "@/lib/data";
 
 /**
  * Prova social na home, em uma dobra só.
@@ -86,7 +86,11 @@ export function ResultsTeaser() {
             href="/resultados"
             className="group inline-flex items-center gap-2 text-sm font-semibold text-olive-dark underline-offset-4 hover:underline"
           >
-            Ver antes e depois
+            {/* O antes e depois só existe com fotos; sem elas, /resultados
+                abre nos depoimentos. */}
+            {RESULTS.some((r) => r.before && r.after)
+              ? "Ver antes e depois"
+              : "Ver todos os depoimentos"}
             <ArrowRight
               size={16}
               className="transition-transform duration-300 group-hover:translate-x-1"
