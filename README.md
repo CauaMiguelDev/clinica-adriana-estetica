@@ -4,10 +4,46 @@ Site de página única da clínica de estética Espaço Cuide-se Bem, em Ceilân
 Brasília. O objetivo é levar o visitante de *conhecer os serviços* a *agendar
 pelo WhatsApp* no menor caminho possível.
 
+**No ar:** https://cauamigueldev.github.io/clinica-adriana-estetica/
+
 **Next.js 14 (App Router) · TypeScript · Tailwind CSS · Framer Motion · Three.js · Lucide**
+
+## Características
+
+- **Página única expandida em rotas** — home curta (quatro dobras) + páginas de aprofundamento; o shell (navbar, rodapé, fundo animado, WhatsApp flutuante) persiste entre navegações.
+- **Agendamento sem backend** — o formulário monta a mensagem e abre a conversa no WhatsApp; nada é armazenado nem enviado por este site.
+- **Fundo com linhas de nível animadas** em canvas, ligado ao scroll, com a clareira do Hero recortada como máscara.
+- **SEO e prévia de link prontos** — metadados, JSON-LD de negócio local e imagem de Open Graph (`opengraph-image.png`) montada com a marca.
+- **Publicação estática** — exportado com `output: export` e servido de graça no GitHub Pages.
+- **Sem dependência de fotos** — todos os espaços de imagem já existem e degradam para monograma/placeholder enquanto as fotos reais não chegam.
 
 O sistema de design — paleta, tipografia, escala, estados e regras de movimento —
 está documentado em [`DESIGN.md`](./DESIGN.md). Leia antes de mexer no visual.
+
+## Publicação (GitHub Pages)
+
+O site é estático e mora na branch `gh-pages` do repositório, servida pelo
+GitHub Pages.
+
+- **URL:** https://cauamigueldev.github.io/clinica-adriana-estetica/
+- Como o site vive sob `/<repo>/`, o build de produção liga `basePath`,
+  `images.unoptimized` e `trailingSlash` — só no `next build` (via *phase* em
+  [`next.config.mjs`](./next.config.mjs)), então `npm run dev` local segue sem
+  prefixo.
+
+**Republicar** (depois de mudar conteúdo ou visual):
+
+```bash
+npm run deploy
+```
+
+> `npm run deploy` faz o build e um push forçado da pasta `out/` para `gh-pages`
+> — essa branch é só artefato de build, não edite nela à mão.
+
+Para um domínio próprio depois, aponte o CNAME, ajuste `basePath` (ou remova, se
+o domínio servir na raiz) e a origem em `metadataBase`
+([`src/app/layout.tsx`](./src/app/layout.tsx)). Quer publicação automática a cada
+push? Dá para trocar por um workflow do GitHub Actions.
 
 ## Como rodar
 

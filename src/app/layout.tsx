@@ -27,7 +27,13 @@ const sans = Karla({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://clinicaadrianaestetica.com.br"),
+  // Origem de onde o site é realmente servido: define o URL absoluto da imagem
+  // de prévia (og:image). Hoje é o GitHub Pages; ao migrar para o domínio próprio,
+  // troque aqui (ou passe NEXT_PUBLIC_SITE_ORIGIN). O basePath do repo o Next
+  // acrescenta sozinho no caminho da imagem.
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_ORIGIN ?? "https://cauamigueldev.github.io"
+  ),
   title: {
     default: `${CLINIC.name} | Estética e Bem-estar em Ceilândia, Brasília`,
     template: `%s | ${CLINIC.name}`,
